@@ -1,0 +1,20 @@
+<div class="container-fluid d-flex justify-content-center align-items-center min-vh-100">
+    <div class="form-container p-4">
+        <h2 class="text-center">Profil</h2>
+        <form>
+            <div class="form-floating mb-3">
+                <p  [(ngModel)]="loggedUser.Uname">Username</p>
+            </div>
+            <div class="form-floating mb-3">
+                <p  [(ngModel)]="loggedUser.displayName">Email</p>
+            </div>
+            <div>
+                <i class="bi bi-box-arrow-right" id="signout"></i>
+            </div>
+            <div>
+                <button type="button" class="btn btn-danger">Delete</button>
+            </div>
+        </form>
+    </div>
+</div>
+
