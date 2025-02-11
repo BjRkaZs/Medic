@@ -10,6 +10,21 @@ export class SigninComponent {
   loginModel:any={}
 
   constructor (private auth:AuthService){}
+  togglePasswordVisibility(inputId: string, iconId: string) {
+    const inputElement = document.getElementById(inputId) as HTMLInputElement;
+    const iconElement = document.getElementById(iconId) as HTMLElement;
+
+    if (inputElement.type === "password") {
+      inputElement.type = "text";
+      iconElement.classList.remove("bi-eye-slash");
+      iconElement.classList.add("bi-eye");
+    } else {
+      inputElement.type = "password";
+      iconElement.classList.remove("bi-eye");
+      iconElement.classList.add("bi-eye-slash");
+    }
+  }
+
   login() {
     this.auth.login(this.loginModel).subscribe({
       next: (response) => {
@@ -21,5 +36,6 @@ export class SigninComponent {
         alert("Login failed: " + (error.error?.message || "Unknown error"));
       }
     });
-  }  
+  } 
 }
+

@@ -42,8 +42,19 @@
                                 </div>
                                 <input type="uname" [(ngModel)]="regModel.uname" name="uname" placeholder="User name" id="uname">
                                 <input type="email" [(ngModel)]="regModel.email" name="email" placeholder="Email" id="email">
-                                <input type="pass" [(ngModel)]="regModel.password" name="pass" placeholder="Password" id="pass">
-                                <input type="cpass" [(ngModel)]="regModel.confirmPassword" name="cpass" placeholder="Confirm password" id="cpass">
+                                <div class="password-container">
+                                    <label for="pass">
+                                        <input type="password" [(ngModel)]="regModel.password" name="pass" placeholder="Password" id="pass">
+                                        <i id="togglePassword3" class="bi bi-eye-slash" (click)="togglePasswordVisibility('pass', 'togglePassword3')"></i>
+                                    </label>
+                                </div>
+    
+                                <div class="password-container">
+                                    <label for="cpass">
+                                        <input type="password" [(ngModel)]="regModel.confirmPassword" name="cpass" placeholder="Confirm password" id="cpass">
+                                        <i id="togglePassword4" class="bi bi-eye-slash" (click)="togglePasswordVisibility('cpass', 'togglePassword4')"></i>
+                                    </label>
+                                </div>
                                 <button (click)="register()" id="signInButton">Sign Up</button>
                             </form>
                         </div>

@@ -121,27 +121,6 @@ h1 {
     min-height: 480px;
 }
 
-input {
-    width: 100%;
-    max-width: 320px;
-    height: 50px;
-    border-radius: 20px;
-    border: 1px solid #556858;
-    text-align: center;
-    margin-bottom: 20px;
-    font-size: 16px;
-    transition: 0.3s;
-}
-
-input:focus {
-    border-color: #749977;
-    outline: none;
-}
-
-input.invalid {
-    border-color: red !important;
-}
-
 #fpass {
     display: block;
     margin-top: 10px;
@@ -170,3 +149,43 @@ input.invalid {
 #signInButton:hover {
     background-color: #5b7a5d;
 }
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    width: 100%;
+    padding-right: 40px;
+    height: 50px;
+    border-radius: 20px;
+}
+
+.password-container i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%); /* This centers the icon vertically */
+    cursor: pointer;
+    color: #555; /* Optional: Adjust icon color */
+}
+input {
+    width: 100%;
+    max-width: 320px;
+    height: 50px;
+    border-radius: 20px;
+    border: 1px solid #556858;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+input:focus {
+    border-color: #749977;
+    outline: none;
+}
+
+input.invalid {
+    border-color: red !important;
+}
+

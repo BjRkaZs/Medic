@@ -41,7 +41,12 @@
                                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
                                 </div>
                                 <input type="email" [(ngModel)]="loginModel.email" name="email" placeholder="Email" id="email">
-                                <input type="pass" [(ngModel)]="loginModel.password" name="pass" placeholder="Password" id="pass">
+                                <div class="password-container">
+                                    <label for="pass">
+                                        <input type="password" [(ngModel)]="loginModel.password" name="pass" placeholder="Password" id="pass">
+                                        <i id="togglePassword3" class="bi bi-eye-slash" (click)="togglePasswordVisibility('pass', 'togglePassword3')"></i>
+                                    </label>
+                                </div>
                                 <a routerLink="/fpass" routerLinkActive="active" id="fpass">Forget Your Password?</a>
                                 <button (click)="login()" id="signInButton">Sign In</button>
                             </form>
