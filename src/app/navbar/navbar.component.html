@@ -1,9 +1,9 @@
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" *ngIf="isLoggedIn"> 
     <div>
         <i class="bi bi-calendar-plus" id="calendar"></i>
     </div>
     <div>
-        <i class="bi bi-box-arrow-right" id="signout"></i>
+        <i class="bi bi-box-arrow-right" id="signout" (click)="signOut()"></i>
     </div>
     <a class="btn btn-success px-4" routerLink="/profile" routerLinkActive="active">Profile</a>
 </nav>

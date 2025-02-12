@@ -12,7 +12,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { loggedUserGuard } from '../logged-user.guard';
 
 const routes: Routes = [
-  { path: 'signup', component: SignupComponent },
+  { path: '', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'fpass', component: FpassComponent },
   { path: 'signfpass', component: SignfpassComponent},

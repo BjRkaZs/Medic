@@ -79,8 +79,21 @@ export class AuthService {
   getLoggedUser(){
     return this.userSub
   }
-  getIsLoggedUser(){
-    return this.loggedUserSub
-   }
+
+
+   private isLoggedUser = false;
+
+  getIsLoggedUser(): boolean {
+
+    return this.isLoggedUser;
+  }
+
+  signIn(): void {
+    this.isLoggedUser = true;
+  }
+
+  signOut(): void {
+    this.isLoggedUser = false;
+  }
 
 }
