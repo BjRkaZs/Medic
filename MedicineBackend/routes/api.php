@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+Route::middleware( "auth:sanctum" )->group( function(){
+    Route::post( "/logout", [ UserController::class, "logout" ]);
+
+    Route::post( "/newpackage", [ PackageController::class, "newPackage" ]);
+    Route::put( "/modpackage", [ PackageController::class, "modifyPackage" ]);
+    Route::delete( "/destpackage", [ PackageController::class, "destroyPackage" ]);
+
+    Route::get( "/userprofile", [ ProfileController::class, "getProfile" ]);
+    Route::put( "/modifyprofile", [ ProfileController::class, "setProfile" ]);
+    Route::put( "/modifypassword", [ ProfileController::class, "setPassword" ]);
+    Route::post("/deleteprofile", [ ProfileController::class, "deleteProfile" ]);
+
+    Route::get( "/users", [ AuthController::class, "getUsers" ]);
+    Route::put( "/admin", [ AuthController::class, "setAdmin" ]);
+    Route::put( "updateuser", [ AuthController::class, "updateUser" ]);
+});
+
+Route::post( "/register", [ UserController::class, "register" ]);
+Route::post( "/login", [ UserController::class, "login" ]);
+
+Route::get( "/tokens", [ UserController::class, "getTokens" ]);
+
+Route::get( "/packages", [ PackageController::class, "getPackages" ]);
+Route::get( "/package", [ PackageController::class, "getPackage" ]);
