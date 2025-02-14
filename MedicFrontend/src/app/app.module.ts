@@ -14,6 +14,7 @@ import { FpassComponent } from './fpass/fpass.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SignfpassComponent } from './signfpass/signfpass.component';
 import { CformComponent } from './cform/cform.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { CformComponent } from './cform/cform.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule,
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

@@ -12,14 +12,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { loggedUserGuard } from '../logged-user.guard';
 
 const routes: Routes = [
-  { path: '', component: SignupComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'signin', component: SigninComponent },
   { path: 'fpass', component: FpassComponent },
   { path: 'signfpass', component: SignfpassComponent},
   { path: 'profile', component: ProfileComponent, canActivate:[loggedUserGuard]},
-  { path: 'calendar', component: CalendarComponent, canActivate:[loggedUserGuard]},
+  { path: '', component: CalendarComponent, canActivate:[loggedUserGuard]},
   { path: 'cform', component: CformComponent, canActivate:[loggedUserGuard]},
-  { path: 'navbar', component: NavbarComponent, canActivate:[loggedUserGuard]}
+  { path: 'navbar', component: NavbarComponent, canActivate:[loggedUserGuard]},
+  { path: '', redirectTo: '/signin', pathMatch: 'full' }
 ];
 
 @NgModule({
