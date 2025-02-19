@@ -1,0 +1,35 @@
+.navbar {
+    background-color: #749977;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar i {
+    cursor: pointer;
+    color: white;
+    font-size: 24px;
+    margin-right: 15px;
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  #signout:hover {
+    color: #ff4d4d;
+  }
+  .form-container {
+    background: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-title {
+    color: #333;
+    font-weight: bold;
+}
