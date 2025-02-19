@@ -51,7 +51,7 @@ export class AuthService {
     return this.http.post(this.apiUrl + 'userClaims/', body, { headers: headers });
   }
 
-  register(userData: any): Observable<any> {
+  Register(userData: any): Observable<any> {
     return this.http.post(this.apiUrl, userData);
   }
 
@@ -64,18 +64,18 @@ export class AuthService {
     return this.http.put('' + user.id, user, head);
   }
 
-  login(loginModel: any): Observable<any> {
+  Login(loginModel: any): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}?email=${loginModel.email}&password=${loginModel.password}`).pipe(
       tap(response => {
         if (response && response.length > 0) {
           const user = response[0];
           sessionStorage.setItem('email', loginModel.email); 
           this.isLoggedUser = true;
-          this.loggedUserSub.next(true);  // 🔥 Értesíti a komponenseket
+          this.loggedUserSub.next(true);
           this.userSub.next(user);  
         } else {
           this.isLoggedUser = false;
-          this.loggedUserSub.next(false); // 🔥 Értesíti a komponenseket
+          this.loggedUserSub.next(false);
           this.userSub.next(null);
         }
       })
@@ -87,7 +87,7 @@ export class AuthService {
   }
 
   getIsLoggedUserObservable(): Observable<boolean> {
-    return this.loggedUserSub.asObservable();  // 🔥 Ezt fogja használni a Guard
+    return this.loggedUserSub.asObservable();
   }
 
   getIsLoggedUser(): boolean {
@@ -96,11 +96,11 @@ export class AuthService {
 
   signIn(): void {
     this.isLoggedUser = true;
-    this.loggedUserSub.next(true);  // 🔥 Értesíti a komponenseket
+    this.loggedUserSub.next(true);
   }
 
   signOut(): void {
     this.isLoggedUser = false;
-    this.loggedUserSub.next(false); // 🔥 Értesíti a komponenseket
+    this.loggedUserSub.next(false);
   }
 }
