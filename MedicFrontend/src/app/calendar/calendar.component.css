@@ -23,4 +23,6 @@
   #signout:hover {
     color: #ff4d4d;
   }
-  
+  section{
+    width: 800px;
+  }

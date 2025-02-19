@@ -24,6 +24,8 @@
             <div class="form-floating mb-3">
                 <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.uname" name="uname">
                 <label for="displayName">Display Name</label>
+                <button type="button" class="btn btn-primary" (click)="saveProfile()">
+                </button>
             </div>
             <div class="form-floating mb-3">
                 <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
