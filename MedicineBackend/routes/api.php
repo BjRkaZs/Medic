@@ -18,14 +18,14 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::put( "/modpackage", [ PackageController::class, "modifyPackage" ]);
     Route::delete( "/destpackage", [ PackageController::class, "destroyPackage" ]);
 
-    Route::get( "/userprofile", [ ProfileController::class, "getProfile" ]);
+    Route::get( "/getprofile", [ ProfileController::class, "getProfile" ]);
     Route::put( "/modifyprofile", [ ProfileController::class, "setProfile" ]);
     Route::put( "/modifypassword", [ ProfileController::class, "setPassword" ]);
     Route::post("/deleteprofile", [ ProfileController::class, "deleteProfile" ]);
 
     Route::get( "/users", [ AuthController::class, "getUsers" ]);
     Route::put( "/admin", [ AuthController::class, "setAdmin" ]);
-    Route::put( "updateuser", [ AuthController::class, "updateUser" ]);
+    Route::put( "/updateuser", [ AuthController::class, "updateUser" ]);
 });
 
 Route::post( "/register", [ UserController::class, "register" ]);

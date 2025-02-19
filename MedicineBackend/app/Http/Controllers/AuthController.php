@@ -10,23 +10,19 @@ use Illuminate\Support\Facades\Gate;
 
 class AuthController extends ResponseController{
     public function getUsers() {
-
         if ( !Gate::denies( "user" )) {
 
             return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
         }
-
         $users = User::all();
+
         return $this->sendResponse( $users, "Betöltve" );
     }
 
     public function setAdmin( Request $request ) {
-
         if ( !Gate::allows( "super" )) {
-
             return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
         }
-
         $user = User::find( $request[ "id" ]);
         $user->admin = 1;
 
@@ -34,9 +30,7 @@ class AuthController extends ResponseController{
     }
 
     public function updateUser( Request $request ) {
-
         if( !Gate::denies( "user" )) {
-
             return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
         }
 
@@ -49,6 +43,6 @@ class AuthController extends ResponseController{
     }
 
     public function destroyUser() {
-
+        
     }
 }

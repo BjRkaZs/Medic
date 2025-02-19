@@ -13,7 +13,6 @@ use Carbon\Carbon;
 
 class UserController extends ResponseController{
     public function register( RegisterRequest $request ) {
-
         $request->validated();
 
         $user = User::create([
@@ -28,18 +27,15 @@ class UserController extends ResponseController{
     }
 
     public function login( LoginRequest $request ) {
-
         $request->validated();
 
         if( Auth::attempt([ "name" => $request["name"], "password" => $request["password"]])) {
-
             $actualTime = Carbon::now();
             $authUser = Auth::user();
             $bannedTime = ( new BanController )->getBannedTime( $authUser->name );
             ( new BanController )->reSetLoginCounter( $authUser->name );
 
             if( $bannedTime < $actualTime ) {
-
                 ( new BanController )->resetBannedTime( $authUser->name );
                 $token = $authUser->createToken( $authUser->name."Token" )->plainTextToken;
                 $data["user"] = [ "user" => $authUser->name ];
@@ -47,13 +43,10 @@ class UserController extends ResponseController{
                 $data["token"] = $token;
 
                 return $this->sendResponse( $data, "Sikeres bejelentkezés");
-
             }else {
-
                 return $this->sendError( "Autentikációs hiba", [ "Következő lehetőség: ", $bannedTime ], 401 );
             }
         }else {
-
             $loginCounter = ( new BanController )->getLoginCounter( $request[ "name" ]);
             if( $loginCounter < 3 ) {
 
@@ -70,7 +63,6 @@ class UserController extends ResponseController{
     }
 
     public function logout() {
-
         auth( "sanctum" )->user()->currentAccessToken()->delete();
         $name = auth( "sanctum" )->user()->name;
 
@@ -79,8 +71,7 @@ class UserController extends ResponseController{
 
 
 
-        public function getTokens() {
-
+    public function getTokens() {
         $tokens = DB::table( "tokens" )->get();
 
         return $tokens;

@@ -8,7 +8,7 @@ class Type extends Model
 {
     public $timestamps = false;
 
-    public function drink() {
+    public function medicine() {
 
         return $this->hasMany( Medicine::class );
     }
