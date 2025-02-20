@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required",
+            "email" => "required|email",
             "password" => "required"
         ];
     }
@@ -33,7 +33,8 @@ class LoginRequest extends FormRequest
 
         return [
 
-            "name.required" => "Név elvárt",
+            "email.required" => "E-mail elvárt",
+            "email.email" => "Érvénytelen email formátum",
             "password.required" => "Jelszó elvárt"
         ];
     }

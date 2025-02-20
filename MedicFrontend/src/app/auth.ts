@@ -1,6 +1,6 @@
 export interface Auth {
     id: string;
-    uname: string;
+    name: string;
     email: string;
     password: string
 }

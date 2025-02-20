@@ -12,7 +12,7 @@ class ProfileController extends ResponseController{
     public function getProfile() {
         $user = auth( "sanctum" )->user();
         $data = [
-            "name" => $user->name,
+            "name" => $user->email,
             "email" => $user->email,
         ];
 
@@ -21,7 +21,7 @@ class ProfileController extends ResponseController{
 
     public function setProfile( Request $request ) {
         $user = auth( "sanctum" )->user();
-        $user->name = $request[ "name" ];
+        $user->email = $request[ "name" ];
         $user->email = $request[ "email" ];
         $user->update();
 

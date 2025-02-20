@@ -14,27 +14,44 @@ export class LogComponent {
 
 
   regModel: any = {
-    uname: '',
+    name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    password_confirmation: '',
+    admin:0
   };
 
   Register() {
-    if (this.regModel.password !== this.regModel.confirmPassword) {
+    console.log('Registration data:', this.regModel);
+
+    if (this.regModel.password !== this.regModel.password_confirmation) {
       alert("Passwords do not match!");
       return;
     }
 
     this.auth.Register(this.regModel).subscribe({
       next: (response) => {
-        console.log("Registration successful", response);
-        alert("Registration successful!");
-        this.router.navigate(['/signin']);
+        console.log('Registration response:', response); // Debug log
+        if (response.success) {  // Check success from ResponseController
+          console.log("Registration successful", response);
+          alert(response.message); // Will show "Sikeres regisztráció"
+          this.router.navigate(['/login']);
+        } else {
+          alert(response.message || "Registration failed");
+        }
       },
       error: (error) => {
         console.error("Registration failed", error);
-        alert("Registration failed");
+        // Show validation errors from Laravel
+        if (error.error?.errors) {
+          // Handle Laravel validation errors
+          const errorMessages = Object.values(error.error.errors).flat();
+          alert(errorMessages.join('\n'));
+        } else if (error.error?.message) {
+          alert(error.error.message);
+        } else {
+          alert('Regisztrációs hiba történt');
+        }
       }
     });
   }
@@ -47,20 +64,18 @@ export class LogComponent {
   Login() {
     this.auth.Login(this.loginModel).subscribe({
       next: (response: any) => {
-        console.log("Login successful", response);
-        sessionStorage.setItem('email', this.loginModel.email);
-
-        // Navigáció a profil oldalra sikeres bejelentkezés után
-        if (response && response.length > 0) {
-          alert("Login successful!");
+        if (response.success) {  // Check success from ResponseController
+          console.log("Login successful", response);
+          sessionStorage.setItem('email', this.loginModel.email);
+          alert(response.message); // Will show "Sikeres bejelentkezés"
           this.router.navigate(['/profile']);
         } else {
-          alert("Login failed: Invalid credentials");
+          alert(response.message || "Login failed");
         }
       },
       error: (error) => {
         console.error("Login failed", error);
-        alert("Login failed: " + (error.error?.message || "Unknown error"));
+        alert(error.error.message || "Login failed");
       }
     });
   }

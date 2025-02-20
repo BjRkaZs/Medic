@@ -3,12 +3,26 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+interface AuthResponse {
+  success: boolean;
+  data: {
+    user: {
+      name: string;
+      email: string;
+    };
+    token: string;
+    time?: string;
+  };
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  
 
-  apiUrl = 'http://localhost:3000/users';
+  apiUrl = 'http://localhost:8000/api';
   private token = '';
   private user: any = {};
   private userSub = new BehaviorSubject<any>(null);
@@ -52,7 +66,16 @@ export class AuthService {
   }
 
   Register(userData: any): Observable<any> {
-    return this.http.post(this.apiUrl, userData);
+    const registerData = {
+      name: userData.name,
+      email: userData.email,
+      password: userData.password,
+      password_confirmation: userData.password_confirmation // Change this line
+    };
+    
+    console.log('Sending registration data:', registerData); // Debug log
+    
+    return this.http.post(`${this.apiUrl}/register`, registerData);
   }
 
   update(user: any) {
@@ -64,19 +87,22 @@ export class AuthService {
     return this.http.put('' + user.id, user, head);
   }
 
-  Login(loginModel: any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}?email=${loginModel.email}&password=${loginModel.password}`).pipe(
-      tap(response => {
-        if (response && response.length > 0) {
-          const user = response[0];
-          sessionStorage.setItem('email', loginModel.email); 
+  Login(loginData: any): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, {
+      email: loginData.email,
+      password: loginData.password
+    }).pipe(
+      tap((response: AuthResponse) => {
+        console.log('Login response:', response, this.token);
+  
+        if (response.success) {
+          localStorage.setItem('token', response.data.token);
+          sessionStorage.setItem('email', response.data.user.email);
+          this.token = response.data.token;
+          this.user = response.data.user;
           this.isLoggedUser = true;
           this.loggedUserSub.next(true);
-          this.userSub.next(user);  
-        } else {
-          this.isLoggedUser = false;
-          this.loggedUserSub.next(false);
-          this.userSub.next(null);
+          this.userSub.next(response.data.user);
         }
       })
     );
