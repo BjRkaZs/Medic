@@ -13,6 +13,23 @@ export class ProfileComponent implements OnInit {
   authService: any;
 
   constructor(private auth: AuthService, private router: Router) {}
+  profilePicUrl: string = 'https://via.placeholder.com/150';
+
+
+  onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files ? target.files[0] : null;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          this.profilePicUrl = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();

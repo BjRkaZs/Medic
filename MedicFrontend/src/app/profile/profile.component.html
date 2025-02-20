@@ -12,9 +12,25 @@
     </div>
 </nav>
 
+<div class="parent">
+    <div class="container">
+            <form>
+            <img id="profilePic" [src]="profilePicUrl" alt="Profile Picture" lass="rounded-circle">
+            <input type="file" id="fileInput" (change)="onFileChange($event)" accept="image/*">
+                <h1>Profile</h1>
+                <input type="text" id="displayName" name="uname" placeholder="Username" readonly>
+                <input type="email" id="email" placeholder="Email" name="email" readonly>
+                <input type="password" id="password" placeholder="Password" name="password" readonly>
+                <button onclick="saveProfile()">Save</button>
+                <button onclick="signOut()">Sign Out</button>
+                <button onclick="deleteProfile()">Delete</button>
+            </form>
+
+    </div>
+</div>
 
 
-<div *ngIf="isLoggedIn" class="container d-flex justify-content-center align-items-center min-vh-100">
+<!-- <div *ngIf="isLoggedIn" class="container d-flex justify-content-center align-items-center min-vh-100">
     <div class="card p-4 w-50">
         <h5 class="card-title text-center">Profile</h5>
         <div class="text-center my-3">
@@ -37,4 +53,5 @@
             </div>
         </form>
     </div>
-</div>
+</div> -->
+

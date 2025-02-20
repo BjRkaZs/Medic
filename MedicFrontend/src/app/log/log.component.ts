@@ -50,7 +50,6 @@ export class LogComponent {
         console.log("Login successful", response);
         sessionStorage.setItem('email', this.loginModel.email);
 
-        // Navigáció a profil oldalra sikeres bejelentkezés után
         if (response && response.length > 0) {
           alert("Login successful!");
           this.router.navigate(['/profile']);

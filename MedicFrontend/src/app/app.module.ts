@@ -12,9 +12,6 @@ import { FpassComponent } from './fpass/fpass.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SignfpassComponent } from './signfpass/signfpass.component';
 import { CformComponent } from './cform/cform.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogComponent } from './log/log.component';
 
 @NgModule({
@@ -33,9 +30,7 @@ import { LogComponent } from './log/log.component';
     AppRoutingModule,
     NgbModule,
     FormsModule
-    // MatDatepickerModule,
-    // MatNativeDateModule,
-    // BrowserAnimationsModule
+
   ],
   providers: [provideHttpClient()],
   bootstrap: [AppComponent]

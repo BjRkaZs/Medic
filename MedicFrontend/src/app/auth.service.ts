@@ -14,7 +14,7 @@ export class AuthService {
   private userSub = new BehaviorSubject<any>(null);
   public SadminSub = new BehaviorSubject<boolean>(false);
   private adminSub = new BehaviorSubject<boolean>(false);
-  private loggedUserSub = new BehaviorSubject<boolean>(false); // 🔥 Megfigyelhető változó
+  private loggedUserSub = new BehaviorSubject<boolean>(false);
   private isLoggedUser = false;
 
   constructor(private http: HttpClient) { }
@@ -22,7 +22,7 @@ export class AuthService {
   logout(): void {
     sessionStorage.removeItem('email');
     this.isLoggedUser = false;
-    this.loggedUserSub.next(false); // 🔥 Értesíti a komponenseket
+    this.loggedUserSub.next(false);
     this.userSub.next(null);
   }
 
