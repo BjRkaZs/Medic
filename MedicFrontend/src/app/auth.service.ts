@@ -19,12 +19,13 @@ export class AuthService {
 
   constructor(private http: HttpClient) { }
 
-  logout(): void {
+  signOut(): void {
     sessionStorage.removeItem('email');
+    this.token = ''; 
     this.isLoggedUser = false;
     this.loggedUserSub.next(false);
     this.userSub.next(null);
-  }
+}
 
   getCurrentUser() {
     return this.userSub;
@@ -57,11 +58,13 @@ export class AuthService {
 
   update(user: any) {
     console.log('update', user);
-    let head: any = {
-      headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
-      'responseType': 'text'
+    let head = {
+      headers: new HttpHeaders({
+        'Authorization': 'Bearer ' + this.token,
+        'Content-Type': 'application/json'
+      })
     };
-    return this.http.put('' + user.id, user, head);
+    return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
   }
 
   Login(loginModel: any): Observable<any> {
@@ -99,8 +102,4 @@ export class AuthService {
     this.loggedUserSub.next(true);
   }
 
-  signOut(): void {
-    this.isLoggedUser = false;
-    this.loggedUserSub.next(false);
-  }
 }

@@ -45,14 +45,15 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteProfile(): void {
-    if (confirm('Are you sure you want to delete your profile?')) {
-      this.auth.logout();
-      this.router.navigate(['/signin']);
-    }
+    // if (confirm('Are you sure you want to delete your profile?')) {
+    //   this.auth.logout();
+    //   this.router.navigate(['/signin']);
+    // }
   }
 
-  signOut(): void {
-    this.authService.signOut();
+  signOut(): void{
+    this.auth.signOut();
     this.isLoggedIn = false;
+    this.router.navigate(['/login']);
   }
 }

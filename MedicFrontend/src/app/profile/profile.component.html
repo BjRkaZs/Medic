@@ -15,43 +15,13 @@
 <div class="parent">
     <div class="container">
             <form>
-            <img id="profilePic" [src]="profilePicUrl" alt="Profile Picture" lass="rounded-circle">
+            <img id="profilePic" [src]="profilePicUrl" alt="Profile Picture" class="rounded-circle">
             <input type="file" id="fileInput" (change)="onFileChange($event)" accept="image/*">
                 <h1>Profile</h1>
-                <input type="text" id="displayName" name="uname" placeholder="Username" readonly>
-                <input type="email" id="email" placeholder="Email" name="email" readonly>
-                <input type="password" id="password" placeholder="Password" name="password" readonly>
-                <button onclick="saveProfile()">Save</button>
-                <button onclick="signOut()">Sign Out</button>
+                <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.uname" name="uname">
+                <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
+                <button (click)="saveProfile()">Save</button>
                 <button onclick="deleteProfile()">Delete</button>
             </form>
-
     </div>
 </div>
-
-
-<!-- <div *ngIf="isLoggedIn" class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div class="card p-4 w-50">
-        <h5 class="card-title text-center">Profile</h5>
-        <div class="text-center my-3">
-            <img class="img-thumbnail rounded-circle" src="https://via.placeholder.com/150" alt="Profile Picture">
-        </div>
-        <form>
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.uname" name="uname">
-                <label for="displayName">Display Name</label>
-                <button type="button" class="btn btn-primary" (click)="saveProfile()">
-                </button>
-            </div>
-            <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
-                <label for="email">E-Mail</label>
-            </div>
-            <div class="d-flex justify-content-between">
-                <button type="button" class="btn btn-primary" (click)="saveProfile()">Save</button>
-                <button type="button" class="btn btn-danger" (click)="deleteProfile()">Delete</button>
-            </div>
-        </form>
-    </div>
-</div> -->
-
