@@ -4,11 +4,12 @@ import { FpassComponent } from './fpass/fpass.component';
 import { SignfpassComponent } from './signfpass/signfpass.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CalendarComponent } from './calendar/calendar.component';
-//import { adminGuard } from './admin.guard';
 import { CformComponent } from './cform/cform.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { loggedUserGuard } from '../logged-user.guard';
 import { LogComponent } from './log/log.component';
+import { DatasComponent } from './datas/datas.component';
+import { adminGuard } from './admin.guard';
 
 const routes: Routes = [
     { path: 'login', component: LogComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
     { path: 'profile', component: ProfileComponent, canActivate: [loggedUserGuard] },
     { path: 'calendar', component: CalendarComponent, canActivate: [loggedUserGuard] },
     { path: 'cform', component: CformComponent, canActivate: [loggedUserGuard] },
+    { path: 'datas', component: DatasComponent, canActivate: [loggedUserGuard, adminGuard] },
     { path: '', redirectTo: 'login', pathMatch: 'full' },
   
 ];

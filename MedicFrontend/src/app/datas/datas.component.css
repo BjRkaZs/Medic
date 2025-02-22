@@ -1,0 +1,121 @@
+.parent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #225b7c;
+    min-height: 100vh;
+    padding-top: 80px;
+}
+.container{
+    background-color: white;
+    padding: 0, 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+}
+nav{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: rgba(34, 91, 124, 0.144);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 60px 0;
+    border-bottom: 5px solid #225b7c;
+    padding-bottom: 20px;
+    width: 100%;
+}
+table{
+    margin-top: 30px;
+}
+h1{
+    text-align: center;
+    color: aliceblue;
+    text-transform: uppercase;
+    font-size: 30px;
+    letter-spacing: 0.3px;
+    margin: 25px;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+.searchbar {
+    width: 500px;
+    height: 50px;
+    border: none;
+    border-radius: 30px;
+    padding: 10px;
+    font-size: 16px;
+    transition: all 0.3s ease-in-out;
+}
+
+.searchbar:focus {
+    outline: none;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.918);
+}
+#name{
+    width: 500px;
+    height: 55px;
+    border-radius: 10px;
+    border-bottom: 2px solid rgba(34, 91, 124, 0.5);
+    transition: all 0.3s ease-in-out;
+}
+button{
+    background-color: #225b7c;
+    color: aliceblue;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    gap: 8px;
+}
+#add{
+    width: 40px !important;
+    height: 55px;
+    border-radius: 50%;
+    font-size: 16px;
+    float: right !important;
+}
+#add, #edit, #delete {
+    width: 100%;
+    max-width: 200px;
+    height: 50px;
+    border-radius: 25px;
+    font-size: 18px;
+}
+
+#search:hover, #add:hover, #edit:hover, #delete:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#edit{
+    width: 100%;
+    max-width: 120px;
+}
+#delete{
+    margin-left: 40px;
+    width: 120px;
+}
+#edit:hover{
+    background-color: rgb(247, 180, 36);
+    color: black;
+}
+#delete:hover{
+    background-color: rgb(216, 6, 6);
+    color: aliceblue;
+}
+.table{
+    width: 100%;
+}
+th{
+    width: 70%;
+}

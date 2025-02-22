@@ -1,32 +1,11 @@
 {
   "users": [
     {
-      "id": "dcda",
-      "uname": "Reka",
-      "email": "levelekspam49@gmail.com",
-      "password": "012",
-      "confirmPassword": "012"
-    },
-    {
-      "id": "b6ca",
-      "uname": "dgf",
+      "id": "3b77",
+      "uname": "Ads",
       "email": "asa@gmail.com",
       "password": "012",
       "confirmPassword": "012"
-    },
-    {
-      "id": "5951",
-      "uname": "Asa",
-      "email": "asa@gmail.com",
-      "password": "012",
-      "confirmPassword": "012"
-    },
-    {
-      "id": "737f",
-      "uname": "",
-      "email": "",
-      "password": "",
-      "confirmPassword": ""
     }
   ]
 }
