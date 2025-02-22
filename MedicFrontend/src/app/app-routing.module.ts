@@ -5,7 +5,6 @@ import { SignfpassComponent } from './signfpass/signfpass.component';
 import { ProfileComponent } from './profile/profile.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CformComponent } from './cform/cform.component';
-import { NavbarComponent } from './navbar/navbar.component';
 import { loggedUserGuard } from '../logged-user.guard';
 import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
