@@ -69,6 +69,10 @@ h1{
     border-bottom: 2px solid rgba(34, 91, 124, 0.5);
     transition: all 0.3s ease-in-out;
 }
+#name:hover{
+    border-color: #225b7c;
+    box-shadow: 0 4px 10px rgba(53, 77, 182, 0.2);
+}
 button{
     background-color: #225b7c;
     color: aliceblue;
