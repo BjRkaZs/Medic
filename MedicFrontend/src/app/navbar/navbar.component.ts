@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css'
+  styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private auth: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.getIsLoggedUser();
+    this.auth.getIsLoggedUserObservable().subscribe(status => {
+      this.isLoggedIn = status;
+    });
   }
 
   signOut(): void {
-    this.authService.signOut();
-    this.isLoggedIn = false;
+    this.auth.signOut();
+    this.router.navigate(['/login']);
   }
-
 }

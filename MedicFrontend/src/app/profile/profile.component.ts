@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -12,8 +13,8 @@ export class ProfileComponent implements OnInit {
   isLoggedIn: boolean = false;
   authService: any;
 
-  constructor(private auth: AuthService, private router: Router) {}
-  profilePicUrl: string = 'https://via.placeholder.com/150';
+  constructor(private auth: AuthService,private http: HttpClient, private router: Router) {}
+  profilePicUrl: string = '';
 
 
   onFileChange(event: Event): void {
@@ -49,11 +50,5 @@ export class ProfileComponent implements OnInit {
     //   this.auth.logout();
     //   this.router.navigate(['/signin']);
     // }
-  }
-
-  signOut(): void{
-    this.auth.signOut();
-    this.isLoggedIn = false;
-    this.router.navigate(['/login']);
   }
 }

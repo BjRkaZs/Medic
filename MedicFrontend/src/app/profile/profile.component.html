@@ -1,27 +1,17 @@
-<nav class="navbar navbar-expand-lg bg-light" *ngIf="isLoggedIn"> 
-    <div class="container-fluid">
-        <button class="btn btn-outline-primary me-3">
-            <a routerLink="/calendar" routerLinkActive="active" class="text-decoration-none text-dark">
-                <i class="bi bi-calendar-plus"></i> Calendar
-            </a>
-        </button>
-        <a class="btn btn-success px-4 me-3" routerLink="/profile" routerLinkActive="active">Profile</a>
-        <button class="btn btn-outline-danger" (click)="signOut()">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-        </button>
-    </div>
-</nav>
-
 <div class="parent">
     <div class="container">
-            <form>
-            <img id="profilePic" [src]="profilePicUrl" alt="Profile Picture" class="rounded-circle">
-            <input type="file" id="fileInput" (change)="onFileChange($event)" accept="image/*">
-                <h1>Profile</h1>
-                <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.uname" name="uname">
-                <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
-                <button (click)="saveProfile()">Save</button>
-                <button onclick="deleteProfile()">Delete</button>
-            </form>
+        <form>
+            <div class="profpic">
+                <img id="profilePic" [src]="profilePicUrl" class="profilePic">
+                <label for="fileInput" class="upload-icon">+</label>
+                <input type="file" id="fileInput" (change)="onFileChange($event)" accept="image/*">
+            </div>
+            <h1>Profile</h1>
+            <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.uname" name="uname">
+            <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
+            <button  class="btn btn-sm" id="save" (click)="saveProfile()">Save</button>
+            <button  class="btn btn-sm" id="delete" onclick="deleteProfile()">Delete</button>
+        </form>
     </div>
 </div>
+

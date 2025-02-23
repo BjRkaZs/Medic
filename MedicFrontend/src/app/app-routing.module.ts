@@ -10,6 +10,7 @@ import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
 import { adminGuard } from './admin.guard';
 
+
 const routes: Routes = [
     { path: 'login', component: LogComponent },
     { path: 'fpass', component: FpassComponent },

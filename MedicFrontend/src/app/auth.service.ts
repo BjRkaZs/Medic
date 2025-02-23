@@ -27,6 +27,7 @@ export class AuthService {
     this.userSub.next(null);
 }
 
+
   getCurrentUser() {
     return this.userSub;
   }

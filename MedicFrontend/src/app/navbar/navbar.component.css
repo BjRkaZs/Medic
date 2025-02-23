@@ -1,35 +1,54 @@
-.navbar {
-  background-color: #749977;
-  padding: 10px 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+nav{
+  position: fixed;
+  top: 0;
+  height: 120px;
+  width: 100%;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-}
-
-.navbar i {
-  cursor: pointer;
+  background-color: rgb(34, 91, 124);
   color: white;
-  font-size: 24px;
-  margin-right: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
-.navbar a {
+button{
+  background-color: #225b7c;
+  color: aliceblue;
+  font-weight: bold;
+  border: none;
+  transition: all 0.3s ease-in-out;
+  gap: 8px;
+}
+
+a{
   color: white;
   text-decoration: none;
 }
 
-#signout:hover {
-  color: #ff4d4d;
-}
-.form-container {
-  background: #f9f9f9;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+#calendar, #profile, #signOut {
+  width: 100%;
+  max-width: 200px;
+  height: 50px;
+  border-radius: 25px;
+  font-size: 18px;
 }
 
-.card-title {
-  color: #333;
-  font-weight: bold;
+#calendar:hover, #profile:hover, #signOut:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#calendar:hover{
+  background-color: #cf5674;
+  color: black;
+}
+
+#profile:hover{
+  background-color: #2ca788 ;
+  color: black;
+}
+
+#signOut:hover{
+  background-color: rgb(216, 6, 6);
+  color: aliceblue;
 }
