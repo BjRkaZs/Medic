@@ -40,7 +40,7 @@ class UserController extends ResponseController{
                 $token = $authUser->createToken( $authUser->email."Token" )->plainTextToken;
                 $data= [
                     "user" => [
-                        "name" => $authUser->email,
+                        "name" => $authUser->name,
                         "email" => $authUser->email
                     ],
                     "token" => $token
@@ -78,7 +78,7 @@ class UserController extends ResponseController{
 
 
     public function getTokens() {
-        $tokens = DB::table( "tokens" )->get();
+        $tokens = DB::table( "personal_access_tokens" )->get();
 
         return $tokens;
     }

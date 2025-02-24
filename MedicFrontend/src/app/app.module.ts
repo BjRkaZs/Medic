@@ -12,9 +12,6 @@ import { FpassComponent } from './fpass/fpass.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SignfpassComponent } from './signfpass/signfpass.component';
 import { CformComponent } from './cform/cform.component';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LogComponent } from './log/log.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -35,10 +32,8 @@ import { AuthInterceptor } from './auth.interceptor';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule,
-    // MatDatepickerModule,
-    // MatNativeDateModule,
-    // BrowserAnimationsModule
+    FormsModule
+
   ],
   providers: [provideHttpClient(), provideAnimationsAsync(), { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]

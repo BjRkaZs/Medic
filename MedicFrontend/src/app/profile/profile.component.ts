@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-profile',
@@ -12,7 +13,24 @@ export class ProfileComponent implements OnInit {
   isLoggedIn: boolean = false;
   authService: any;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService,private http: HttpClient, private router: Router) {}
+  profilePicUrl: string = '';
+
+
+  onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files ? target.files[0] : null;
+
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          this.profilePicUrl = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
@@ -28,14 +46,9 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteProfile(): void {
-    if (confirm('Are you sure you want to delete your profile?')) {
-      this.auth.logout();
-      this.router.navigate(['/signin']);
-    }
-  }
-
-  signOut(): void {
-    this.authService.signOut();
-    this.isLoggedIn = false;
+    // if (confirm('Are you sure you want to delete your profile?')) {
+    //   this.auth.logout();
+    //   this.router.navigate(['/signin']);
+    // }
   }
 }

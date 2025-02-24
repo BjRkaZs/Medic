@@ -1,35 +1,146 @@
-.navbar {
-    background-color: #749977;
-    padding: 10px 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .navbar i {
-    cursor: pointer;
-    color: white;
-    font-size: 24px;
-    margin-right: 15px;
-  }
-  
-  .navbar a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  #signout:hover {
-    color: #ff4d4d;
-  }
-  .form-container {
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif;
 }
 
-.card-title {
-    color: #333;
-    font-weight: bold;
+.parent {
+  background: linear-gradient(to bottom, #225b7c 50%, #ecf8ff 50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+}
+
+.container {
+  height: 500px;
+  width: 700px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.30);
+  background-color: white;
+  border-radius: 30px;
+  text-align: center;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  font-size: 30px;
+  letter-spacing: 0.3px;
+  font-weight: 700;
+  height: 40px;
+}
+
+.profpic {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profilePic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.30);
+  border: 3px solid white;
+}
+
+.upload-icon {
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
+  background-color: #007bff;
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+}
+
+.upload-icon:hover {
+  background-color: #0056b3;
+}
+
+#fileInput {
+  display: none;
+}
+
+h1 {
+  color: black;
+  text-transform: uppercase;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid rgba(34, 91, 124, 0.5);
+  transition: all 0.3s ease-in-out;
+  padding: 10px;
+  margin-bottom: 15px;
+}
+
+input:hover {
+  border-color: #225b7c;
+  box-shadow: 0 4px 10px rgba(53, 77, 182, 0.2);
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+button {
+  background-color: #225b7c;
+  color: white;
+  width: 45%;
+  height: 45px;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 10px;
+}
+
+#save:hover, #delete:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#save:hover{
+  background-color: rgb(247, 180, 36);
+  color: black;
+}
+
+#delete:hover{
+  background-color: rgb(216, 6, 6);
+  color: aliceblue;
 }

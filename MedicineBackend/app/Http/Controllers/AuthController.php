@@ -23,10 +23,15 @@ class AuthController extends ResponseController{
         if ( !Gate::allows( "super" )) {
             return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
         }
-        $user = User::find( $request[ "id" ]);
-        $user->admin = 1;
+        $user = User::find($request["id"]);
+        if (!$user) {
+            return $this->sendError("Adathiba", "Felhasználó nem található", 404);
+        }
 
+        $user->admin = 1;
         $user->update();
+
+        return $this->sendResponse($user, "Admin jogosultság beállítva"); 
     }
 
     public function updateUser( Request $request ) {

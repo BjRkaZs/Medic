@@ -20,7 +20,7 @@ class MedController extends ResponseController{
     public function getOneMedicine( Request $request ) {
         $medicine = Medicine::where( "medicine", $request["medicine"] )->first();
         if( !medicine ){
-            return $this->sendError( "Adathiba", "Nincs ilyen ital" );
+            return $this->sendError( "Adathiba", "Nincs ilyen Gyógyszer" );
         }
 
         return $this->sendResponse( new MedicineResource( $medicine ), "Sikeres olvasás");
