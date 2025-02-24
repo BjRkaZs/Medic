@@ -17,8 +17,7 @@ export class LogComponent {
     name: '',
     email: '',
     password: '',
-    password_confirmation: '',
-    admin:0
+    password_confirmation: ''
   };
 
   Register() {
