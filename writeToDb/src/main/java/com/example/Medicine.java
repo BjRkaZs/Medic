@@ -2,20 +2,23 @@ package com.example;
 
 public class Medicine {
     private Integer id;
-    private String nev;
-    private String hatoanyag;
+    private String name;
+    private String form;
+    private String substance;
 
     public Medicine() {}
 
-    public Medicine(String nev, String hatoanyag) {
-        this.nev = nev;
-        this.hatoanyag = hatoanyag;
+    public Medicine(String name, String form, String substance) {
+        this.name = name;
+        this.form = form;
+        this.substance = substance;
     }
 
-    public Medicine(Integer id, String nev, String hatoanyag) {
+    public Medicine(Integer id, String form, String name, String substance) {
         this.id = id;
-        this.nev = nev;
-        this.hatoanyag = hatoanyag;
+        this.name = name;
+        this.form = form;
+        this.substance = substance;
     }
 
     public Integer getId() {
@@ -26,19 +29,28 @@ public class Medicine {
         this.id = id;
     }
 
-    public String getNev() {
-        return nev;
+    public String getName() {
+        return name;
     }
 
-    public void setNev(String nev) {
-        this.nev = nev;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getHatoanyag() {
-        return hatoanyag;
+    public String getSubstance() {
+        return substance;
     }
 
-    public void setHatoanyag(String hatoanyag) {
-        this.hatoanyag = hatoanyag;
+    public void setSubstance(String substance) {
+        this.substance = substance;
+    }
+
+    public String getForm() {
+        return form;
+    }
+
+    public void setForm(String form) {
+        this.form = form;
     }
 }
+

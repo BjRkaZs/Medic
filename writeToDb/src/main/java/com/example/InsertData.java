@@ -21,10 +21,11 @@ public class InsertData {
             return;
         }
 
-        String insert = "INSERT INTO medicine (nev, hatoanyag) VALUES (?, ?)";
+        String insert = "INSERT INTO medicine (name, form, substance) VALUES (?, ?, ?)";
         try (PreparedStatement ps = conn.prepareStatement(insert)) {
-            ps.setString(1, med.getNev());
-            ps.setString(2, med.getHatoanyag());
+            ps.setString(1, med.getName());
+            ps.setString(2, med.getForm());
+            ps.setString(3, med.getSubstance());
             ps.execute();
         } catch (SQLException e) {
             System.err.println("Error inserting data: " + e.getMessage());
