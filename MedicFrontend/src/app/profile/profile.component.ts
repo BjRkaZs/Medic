@@ -33,7 +33,6 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.auth.getIsLoggedUser();
     this.auth.getLoggedUser().subscribe(user => {
       this.user = user;
     });
