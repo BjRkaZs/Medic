@@ -1,4 +1,4 @@
-<div class="parent" *ngIf="isLoggedIn">
+<div class="parent" *ngIf="admin?.role === 'admin'">
   <nav>
       <h1>Datasbase</h1>
       <button class="btn btn-outline-primary me-3" id="datas">

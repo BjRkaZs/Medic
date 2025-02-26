@@ -18,6 +18,7 @@ export class DatasComponent implements OnInit {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.isLoggedIn = this.authService.getIsLoggedUser();
     this.authService.getLoggedUser().subscribe(admin => {
       this.admin = admin;
     });

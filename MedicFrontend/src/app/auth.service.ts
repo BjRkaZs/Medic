@@ -72,6 +72,8 @@ export class AuthService {
     return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
   }
 
+  
+
   // signIn(): void {
   //   this.isLoggedUser = true;
   //   this.loggedUserSub.next(true);
