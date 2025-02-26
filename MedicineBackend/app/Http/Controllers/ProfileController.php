@@ -38,6 +38,7 @@ class ProfileController extends ResponseController{
 
     public function deleteProfile() {
         $user = auth( "sanctum" )->user();
+        $user->tokens()->delete();
         $user->delete();
 
         return $this->sendResponse( $user, "Profil törölve");

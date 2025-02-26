@@ -41,7 +41,8 @@ class UserController extends ResponseController{
                 $data= [
                     "user" => [
                         "name" => $authUser->name,
-                        "email" => $authUser->email
+                        "email" => $authUser->email,
+                        "admin" => $authUser->admin
                     ],
                     "token" => $token
                 ];

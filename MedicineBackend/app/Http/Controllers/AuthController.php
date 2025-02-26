@@ -34,19 +34,6 @@ class AuthController extends ResponseController{
         return $this->sendResponse($user, "Admin jogosultság beállítva"); 
     }
 
-    public function updateUser( Request $request ) {
-        if( !Gate::denies( "user" )) {
-            return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
-        }
-
-        $user = User::find( $request[ "id" ]);
-        $user->name = $request[ "name" ];
-        $user->email = $request[ "email" ];
-        $user->update();
-
-        return $this->sendResponse( $user, "Felhasználó frissítve" );
-    }
-
     public function destroyUser() {
         
     }
