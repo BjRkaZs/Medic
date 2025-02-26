@@ -13,6 +13,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SignfpassComponent } from './signfpass/signfpass.component';
 import { CformComponent } from './cform/cform.component';
 import { LogComponent } from './log/log.component';
+import { DatasComponent } from './datas/datas.component';
+import { UsersComponent } from './users/users.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { LogComponent } from './log/log.component';
     NavbarComponent,
     SignfpassComponent,
     CformComponent,
-    LogComponent
+    LogComponent,
+    DatasComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

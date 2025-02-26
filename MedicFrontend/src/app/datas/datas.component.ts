@@ -4,19 +4,39 @@ import { AuthService } from '../auth.service';
 @Component({
   selector: 'app-datas',
   templateUrl: './datas.component.html',
-  styleUrl: './datas.component.css'
+  styleUrls: ['./datas.component.css']
 })
 export class DatasComponent implements OnInit {
-  medications: any = [];
-  newMedication: any = {
-    id: 0,
-    name: ''
+  admin: any = {};
+  datas: any[] = [];
+  isLoggedIn: boolean = false;
+  addModel: any = {
+    name: '',
+    substance: ''
   };
 
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.isLoggedIn = this.authService.getIsLoggedUser();
+    this.authService.getLoggedUser().subscribe(admin => {
+      this.admin = admin;
+    });
+  }
+
+  loadData(): void {
 
   }
 
+  addData(): void {
+
+  }
+
+  updateData(data:any): void {
+
+  }
+
+  deleteData(data:any): void {
+
+  }
 }

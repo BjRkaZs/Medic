@@ -9,17 +9,19 @@ import { loggedUserGuard } from '../logged-user.guard';
 import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
 import { adminGuard } from './admin.guard';
+import { UsersComponent } from './users/users.component';
 
 
 const routes: Routes = [
-    { path: 'login', component: LogComponent },
+    { path: 'signin', component: LogComponent },
     { path: 'fpass', component: FpassComponent },
     { path: 'signfpass', component: SignfpassComponent },
     { path: 'profile', component: ProfileComponent, canActivate: [loggedUserGuard] },
     { path: 'calendar', component: CalendarComponent, canActivate: [loggedUserGuard] },
     { path: 'cform', component: CformComponent, canActivate: [loggedUserGuard] },
     { path: 'datas', component: DatasComponent, canActivate: [loggedUserGuard, adminGuard] },
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: 'users', component: UsersComponent, canActivate: [loggedUserGuard, adminGuard] },
+    { path: '', redirectTo: 'signin', pathMatch: 'full' },
   
 ];
 

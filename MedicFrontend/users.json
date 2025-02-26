@@ -6,6 +6,13 @@
       "email": "asa@gmail.com",
       "password": "012",
       "confirmPassword": "012"
+    },
+    {
+      "id": "1590",
+      "uname": "ok",
+      "email": "012",
+      "password": "012",
+      "confirmPassword": "012"
     }
   ]
 }
