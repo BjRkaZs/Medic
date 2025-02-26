@@ -13,6 +13,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SignfpassComponent } from './signfpass/signfpass.component';
 import { CformComponent } from './cform/cform.component';
 import { LogComponent } from './log/log.component';
+import { DatasComponent } from './datas/datas.component';
+import { UsersComponent } from './users/users.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
@@ -26,7 +28,9 @@ import { AuthInterceptor } from './auth.interceptor';
     NavbarComponent,
     SignfpassComponent,
     CformComponent,
-    LogComponent
+    LogComponent,
+    DatasComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
