@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-datas',
@@ -7,21 +8,29 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./datas.component.css']
 })
 export class DatasComponent implements OnInit {
+  
+  constructor(private auth: AuthService, private router: Router) { }
+  
   admin: any = {};
   datas: any[] = [];
   isLoggedIn: boolean = false;
   addModel: any = {
     name: '',
-    substance: ''
+    substance: '',
+    form: ''
   };
 
-  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.getIsLoggedUser();
-    this.authService.getLoggedUser().subscribe(admin => {
+    this.isLoggedIn = this.auth.getIsLoggedUser();
+    this.auth.getLoggedUser().subscribe(admin => {
       this.admin = admin;
     });
+  }
+
+  signOut(): void {
+    this.auth.signOut();
+    this.router.navigate(['/signin']);
   }
 
   loadData(): void {
