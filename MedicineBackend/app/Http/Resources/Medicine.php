@@ -16,7 +16,8 @@ class Medicine extends JsonResource
     {
         return [
             "id" => $this->id,
-            "medicine" => $this->medicine,
+            "name" => $this->name,
+            "form" => $this->form,
             "substance" => $this->substance,
         ];
     }

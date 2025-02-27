@@ -30,10 +30,10 @@ export class LogComponent {
 
     this.auth.Register(this.regModel).subscribe({
       next: (response) => {
-        console.log('Registration response:', response); // Debug log
-        if (response.success) {  // Check success from ResponseController
+        console.log('Registration response:', response); 
+        if (response.success) {  
           console.log("Registration successful", response);
-          alert(response.message); // Will show "Sikeres regisztráció"
+          alert(response.message); 
           this.router.navigate(['/login']);
         } else {
           alert(response.message || "Registration failed");
@@ -41,9 +41,7 @@ export class LogComponent {
       },
       error: (error) => {
         console.error("Registration failed", error);
-        // Show validation errors from Laravel
         if (error.error?.errors) {
-          // Handle Laravel validation errors
           const errorMessages = Object.values(error.error.errors).flat();
           alert(errorMessages.join('\n'));
         } else if (error.error?.message) {
@@ -63,10 +61,10 @@ export class LogComponent {
   Login() {
     this.auth.Login(this.loginModel).subscribe({
       next: (response: any) => {
-        if (response.success) {  // Check success from ResponseController
+        if (response.success) {  
           console.log("Login successful", response);
           sessionStorage.setItem('email', this.loginModel.email);
-          alert(response.message); // Will show "Sikeres bejelentkezés"
+          alert(response.message); 
           this.router.navigate(['/profile']);
         } else {
           alert(response.message || "Login failed");

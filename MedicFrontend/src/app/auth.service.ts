@@ -38,24 +38,14 @@ export class AuthService {
       name: userData.name,
       email: userData.email,
       password: userData.password,
-      password_confirmation: userData.password_confirmation // Change this line
+      password_confirmation: userData.password_confirmation 
     };
     
-    console.log('Sending registration data:', registerData); // Debug log
+    console.log('Sending registration data:', registerData); 
     
     return this.http.post(`${this.apiUrl}/register`, registerData);
   }
 
-  update(user: any) {
-    console.log('update', user);
-    let head = {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + this.token,
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
-  }
 
   Login(loginData: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, {

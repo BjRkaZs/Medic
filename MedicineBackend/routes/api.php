@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MedController;
+use App\Http\Controllers\ModMedController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -21,7 +23,13 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::get( "/users", [ AuthController::class, "getUsers" ]);
     Route::put( "/admin", [ AuthController::class, "setAdmin" ]);
     Route::put( "/updateuser", [ AuthController::class, "updateUser" ]);
+
+    Route::post( "/addmedicine", [ ModMedController::class, "addMedicine" ]);
+    Route::put( "/modifymedicine", [ ModMedController::class, "modifyMedicine" ]);
+    Route::delete( "/deletemedicine", [ ModMedController::class, "deleteMedicine" ]);
 });
+
+Route::get( "/searchmedicine", [ MedController::class, "searchMedicine" ]);
 
 Route::post( "/register", [ UserController::class, "register" ]);
 Route::post( "/login", [ UserController::class, "login" ]);

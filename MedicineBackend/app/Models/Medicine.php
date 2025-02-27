@@ -10,15 +10,34 @@ class Medicine extends Model
 {
     use HasFactory, Notifiable;
 
+    protected $table = 'medicine';
     public $timestamps = false;
 
-    public function package() {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<string>
+     */
+    protected $fillable = [
+        'name',
+        'form',
+        'substance'
+    ];
 
-        return $this->belongsTo( Package::class );
-    }
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [];
 
-    public function type() {
-
-        return $this->belongsTo( Type::class );
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [];
     }
 }
