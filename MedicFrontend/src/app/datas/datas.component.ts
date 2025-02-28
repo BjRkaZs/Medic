@@ -16,8 +16,8 @@ export class DatasComponent implements OnInit {
   isLoggedIn: boolean = false;
   addModel: any = {
     name: '',
-    substance: '',
-    form: ''
+    form: '',
+    substance: ''
   };
 
 

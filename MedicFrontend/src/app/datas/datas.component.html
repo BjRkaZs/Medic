@@ -1,7 +1,6 @@
-<div class="parent" *ngIf="isLoggedIn" >     
+<div class="parent" *ngIf="isLoggedIn && (admin?.role === 'admin' || admin?.role === 'superAdmin')">    
   <!-- *ngIf="admin?.role === 'admin'" -->
   <nav>
-      <h1>Database</h1>
       <button class="btn btn-outline-primary me-3" id="datas">
         <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
             <i class="bi bi-capsule"></i> Medications
@@ -21,8 +20,8 @@
           <input id="search" type="text" class="searchbar" placeholder="Search"/>
           <div class="form-group">
               <input id="name" name="name" class="form-control" placeholder="Name" [(ngModel)]="addModel.name" required />
-              <input id="substance" name="substance" class="form-control" placeholder="Substance" [(ngModel)]="addModel.substance" required />
               <input id="form" name="form" class="form-control" placeholder="Form" [(ngModel)]="addModel.form" required />
+              <input id="substance" name="substance" class="form-control" placeholder="Substance" [(ngModel)]="addModel.substance" required />
               <button type="submit" (ngSubmit)="addData()" class="btn btn-primary" id="add">+</button>
             </div>
       </form>
@@ -37,6 +36,7 @@
           <tbody>
             <tr>
               <td><!-- {{ data.name }} --></td>
+              <td><!-- {{ data.form }} --></td>
               <td><!-- {{ data.substance }} --></td>
               <td>
                 <div class="buttons">

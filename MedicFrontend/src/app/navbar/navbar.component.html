@@ -1,21 +1,19 @@
 <nav class="navbar navbar-expand-lg bg-light" *ngIf="isLoggedIn"> 
     <div class="container-fluid">
-        <button class="btn btn-outline-primary me-3" id="calendar">
+        <button
+        class="btn btn-outline-primary me-3" id="calendar">
             <a routerLink="/calendar" routerLinkActive="active" class="text-decoration-none">
                 <i class="bi bi-calendar-plus"></i> Calendar
             </a>
         </button>
-        <button class="btn btn-outline-primary me-3" id="profile">
+        <button
+        class="btn btn-outline-primary me-3" id="profile">
             <a routerLink="/profile" routerLinkActive="active" class="text-decoration-none">
                 <i class="bi bi-person-circle"></i> Profile
             </a>
         </button>
-        <button class="btn btn-outline-primary me-3" id="datas">
-            <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
-                <i class="bi bi-person-circle"></i> Datas
-            </a>
-        </button>
-        <button class="btn btn-outline-danger" (click)="signOut()" id="signOut">
+        <button
+        class="btn btn-outline-danger" (click)="signOut()" id="signOut">
             <i class="bi bi-box-arrow-right"></i> Sign Out
         </button>
     </div>

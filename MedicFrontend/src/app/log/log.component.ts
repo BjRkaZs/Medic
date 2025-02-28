@@ -48,11 +48,20 @@ export class LogComponent {
     this.auth.Login(this.loginModel).subscribe({
       next: (response: any) => {
         console.log("Login successful", response);
-        sessionStorage.setItem('email', this.loginModel.email);
-
         if (response && response.length > 0) {
+          const user = response[0];
+          sessionStorage.setItem('email', user.email);
           alert("Login successful!");
-          this.router.navigate(['/profile']);
+    
+          if (user.role === 'user') {
+            this.router.navigate(['/calendar']);
+          } else if (user.role === 'admin') {
+            this.router.navigate(['/datas']);
+          } else if (user.role === 'superAdmin') {
+            this.router.navigate(['/users']);
+          } else {
+            alert("Login failed: Invalid role");
+          }
         } else {
           alert("Login failed: Invalid credentials");
         }
@@ -63,6 +72,7 @@ export class LogComponent {
       }
     });
   }
+  
 
   togglePasswordVisibility(inputId: string, iconId: string) {
     const inputElement = document.getElementById(inputId) as HTMLInputElement;
