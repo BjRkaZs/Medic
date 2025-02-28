@@ -27,6 +27,15 @@ nav{
     z-index: 1000;
 }
 
+h1{
+    text-transform: uppercase;
+    font-size: 30px;
+    letter-spacing: 0.3px;
+    margin: 15px 0;
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
 a{
     color: white;
     text-decoration: none;
