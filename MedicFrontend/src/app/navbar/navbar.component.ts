@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+  user: any = {};
+  admin: any = {};
   isLoggedIn: boolean = false;
 
   constructor(private auth: AuthService, private router: Router) {}
@@ -20,6 +22,6 @@ export class NavbarComponent implements OnInit {
 
   signOut(): void {
     this.auth.signOut();
-    this.router.navigate(['/log']);
+    this.router.navigate(['/signin']);
   }
 }

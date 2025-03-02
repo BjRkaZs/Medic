@@ -81,11 +81,34 @@ export class AuthService {
   }
 
   signOut(): void {
-    sessionStorage.removeItem('email');
-    this.token = ''; 
-    this.isLoggedUser = false;
-    this.loggedUserSub.next(false);
-    this.userSub.next(null);
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    this.http.post(`${this.apiUrl}/logout`, {}, { headers })
+      .subscribe({
+        next: (response: any) => {
+          console.log('Logout successful:', response);
+          localStorage.removeItem('token');
+          sessionStorage.clear();
+          this.token = '';
+          this.isLoggedUser = false;
+          this.loggedUserSub.next(false);
+          this.userSub.next(null);
+        },
+        error: (error) => {
+          console.error('Logout error:', error);
+          localStorage.removeItem('token');
+          sessionStorage.clear();
+          this.token = '';
+          this.isLoggedUser = false;
+          this.loggedUserSub.next(false);
+          this.userSub.next(null);
+        }
+      });
   }
 
   update(user: any) {

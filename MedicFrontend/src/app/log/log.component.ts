@@ -61,13 +61,21 @@ export class LogComponent {
   Login() {
     this.auth.Login(this.loginModel).subscribe({
       next: (response: any) => {
+        console.log("Login successful", response);
         if (response.success) {  
-          console.log("Login successful", response);
+          console.log("Login response:", response);
+          const adminLevel = response.data.user.admin;
+          localStorage.setItem('token', response.data.token);
           sessionStorage.setItem('email', this.loginModel.email);
-          alert(response.message); 
-          this.router.navigate(['/profile']);
-        } else {
-          alert(response.message || "Login failed");
+          sessionStorage.setItem('role', adminLevel);
+          if (adminLevel === 2) {
+            this.router.navigate(['/users']);
+          } else if (adminLevel === 1) {
+            this.router.navigate(['/datas']);
+          } else {
+            this.router.navigate(['/calendar']);
+          }
+          alert("Login successful!");
         }
       },
       error: (error) => {
@@ -76,6 +84,7 @@ export class LogComponent {
       }
     });
   }
+  
 
   togglePasswordVisibility(inputId: string, iconId: string) {
     const inputElement = document.getElementById(inputId) as HTMLInputElement;

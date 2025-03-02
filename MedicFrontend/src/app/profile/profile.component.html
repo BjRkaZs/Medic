@@ -18,11 +18,11 @@
             <div class="profpic">
                 <img id="profilePic" [src]="profilePicUrl" class="profilePic">
                 <label for="fileInput" class="upload-icon">+</label>
-                <input type="file" id="fileInput" (change)="onFileChange($event)" accept="image/*">
+                <input type="file" id="fileInput"  accept="image/*"> <!--(change)="onFileChange($event)" -->
             </div>
             <h1>Profile</h1>
             <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.name" name="name">
-            <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
+            <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email">
             <button  class="btn btn-sm" id="save" (click)="saveProfile()">Save</button>
             <button  class="btn btn-sm" id="delete" (click)="deleteProfile()">Delete</button>
         </form>

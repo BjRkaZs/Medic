@@ -18,7 +18,7 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::get( "/getprofile", [ ProfileController::class, "getProfile" ]);
     Route::put( "/modifyprofile", [ ProfileController::class, "setProfile" ]);
     Route::put( "/modifypassword", [ ProfileController::class, "setPassword" ]);
-    Route::post("/deleteprofile", [ ProfileController::class, "deleteProfile" ]);
+    Route::delete("/deleteprofile", [ ProfileController::class, "deleteProfile" ]);
 
     Route::get( "/users", [ AuthController::class, "getUsers" ]);
     Route::put( "/admin", [ AuthController::class, "setAdmin" ]);
@@ -27,6 +27,7 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::post( "/addmedicine", [ ModMedController::class, "addMedicine" ]);
     Route::put( "/modifymedicine", [ ModMedController::class, "modifyMedicine" ]);
     Route::delete( "/deletemedicine", [ ModMedController::class, "deleteMedicine" ]);
+    Route::get( "/allmedicine", [ ModMedController::class, "getAllMedicine" ]);
 });
 
 Route::get( "/searchmedicine", [ MedController::class, "searchMedicine" ]);

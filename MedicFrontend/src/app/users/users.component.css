@@ -16,15 +16,24 @@ nav{
     position: fixed;
     top: 0;
     left: 0;
+    height: 120px;
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 20px;
-    background-color: rgba(34, 91, 124, 0.144);
-    color: white;
+    padding: 20px;
+    background-color:#e0e1dd;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     z-index: 1000;
+}
+
+h1{
+    text-transform: uppercase;
+    font-size: 30px;
+    letter-spacing: 0.3px;
+    margin: 15px 0;
+    text-transform: uppercase;
+    font-weight: 700;
 }
 
 a{
@@ -32,24 +41,21 @@ a{
     text-decoration: none;
 }
 
-button #users, 
-button #datas{
+#users, 
+#datas,
+#signOut{
     background-color: #225b7c;
     color: aliceblue;
     font-weight: bold;
     border: none;
     transition: all 0.3s ease-in-out;
     gap: 8px;
-} 
-  
-#users,
-#datas {
     width: 100%;
     max-width: 200px;
     height: 50px;
     border-radius: 25px;
     font-size: 18px;
-  }
+}
   
 #users:hover,
 #datas:hover {
@@ -58,19 +64,15 @@ button #datas{
     background-color: #2ca788 ;
     color: black;
 }
+#signOut:hover{
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background-color: rgb(216, 6, 6);
+    color: aliceblue;
+}
 
 table{
     margin-top: 50px;
-}
-h1{
-    text-align: center;
-    color: aliceblue;
-    text-transform: uppercase;
-    font-size: 30px;
-    letter-spacing: 0.3px;
-    margin: 25px;
-    text-transform: uppercase;
-    font-weight: 700;
 }
 
 .buttons {
@@ -79,14 +81,22 @@ h1{
     justify-content: flex-end;
 }
 
-.buttons > #edit,
-.buttons > #save {
-    margin-right: 8px;
+.dropdown #dropdown{
+    margin-left: 20px;
+}
+
+.dropdown-menu a {
+    color: black;
+}
+.dropdown-menu a:hover {
+    color: rgb(216, 6, 6);
+    height: 100%;
+    background-color: #f8f9fa;
+
 }
   
-.buttons > #delete {
-    margin-left: auto;
-    margin-right: 15px;
+.buttons > #save {
+    margin-right: 8px;
 }
   
 button{
@@ -97,7 +107,7 @@ button{
     transition: all 0.3s ease-in-out;
 }
 
-#save, #edit, #delete {
+#save, #delete {
     width: 50px !important;
     height: 50px;
     border-radius: 50%;
@@ -105,31 +115,16 @@ button{
     float: right !important;
 }
 
-#edit:hover, #save:hover, #delete:hover {
+#save:hover, #delete:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#edit{
-    width: 100%;
-    max-width: 120px;
-}
-#edit:hover{
-    background-color: rgb(247, 180, 36);
-    color: black;
-}
-#save{
-    width: 100%;
-    max-width: 120px;
-}
 #save:hover{
     background-color: #2ca788;
     color: black;
 }
-#delete{
-    margin-left: 40px;
-    width: 120px;
-}
+
 #delete:hover{
     background-color: rgb(216, 6, 6);
     color: aliceblue;
@@ -138,5 +133,5 @@ button{
     width: 100%;
 }
 th{
-    width: 550px
+    width: 700px
 }

@@ -5,14 +5,24 @@
       "uname": "asa",
       "email": "asa@gmail.com",
       "password": "012",
-      "confirmPassword": "012"
+      "confirmPassword": "012",
+      "role": "user"
     },
     {
-      "id": "1590",
-      "uname": "ok",
-      "email": "012",
+      "id": "7486",
+      "uname": "admin",
+      "email": "admin@gmail.com",
       "password": "012",
-      "confirmPassword": "012"
+      "confirmPassword": "012",
+      "role": "admin"
+    },
+    {
+      "id": "e814",
+      "uname": "sadmin",
+      "email": "sadmin@gmail.com",
+      "password": "012",
+      "confirmPassword": "012",
+      "role": "superAdmin"
     }
   ]
 }

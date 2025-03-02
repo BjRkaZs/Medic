@@ -7,14 +7,16 @@ import { AuthService } from '../auth.service';
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent {
-    isLoggedIn : boolean = false;
-    constructor(private authService: AuthService) {}
-    ngOnInit(): void {
-      this.isLoggedIn = this.authService.getIsLoggedUser();
-    }
-  
-    signOut(): void {
-      this.authService.signOut();
-      this.isLoggedIn = false;
-    }
+  user: any = {};
+  admin: any = {};
+  isLoggedIn : boolean = false;
+  constructor(private auth: AuthService) {}
+  ngOnInit(): void {
+    this.isLoggedIn = this.auth.getIsLoggedUser();
+  }
+
+  signOut(): void {
+    this.auth.signOut();
+    this.isLoggedIn = false;
+  }
 }

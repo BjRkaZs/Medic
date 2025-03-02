@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Medicine;
 use App\Http\Requests\MedicineModRequest;
 use Illuminate\Support\Facades\Gate;
+use App\Http\Resources\Medicine as MedicineResource;
 
 class ModMedController extends ResponseController
 {
@@ -21,6 +22,15 @@ class ModMedController extends ResponseController
         $medicine->save();
 
         return $this->sendResponse( $medicine, "Sikeres hozzáadás" );
+    }
+
+    public function getAllMedicine() {
+        if (!Gate::any(['super', 'admin'])) {
+            return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
+        }
+        $medicine = Medicine::all();
+
+        return $this->sendResponse( MedicineResource::collection( $medicine ), "Sikeres olvasás");
     }
 
     public function modifyMedicine( MedicineModRequest $request  ) {
