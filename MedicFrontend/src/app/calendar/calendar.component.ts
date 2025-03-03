@@ -12,7 +12,7 @@ interface Medication{
   endDate?: string;
   reminderTime: string;
   restockReminder: string;
-  frequencyPerDay: number;
+  repeat: number;
 }
 
 @Component({
@@ -44,7 +44,7 @@ export class CalendarComponent implements OnInit {
       endDate: '',
       reminderTime: '',
       restockReminder: '',
-      frequencyPerDay: 1
+      repeat: 1
     });
 
   }
