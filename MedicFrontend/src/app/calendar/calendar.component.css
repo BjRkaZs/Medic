@@ -131,9 +131,7 @@ input{
 }
 
 #save,
-#cancel,
-#right,
-#left {
+#cancel {
   background-color: #225b7c;
   color: white;
   border-radius: 50%;
@@ -146,16 +144,12 @@ input{
   margin-bottom: 10px;
 }
 
-#save:hover, 
-#cancel:hover,
-#right,
-#left {
+#save:hover, #cancel:hover {
   transform: scale(1.05);
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-#save:hover,
-{
+#save:hover{
   background-color: rgb(247, 180, 36);
   color: black;
 }
