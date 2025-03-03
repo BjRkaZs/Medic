@@ -16,7 +16,7 @@
 }
 
 .container {
-  height: 500px;
+  height: 550px;
   width: 700px;
   padding: 30px;
   display: flex;
@@ -143,4 +143,12 @@ button {
 #delete:hover{
   background-color: rgb(216, 6, 6);
   color: aliceblue;
+}
+
+.profile{
+  flex-direction: column;
+}
+
+.button{
+  flex-direction: column;
 }

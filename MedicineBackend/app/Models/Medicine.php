@@ -40,4 +40,9 @@ class Medicine extends Model
     {
         return [];
     }
+
+    public function calendars()
+    {
+        return $this->hasMany(Calendar::class);
+    }
 }
