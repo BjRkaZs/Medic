@@ -1,13 +1,83 @@
 <div class="parent" *ngIf="isLoggedIn">
+
     <div class="container">
-        <form>
-            <h1>Calendar</h1>
-        </form>
+    <h1>
+        <button class="btn btn-outline-primary btn-lg me-3" (click)="changeMonth(-1)">❮</button>
+        {{ currentYear }} / {{ currentMonth + 1 }}
+        <button class="btn btn-outline-primary btn-lg ms-3" (click)="changeMonth(1)">❯</button>
+    </h1>
+
+    <div class="row day-names">
+        <div class="col" *ngFor="let day of weekDays">{{ day }}</div>
     </div>
+
+    <div class="calendar-grid">
+        <div *ngFor="let day of displayedDays" class="calendar-cell">
+        <div *ngIf="day !== null"
+                class="day-box"
+                [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}"
+                (click)="selectDay(day)">
+            <div class="day-number">{{ day }}</div>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <div class="pop-up" *ngIf="showForm">
+    <form [formGroup]="medicationForm" (ngSubmit)="addMedication()">
+    <label for="name" class="form-label mt-2">Name</label>
+    <textarea id="name" formControlName="name" class="form-control"></textarea>
+
+    <label for="description" class="form-label mt-2">Description</label>
+    <textarea id="description" formControlName="description" maxlength="100" class="form-control"></textarea>
+
+    <label for="stock" class="form-label mt-2">Stock</label>
+    <input id="stock" formControlName="stock" type="number" required class="form-control"/>
+
+    <label for="dosage" class="form-label mt-2">Dosage</label>
+    <div class="input-group">
+        <input id="dosage" formControlName="dosage" type="text" class="form-control"/>
+        <button class="btn btn-secondary dropdown-toggle" type="button"></button>
+        <div class="dropdown-menu">
+        <a class="dropdown-item">g</a>
+        <a class="dropdown-item">ml</a>
+        <a class="dropdown-item">bit</a>
+        </div>
+    </div>
+
+    <label for="startDate" class="form-label mt-2">Start Date</label>
+    <input id="startDate" formControlName="startDate" type="date" required class="form-control"/>
+
+    <label for="endDate" class="form-label mt-2">End Date</label>
+    <input id="endDate" formControlName="endDate" type="date" required class="form-control"/>
+
+    <label for="reminderTime" class="form-label mt-2">Reminder! Take your meds!</label>
+    <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
+
+    <button id="add" class="btn btn-link mt-2">Add more dates!</button>
+
+    <label for="restockReminder" class="form-label mt-2">Reminder! Restock</label>
+    <input id="restockReminder" formControlName="restockReminder" type="time" class="form-control"/>
+
+    <label for="repeat" class="form-label mt-2">Repeat</label>
+    <div class="input-group">
+        <input id="repeat" formControlName="repeat" type="text" class="form-control"/>
+        <button class="btn btn-secondary dropdown-toggle" type="button"></button>
+        <div class="dropdown-menu">
+        <a class="dropdown-item">Daily</a>
+        <a class="dropdown-item">Weekly</a>
+        <a class="dropdown-item">Monthly</a>
+        <a class="dropdown-item">No repeat</a>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-3">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-danger" (click)="showForm = false">Cancel</button>
+    </div>
+
+    </form>
 </div>
-
-
-
-
-
 

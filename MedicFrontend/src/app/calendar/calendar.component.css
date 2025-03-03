@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+  }
+  
+  .parent {
+    margin-top: 150px;
+    background-color: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+  }
+  
+  .container {
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    text-align: center;
+    background-color:#225b7c;;
+  }
+  
+  h1 {
+    font-size: 50px;
+    letter-spacing: 0.7px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    color: aliceblue;
+  }
+  
+  .day-names {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+    color: aliceblue;
+    text-align: center;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    padding: 10px;
+    border-radius: 30px;
+    background-color:#e0e1dd;
+  }
+  
+  .calendar-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   
+  }
+  
+  .day-box {
+    width: 100%;
+    min-height: 120px;
+    text-align: center;
+    padding: 12px;
+    border-radius: 30px;
+    transition: 0.2s ease-in-out;  
+    background-color: rgb(255, 251, 248);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .day-number {
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .day-name {
+    font-size: 14px;
+    color: #6c757d;
+    display: block;
+    margin-top: 4px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  
+  .hover-effect:hover {
+    background-color: #B7B1F2;
+    cursor: pointer;
+  }
+  
+  
+  .bg-success {
+    background-color: #4D55CC !important;
+    color: white !important;
+  }
+  
+  .pop-up {
+    position: fixed;
+    background: white;
+    border-radius: 50px;
+    padding: 60px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 85%;
+    max-height: 80vh;
+    display: block !important;
+  }
+  
+  
+  body {
+    overflow: auto;
+  }
+  
+  
