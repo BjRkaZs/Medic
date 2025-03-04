@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Gate;
 class AuthController extends ResponseController{
     public function getUsers() {
         if ( !Gate::denies( "user" )) {
-
             return $this->sendError( "Autentikációs hiba", "Nincs jogosultság", 401 );
         }
         $users = User::all();
@@ -27,8 +26,8 @@ class AuthController extends ResponseController{
         if (!$user) {
             return $this->sendError("Adathiba", "Felhasználó nem található", 404);
         }
-
-        $user->admin = 1;
+    
+        $user->admin = $request["admin"];
         $user->update();
 
         return $this->sendResponse($user, "Admin jogosultság beállítva"); 

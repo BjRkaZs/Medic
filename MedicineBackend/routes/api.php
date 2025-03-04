@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MedController;
 use App\Http\Controllers\ModMedController;
+use App\Http\Controllers\CalendarController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -31,8 +32,12 @@ Route::middleware( "auth:sanctum" )->group( function(){
 });
 
 Route::get( "/searchmedicine", [ MedController::class, "searchMedicine" ]);
+Route::get( "/searchmedname", [ MedController::class, "searchMedicineName" ]);
+Route::get( "/medforms", [ MedController::class, "getMedicineForms" ]);
 
 Route::post( "/register", [ UserController::class, "register" ]);
 Route::post( "/login", [ UserController::class, "login" ]);
 Route::get( "/tokens", [ UserController::class, "getTokens" ]);
+
+Route::post( "/calendar", [ CalendarController::class, "addCalendar" ]);
 

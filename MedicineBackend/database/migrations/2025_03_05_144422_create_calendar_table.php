@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('calendar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('medicine_id')->constrained('medicine')->onDelete('cascade');
-            $table->string('name');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('medicine_id');
             $table->string('description');
             $table->integer('stock');
             $table->double('dosage');
@@ -27,6 +27,17 @@ return new class extends Migration
             $table->timeTz('reminder_time5');
             $table->date('restock_reminder');
             $table->integer('repeat');
+            $table->timestamps();
+
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->onDelete('cascade');
+
+            $table->foreign('medicine_id')
+                ->references('id')
+                ->on('medicine')
+                ->onDelete('cascade');
         });
     }
 
