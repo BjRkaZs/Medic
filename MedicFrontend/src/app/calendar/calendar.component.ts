@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 interface Medication{
   id: number;
@@ -37,6 +37,7 @@ export class CalendarComponent implements OnInit {
   constructor(private auth: AuthService, private fb: FormBuilder) {
     this.medicationForm = this.fb.group({
       name: '',
+      form: '',
       description: '',
       stock: 0,
       dosage: 'db',      
@@ -46,6 +47,7 @@ export class CalendarComponent implements OnInit {
       restockReminder: '',
       repeat: 1
     });
+    
 
   }
   ngOnInit(): void {
@@ -143,6 +145,14 @@ export class CalendarComponent implements OnInit {
     return date.toLocaleDateString('en-US', { weekday: 'long' }).slice(0, 10);
   }
 
+  selectedRole: string = 'No repeat';
+  setRole(role: string) {
+    this.selectedRole = role;
+  }
+  
+
+
+  
   signOut(): void {
     this.auth.signOut();
     this.isLoggedIn = false;
