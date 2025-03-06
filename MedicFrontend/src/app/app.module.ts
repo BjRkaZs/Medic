@@ -10,8 +10,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarComponent } from './calendar/calendar.component';
 import { FpassComponent } from './fpass/fpass.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SignfpassComponent } from './signfpass/signfpass.component';
-import { CformComponent } from './cform/cform.component';
 import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
 import { UsersComponent } from './users/users.component';
@@ -23,8 +21,6 @@ import { UsersComponent } from './users/users.component';
     CalendarComponent,
     FpassComponent,
     NavbarComponent,
-    SignfpassComponent,
-    CformComponent,
     LogComponent,
     DatasComponent,
     UsersComponent

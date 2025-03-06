@@ -72,6 +72,9 @@ export class AuthService {
     return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
   }
 
+  // ResetPassword(data: any): Observable<any> {
+  //   return this.http.post(`${this.apiUrl}/reset-password`, data);
+  // }
   
 
   // signIn(): void {

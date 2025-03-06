@@ -32,6 +32,7 @@ export class CalendarComponent implements OnInit {
   medicationForm: FormGroup;
   user: any = {};
   admin: any = {};
+  reminders: string[] = [];
 
   isLoggedIn : boolean = false;
   constructor(private auth: AuthService, private fb: FormBuilder) {
@@ -149,9 +150,19 @@ export class CalendarComponent implements OnInit {
   setRole(role: string) {
     this.selectedRole = role;
   }
+
+  addReminder(): void {
+    const reminderTime = this.medicationForm.get('reminderTime')?.value;
+    if (reminderTime) {
+      this.reminders.push(reminderTime);
+      this.medicationForm.patchValue({ reminderTime: '' });
+    }
+  }
   
-
-
+  removeReminder(index: number): void {
+    this.reminders.splice(index, 1);
+  }
+  
   
   signOut(): void {
     this.auth.signOut();

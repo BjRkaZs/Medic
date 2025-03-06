@@ -88,12 +88,23 @@
                           </div>
                           
                           <div class="extra-row">
-                            <label for="reminderTime" class="form-label mt-2">Reminder</label>
+                            <label for="reminderTime" class="form-label mt-2">Reminder Time</label>
                             <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
-                            <button id="add" type="button" class="btn btn-sm">
-                                <i class="bi bi-plus fs-4"></i>
+                            <button id="add" type="button" class="btn btn-sm" (click)="addReminder()">
+                              <i class="bi bi-plus fs-4"></i>
                             </button>
-                        </div>
+                          </div>
+
+                          <div *ngIf="reminders.length > 0">
+                            <ul class="reminder-list">
+                              <li *ngFor="let reminder of reminders; let i = index">
+                                {{ reminder }}
+                                <button type="button" class="btn btn-sm btn-danger" id="cancel" (click)="removeReminder(i)">
+                                  <i class="bi bi-x-circle"></i>
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
                         
                           <div class="extra-row">
                             <label for="restockReminder" class="form-label mt-2">Restock</label>
@@ -124,4 +135,4 @@
 </div>
 
 
-<!-- add button működjön, hozzá lehessen adni több eseményt, kiírja a nevet, fordító  -->
+
