@@ -6,12 +6,10 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ProfileComponent } from './profile/profile.component';
 import { provideHttpClient } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CalendarComponent } from './calendar/calendar.component';
 import { FpassComponent } from './fpass/fpass.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { SignfpassComponent } from './signfpass/signfpass.component';
-import { CformComponent } from './cform/cform.component';
 import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
 import { UsersComponent } from './users/users.component';
@@ -26,8 +24,6 @@ import { AuthInterceptor } from './auth.interceptor';
     CalendarComponent,
     FpassComponent,
     NavbarComponent,
-    SignfpassComponent,
-    CformComponent,
     LogComponent,
     DatasComponent,
     UsersComponent
@@ -36,8 +32,8 @@ import { AuthInterceptor } from './auth.interceptor';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule
-
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [provideHttpClient(), provideAnimationsAsync(), { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
