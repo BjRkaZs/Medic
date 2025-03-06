@@ -220,16 +220,24 @@ color: aliceblue;
   text-align: center;
 }
 
-#add,
-#removeReminder{
+#add{
   width: 35px;
   height: 35px;
   border-radius: 50%;
 }
-button #removeReminder{
-  background-color: transparent;
-  color: black;
+button#removeReminder {
   border: none;
+  background-color: transparent;
+  color: red;
+  cursor: pointer;
+  padding: 0;
+  font-size: 1rem;
+  margin-left: 2px;
+}
+
+button#removeReminder i {
+  font-size: 1rem;
+  color: red;
 }
 ul.reminder-list {
   display: flex;
