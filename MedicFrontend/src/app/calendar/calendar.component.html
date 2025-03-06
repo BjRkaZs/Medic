@@ -97,9 +97,9 @@
 
                           <div *ngIf="reminders.length > 0">
                             <ul class="reminder-list">
-                              <li *ngFor="let reminder of reminders; let i = index">
+                              <li *ngFor="let reminder of reminders; let i = index" class="reminder-item">
                                 {{ reminder }}
-                                <button type="button" class="btn btn-sm btn-danger" id="cancel" (click)="removeReminder(i)">
+                                <button type="button" class="btn btn-sm btn-danger" id="removeReminder" (click)="removeReminder(i)">
                                   <i class="bi bi-x-circle"></i>
                                 </button>
                               </li>

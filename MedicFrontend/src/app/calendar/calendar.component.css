@@ -221,14 +221,15 @@ color: aliceblue;
 }
 
 #add,
-#cancel{
+#removeReminder{
   width: 35px;
   height: 35px;
   border-radius: 50%;
 }
-#cancel{
+button #removeReminder{
   background-color: transparent;
   color: black;
+  border: none;
 }
 ul.reminder-list {
   display: flex;
@@ -239,7 +240,7 @@ ul.reminder-list {
   margin: 0;
 }
 
-li {
+li.reminder-item {
   background-color: #e0e1dd;
   border-radius: 20px;
   list-style: none;
