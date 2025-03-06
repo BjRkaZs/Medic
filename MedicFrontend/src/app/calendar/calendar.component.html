@@ -29,7 +29,7 @@
         
 
         <div class="pop-up" *ngIf="showForm">
-            <form [formGroup]="medicationForm" (ngSubmit)="addMedication()">
+            <form [formGroup]="medicationForm" (ngSubmit)="addCalendar()">
                 <div class="d-flex justify-content-between mt-3 buttons">
                     <button type="submit" class="btn btn-success" id="save">
                         <i class="bi bi-floppy"></i>
@@ -45,12 +45,41 @@
                         <div class="extras">
                           <div class="extra-row">
                             <label for="name" class="form-label mt-2">Name</label>
-                            <input id="name" formControlName="name" class="form-control"/>
+                            <div class="search-container" (click)="onSearchContainerClick($event)">
+                              <input id="name" 
+                                     formControlName="name" 
+                                     class="form-control"
+                                     (input)="searchMedicine($event)"
+                                     autocomplete="off"/>
+                              
+                              <div class="search-results" *ngIf="showSearchResults">
+                                <div class="result-item" 
+                                    *ngFor="let medicine of searchResults"
+                                    [class.not-found]="medicine.name === 'Medication not available'"
+                                    (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
+                                  {{ medicine.name }}
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <div class="extra-row">
                             <label for="form" class="form-label mt-2">Form</label>
-                            <input id="form" formControlName="form" class="form-control"/>
-                         </div>
+                            <div class="form-container">
+                              <input id="form" 
+                                     formControlName="form" 
+                                     class="form-control"
+                                     readonly
+                                     (click)="showForms = medicineForms.length > 0"/>
+                              
+                              <div class="forms-dropdown" *ngIf="showForms && medicineForms.length > 0">
+                                <div class="form-item" 
+                                     *ngFor="let form of medicineForms"
+                                     (click)="selectForm(form)">
+                                  {{ form.form }}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
                           <div class="extra-row">
                             <label for="description" class="form-label mt-2">Description</label>
                             <textarea id="description" formControlName="description" maxlength="100" class="form-control"></textarea>
@@ -67,7 +96,6 @@
   
                     </div>
                     <div class="col-6 rightSide">
-  
                         <div class="extras">
                           <div class="extra-row">
                             <label for="stock" class="form-label mt-2">Stock</label>
@@ -77,11 +105,11 @@
                             <label for="dosage" class="form-label mt-2">Dosage</label>
                             <input id="dosage" formControlName="dosage" type="number" class="form-control" min="0"/>
                             <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false" data-bs-toggle="dropdown"></button>
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                                 <ul class="dropdown-menu" aria-labelledby="roleDropdown">
-                                  <li><a class="dropdown-item" href="#" (click)="setRole( 'g')">g</a></li>
-                                  <li><a class="dropdown-item" href="#" (click)="setRole( 'ml')">ml</a></li>
-                                  <li><a class="dropdown-item" href="#" (click)="setRole( 'pieces')">pieces</a></li>
+                                  <li><a class="dropdown-item" (click)="setRole( 'g')">g</a></li>
+                                  <li><a class="dropdown-item" (click)="setRole( 'ml')">ml</a></li>
+                                  <li><a class="dropdown-item" (click)="setRole( 'pieces')">pieces</a></li>
                                 </ul>
                               </div>
                           </div>
@@ -112,25 +140,13 @@
                           </div>
                           
                           <div class="extra-row">
-                            <div class="dropdown repeat">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                  {{ selectedRole }}
-                                </button>
-                                <ul class="dropdown-menu">
-                                  <li><a class="dropdown-item" href="#" (click)="setRole('Daily Reminder')">Daily Reminder</a></li>
-                                  <li><a class="dropdown-item" href="#" (click)="setRole('Weekly Reminder')">Weekly Reminder</a></li>
-                                  <li><a class="dropdown-item" href="#" (click)="setRole('Monthly Reminder')">Monthly Reminder</a></li>
-                                  <li><a class="dropdown-item" href="#" (click)="setRole('No repeat')">No repeat</a></li>
-                                </ul>
-                                
-                            </div>
-                        </div>
-                        
+                            <label for="repeat" class="form-label mt-2">Repeat (days)</label>
+                            <input id="repeat" formControlName="repeat" type="number" class="form-control" min="0"/>
+                          </div>
                         </div>
                     </div>
             </form>
         </div>
-        
     </div>
 </div>
 

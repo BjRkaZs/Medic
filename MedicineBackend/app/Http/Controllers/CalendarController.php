@@ -32,4 +32,13 @@ class CalendarController extends ResponseController
 
         return $this->sendResponse( new CalendarResource($calendar), "Sikeres hozzáadás" );
     }
+
+    public function getCalendar() {
+        $user_id = auth("sanctum")->user()->id;
+        $calendar = Calendar::with('medicine')
+                           ->where('user_id', $user_id)
+                           ->get();
+    
+        return $this->sendResponse(CalendarResource::collection($calendar), "Sikeres lekérés");
+    }
 }

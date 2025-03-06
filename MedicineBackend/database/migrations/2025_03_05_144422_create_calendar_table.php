@@ -21,11 +21,11 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->timeTz('reminder_time1');
-            $table->timeTz('reminder_time2');
-            $table->timeTz('reminder_time3');
-            $table->timeTz('reminder_time4');
-            $table->timeTz('reminder_time5');
-            $table->date('restock_reminder');
+            $table->timeTz('reminder_time2')->nullable();
+            $table->timeTz('reminder_time3')->nullable();
+            $table->timeTz('reminder_time4')->nullable();
+            $table->timeTz('reminder_time5')->nullable();
+            $table->date('restock_reminder')->nullable();
             $table->integer('repeat');
             $table->timestamps();
 

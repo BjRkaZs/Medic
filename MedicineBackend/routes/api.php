@@ -29,6 +29,9 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::put( "/modifymedicine", [ ModMedController::class, "modifyMedicine" ]);
     Route::delete( "/deletemedicine", [ ModMedController::class, "deleteMedicine" ]);
     Route::get( "/allmedicine", [ ModMedController::class, "getAllMedicine" ]);
+
+    Route::post( "/calendar", [ CalendarController::class, "addCalendar" ]);
+    Route::get( "/calendar", [ CalendarController::class, "getCalendar" ]);
 });
 
 Route::get( "/searchmedicine", [ MedController::class, "searchMedicine" ]);
@@ -38,6 +41,4 @@ Route::get( "/medforms", [ MedController::class, "getMedicineForms" ]);
 Route::post( "/register", [ UserController::class, "register" ]);
 Route::post( "/login", [ UserController::class, "login" ]);
 Route::get( "/tokens", [ UserController::class, "getTokens" ]);
-
-Route::post( "/calendar", [ CalendarController::class, "addCalendar" ]);
 

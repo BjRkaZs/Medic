@@ -30,11 +30,11 @@ class CalendarRequest extends FormRequest
             'dosage' => "required|numeric",
             'start_date' => "required|date",
             'end_date' => "required|date|after:start_date",
-            'reminder_time1' => "required|date_format:G:i",
-            'reminder_time2' => "nullable|date_format:G:i",
-            'reminder_time3' => "nullable|date_format:G:i",
-            'reminder_time4' => "nullable|date_format:G:i",
-            'reminder_time5' => "nullable|date_format:G:i",
+            'reminder_time1' => "required|date_format:H:i",
+            'reminder_time2' => "nullable|date_format:H:i",
+            'reminder_time3' => "nullable|date_format:H:i",
+            'reminder_time4' => "nullable|date_format:H:i",
+            'reminder_time5' => "nullable|date_format:H:i",
             'restock_reminder' => "date",
             'repeat' => "integer"
         ];

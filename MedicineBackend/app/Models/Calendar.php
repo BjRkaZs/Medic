@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Calendar extends Model
 {
     protected $table = 'calendar';
+    public $timestamps = true;
 
     protected $fillable = [
         'user_id',
@@ -29,11 +30,11 @@ class Calendar extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
-        'reminder_time1' => 'datetime:G:i',
-        'reminder_time2' => 'datetime:G:i',
-        'reminder_time3' => 'datetime:G:i',
-        'reminder_time4' => 'datetime:G:i',
-        'reminder_time5' => 'datetime:G:i',
+        'reminder_time1' => 'datetime:H:i',
+        'reminder_time2' => 'datetime:H:i',
+        'reminder_time3' => 'datetime:H:i',
+        'reminder_time4' => 'datetime:H:i',
+        'reminder_time5' => 'datetime:H:i',
         'restock_reminder' => 'date',
         'dosage' => 'double',
         'stock' => 'integer',

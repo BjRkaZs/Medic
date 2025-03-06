@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 
-interface Medication{
-  id: number;
-  name: string;
-  description: string;
-  stock: number;
-  dosage: number;  
-  startDate: string;
-  endDate?: string;
-  reminderTime: string;
-  restockReminder: string;
-  repeat: number;
-}
+// interface Medication{
+//   id: number;
+//   name: string;
+//   description: string;
+//   stock: number;
+//   dosage: number;  
+//   startDate: string;
+//   endDate?: string;
+//   reminderTime: string;
+//   restockReminder: string;
+//   repeat: number;
+// }
 
 @Component({
   selector: 'app-calendar',
@@ -21,32 +22,38 @@ interface Medication{
   styleUrl: './calendar.component.css'
 })
 export class CalendarComponent implements OnInit {
-
   currentYear: number = new Date().getFullYear();
   currentMonth: number = new Date().getMonth();
   today: number = new Date().getDate();
   displayedDays: (number | null)[] = [];
   selectedDay: number | null = null;
   showForm: boolean = false;
-  medications: Medication[] = [];
+  // medications: Medication[] = [];
   medicationForm: FormGroup;
-  user: any = {};
-  admin: any = {};
+  // user: any = {};
+  // admin: any = {};
   reminders: string[] = [];
 
+  searchResults: any[] = [];
+  showSearchResults: boolean = false;
+  medicineForms: any[] = [];
+  showForms: boolean = false;
+  calendarEntries: any[] = [];
+
   isLoggedIn : boolean = false;
-  constructor(private auth: AuthService, private fb: FormBuilder) {
+  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
     this.medicationForm = this.fb.group({
       name: '',
       form: '',
+      medicine_id: [''],
       description: '',
-      stock: 0,
+      stock: '',
       dosage: 'db',      
       startDate: '',
       endDate: '',
       reminderTime: '',
       restockReminder: '',
-      repeat: 1
+      repeat: [0, [Validators.min(0)]]
     });
     
 
@@ -54,9 +61,9 @@ export class CalendarComponent implements OnInit {
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.updateCalendar();
-    this.loadMedications();
+    this.loadCalendarEntries();
   }
-  
+
 
   updateCalendar(): void {
     const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
@@ -90,7 +97,40 @@ export class CalendarComponent implements OnInit {
     if (day !== null) {
       this.selectedDay = day;
       this.showForm = true;
-      this.medicationForm.patchValue({ startDate: `${this.currentYear}-${this.currentMonth + 1}-${day}` });
+      const month = (this.currentMonth + 1).toString().padStart(2, '0');
+      const formattedDay = day.toString().padStart(2, '0');
+      
+      const entries = this.getEntriesForDay(day);
+      if (entries.length > 0) {
+        const entry = entries[0];
+        this.medicationForm.patchValue({
+          medicine_id: entry.medicine_id,
+          name: entry.medicine.name,
+          form: entry.medicine.form,
+          description: entry.description,
+          stock: entry.stock,
+          dosage: entry.dosage,
+          startDate: entry.start_date,
+          endDate: entry.end_date,
+          restockReminder: entry.restock_reminder,
+          repeat: entry.repeat
+        });
+        this.reminders = [];
+        for (let i = 1; i <= 5; i++) {
+          if (entry[`reminder_time${i}`]) {
+            this.reminders.push(entry[`reminder_time${i}`]);
+          }
+        }
+      } else {
+        this.medicationForm.reset();
+        this.medicationForm.patchValue({ 
+          startDate: `${this.currentYear}-${month}-${formattedDay}`,
+          dosage: 'db',
+          stock: 0,
+          repeat: 1
+        });
+        this.reminders = [];
+      }
     }
   }
 
@@ -99,44 +139,194 @@ export class CalendarComponent implements OnInit {
     return this.currentYear === now.getFullYear() && this.currentMonth === now.getMonth() && day === now.getDate();
   }
 
-  addMedication(): void {
-    const newMedication: Medication = {
-      id: this.medications.length + 1,
-      ...this.medicationForm.value
-    };
-    this.medications.push(newMedication);
-    this.saveMedications();
-    this.showForm = false;
+  @HostListener('document:click')
+  hideSearchResults() {
+    this.showSearchResults = false;
   }
 
-  getMedicationForDay(day: number): Medication | null {
-    return this.medications.find(med => {
-      if (!med.startDate) return false;
-      const medicationDate = new Date(med.startDate);
-      return medicationDate.getDate() === day &&
-             medicationDate.getMonth() === this.currentMonth &&
-             medicationDate.getFullYear() === this.currentYear;
-    }) || null;
+  onSearchContainerClick(event: Event) {
+    event.stopPropagation();
   }
 
-  deleteMedication(medicationId: number): void {
-    this.medications = this.medications.filter(med => med.id !== medicationId);
-    this.saveMedications();
-  }
+  searchMedicine(event: any) {
+    const searchTerm = event.target.value;
+    if (searchTerm.length > 0) {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      };
 
-  loadMedications(): void {
-    const storedMedications = localStorage.getItem('medications');
-    if (storedMedications) {
-      this.medications = JSON.parse(storedMedications);
+      this.http.get(`http://localhost:8000/api/searchmedname?name=${searchTerm}`, { headers })
+        .subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              this.searchResults = response.data;
+              this.showSearchResults = true;
+            }
+          },
+          error: (error) => {
+            this.searchResults = [{name: 'Medication not available'}];
+            this.showSearchResults = true;
+            console.error('Error searching medicines:', error);
+          }
+        });
+    } else {
+      this.searchResults = [];
+      this.showSearchResults = false;
     }
   }
 
-  saveMedications(): void {
-    localStorage.setItem('medications', JSON.stringify(this.medications));
+  selectMedicine(medicine: any) {
+    this.medicationForm.patchValue({
+      name: medicine.name
+    });
+    this.showSearchResults = false;
+    
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    this.http.get(`http://localhost:8000/api/medforms?name=${medicine.name}`, { headers })
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.medicineForms = response.data;
+            this.showForms = true;
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching medicine forms:', error);
+          this.medicineForms = [];
+          this.showForms = false;
+        }
+      });
   }
 
+  selectForm(form: any) {
+    this.medicationForm.patchValue({
+      form: form.form,
+      medicine_id: form.id
+    });
+    this.showForms = false;
+  }
 
+  addCalendar(): void {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
 
+    if (!this.medicationForm.get('medicine_id')?.value) {
+      alert('Please select a medicine first');
+      return;
+    }
+
+    console.log('Form values:', this.medicationForm.value);
+    console.log('Reminders:', this.reminders);
+    
+    const requiredFields = ['medicine_id', 'stock', 'dosage', 'startDate', 'endDate'];
+    const missingFields = requiredFields.filter(field => 
+      !this.medicationForm.get(field)?.value
+    );
+  
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
+      alert(`Please fill in: ${missingFields.join(', ')}`);
+      return;
+    }
+  
+    if (this.reminders.length === 0) {
+      alert('At least one reminder time is required');
+      return;
+    }
+
+    const reminderFields: any = {};
+
+    for (let i = 0; i < 5; i++) {
+      reminderFields[`reminder_time${i + 1}`] = 
+          this.reminders[i] || null;
+    }
+  
+    const formData = {
+      medicine_id: this.medicationForm.get('medicine_id')?.value,
+      description: this.medicationForm.get('description')?.value,
+      stock: this.medicationForm.get('stock')?.value,
+      dosage: this.medicationForm.get('dosage')?.value,
+      start_date: this.medicationForm.get('startDate')?.value,
+      end_date: this.medicationForm.get('endDate')?.value,
+      restock_reminder: this.medicationForm.get('restockReminder')?.value,
+      repeat: this.medicationForm.get('repeat')?.value,
+      ...reminderFields
+    };
+
+    console.log('Sending data:', formData);
+    console.log('Token:', token); 
+  
+    this.http.post('http://localhost:8000/api/calendar', formData, { headers, observe: 'response' })
+      .subscribe({
+        next: (response: any) => {
+          console.log('Full response:', response);
+          if (response.body?.success) {
+              this.showForm = false;
+              this.loadCalendarEntries();
+              this.medicationForm.reset();
+              this.reminders = [];
+          } else {
+              console.error('Response indicates failure:', response.body);
+              alert('Failed to save calendar entry');
+          }
+      },
+      error: (error) => {
+          console.error('Network error details:', {
+              status: error.status,
+              statusText: error.statusText,
+              error: error.error,
+              headers: error.headers?.keys()
+          });
+          alert(`Error: ${error.error?.message || 'Failed to save calendar entry'}`);
+      }
+      });
+  }
+
+  loadCalendarEntries(): void {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    this.http.get('http://localhost:8000/api/calendar', { headers })
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.calendarEntries = response.data;
+          }
+        },
+        error: (error) => {
+          console.error('Error loading calendar entries:', error);
+        }
+      });
+  }
+
+  getEntriesForDay(day: number): any[] {
+    if (!this.calendarEntries) return [];
+    
+    return this.calendarEntries.filter(entry => {
+      const entryDate = new Date(entry.start_date);
+      return entryDate.getDate() === day &&
+             entryDate.getMonth() === this.currentMonth &&
+             entryDate.getFullYear() === this.currentYear;
+    });
+  }
+  
   weekDays: string[] = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   getDayName(day: number | null): string {
@@ -162,7 +352,6 @@ export class CalendarComponent implements OnInit {
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
   }
-  
   
   signOut(): void {
     this.auth.signOut();
