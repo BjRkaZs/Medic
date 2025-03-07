@@ -1,24 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-interface Medication{
+interface Medication {
   id: number;
   name: string;
   description: string;
   stock: number;
-  dosage: number;  
+  dosage: number;
   startDate: string;
   endDate?: string;
   reminderTime: string;
   restockReminder: string;
   repeat: number;
+  reminders: string;
 }
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css'
+  styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
 
@@ -32,31 +33,34 @@ export class CalendarComponent implements OnInit {
   medicationForm: FormGroup;
   user: any = {};
   admin: any = {};
-  reminders: string[] = [];
+  reminders: any[] = [];
 
   isLoggedIn : boolean = false;
+  selectedMedication: Medication | null = null;
+
   constructor(private auth: AuthService, private fb: FormBuilder) {
     this.medicationForm = this.fb.group({
-      name: '',
-      form: '',
-      description: '',
-      stock: 0,
-      dosage: 'db',      
-      startDate: '',
-      endDate: '',
-      reminderTime: '',
-      restockReminder: '',
-      repeat: 1
+      name: ['', Validators.required],
+      form: [''],
+      description: [''],
+      stock: [0, Validators.required],
+      dosage: [''],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      reminderTime: [''],
+      restockReminder: ['', Validators.required],
+      repeat: [1],
+      medicationName: [0, [Validators.min(0)]]
+
     });
     
-
   }
+
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.updateCalendar();
     this.loadMedications();
   }
-  
 
   updateCalendar(): void {
     const daysInMonth = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
@@ -90,7 +94,27 @@ export class CalendarComponent implements OnInit {
     if (day !== null) {
       this.selectedDay = day;
       this.showForm = true;
-      this.medicationForm.patchValue({ startDate: `${this.currentYear}-${this.currentMonth + 1}-${day}` });
+
+      const medication = this.getMedicationsForDay(day)[0];
+
+      if (medication) {
+        this.medicationForm.patchValue({
+          name: medication.name,
+          description: medication.description,
+          stock: medication.stock,
+          dosage: medication.dosage,
+          startDate: medication.startDate,
+          endDate: medication.endDate,
+          reminderTime: medication.reminderTime,
+          restockReminder: medication.restockReminder,
+          repeat: medication.repeat
+        });
+      } else {
+        this.medicationForm.reset({
+          startDate: `${this.currentYear}-${this.currentMonth + 1}-${day}`,
+          repeat: 1
+        });
+      }
     }
   }
 
@@ -100,29 +124,39 @@ export class CalendarComponent implements OnInit {
   }
 
   addMedication(): void {
-    const newMedication: Medication = {
-      id: this.medications.length + 1,
-      ...this.medicationForm.value
-    };
-    this.medications.push(newMedication);
+    if (this.selectedMedication) {
+      Object.assign(this.selectedMedication, this.medicationForm.value);
+    } else {
+      const newMedication: Medication = {
+        id: this.medications.length + 1,
+        ...this.medicationForm.value
+      };
+      this.medications.push(newMedication);
+    }
+    
     this.saveMedications();
     this.showForm = false;
+    this.selectedMedication = null;
   }
+  
 
-  getMedicationForDay(day: number): Medication | null {
-    return this.medications.find(med => {
-      if (!med.startDate) return false;
+  getMedicationsForDay(day: number): Medication[] {
+    return this.medications.filter(med => {
       const medicationDate = new Date(med.startDate);
       return medicationDate.getDate() === day &&
              medicationDate.getMonth() === this.currentMonth &&
              medicationDate.getFullYear() === this.currentYear;
-    }) || null;
+    });
   }
 
   deleteMedication(medicationId: number): void {
-    this.medications = this.medications.filter(med => med.id !== medicationId);
+    const index = this.medications.findIndex(med => med.id === medicationId);
+    if (index !== -1) {
+      this.medications.splice(index, 1);
+    }
     this.saveMedications();
   }
+  
 
   loadMedications(): void {
     const storedMedications = localStorage.getItem('medications');
@@ -135,9 +169,7 @@ export class CalendarComponent implements OnInit {
     localStorage.setItem('medications', JSON.stringify(this.medications));
   }
 
-
-
-  weekDays: string[] = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  weekDays: string[] = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   getDayName(day: number | null): string {
     if (day === null) return '';
@@ -146,24 +178,77 @@ export class CalendarComponent implements OnInit {
     return date.toLocaleDateString('en-US', { weekday: 'long' }).slice(0, 10);
   }
 
+  getMedNames(day: number): string[] {
+    return this.medications
+      .filter(med => {
+        const medicationDate = new Date(med.startDate);
+        return medicationDate.getDate() === day &&
+               medicationDate.getMonth() === this.currentMonth &&
+               medicationDate.getFullYear() === this.currentYear;
+      })
+      .map(med => med.name);
+  }
+  isNewMedication: boolean = false;
+  newPopup(day: number): void {
+    this.selectedDay = day;
+    this.isNewMedication = true;
+    this.medicationForm.reset({
+      startDate: `${this.currentYear}-${this.currentMonth + 1}-${day}`,
+      repeat: 1,
+    });
+    this.showForm = true;
+  }
+
+
+  openPopup(medication: Medication): void {
+    this.selectedMedication = medication;
+    this.isNewMedication = false;
+    this.medicationForm.patchValue({
+      name: medication.name,
+      description: medication.description,
+      stock: medication.stock,
+      dosage: medication.dosage,
+      startDate: medication.startDate,
+      endDate: medication.endDate,
+      reminderTime: medication.reminderTime,
+      restockReminder: medication.restockReminder,
+      repeat: medication.repeat,
+    });
+    this.showForm = true;
+  }
+  
+
   selectedRole: string = 'No repeat';
   setRole(role: string) {
     this.selectedRole = role;
   }
-
   addReminder(): void {
     const reminderTime = this.medicationForm.get('reminderTime')?.value;
-    if (reminderTime) {
-      this.reminders.push(reminderTime);
+    if (reminderTime && this.selectedMedication) {
+      if (!this.selectedMedication.reminders) {
+        this.reminders = [];
+      }
+      this.reminders.push({ reminderTime });
       this.medicationForm.patchValue({ reminderTime: '' });
     }
   }
   
+
+  removeName(day: number, medication: Medication): void {
+    this.medications = this.medications.filter(med => {
+      const medDate = new Date(med.startDate);
+      return !(medDate.getDate() === day &&
+               medDate.getMonth() === this.currentMonth &&
+               medDate.getFullYear() === this.currentYear &&
+               med.id === medication.id);
+    });
+    this.saveMedications();
+  }
+
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
   }
-  
-  
+
   signOut(): void {
     this.auth.signOut();
     this.isLoggedIn = false;
