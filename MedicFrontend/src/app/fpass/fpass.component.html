@@ -1,28 +1,27 @@
-<!-- <div class="parent">
+<div class="parent">
   <div class="container">
     <form [formGroup]="resetPasswordForm">
       <h1>Reset password</h1>
       <div class="mb-3">
         <div class="extras">
+
+          <div class="extra-row">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="Enter your email" formControlName="email">
+          </div>
+
           <div class="extra-row">
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" placeholder="Enter new password" formControlName="password">
-            <small *ngIf="resetPasswordForm.controls['password'].touched && resetPasswordForm.controls['password'].hasError('required')" class="error-text">*Password is required*</small>
-            <small *ngIf="resetPasswordForm.controls['password'].touched && resetPasswordForm.controls['password'].hasError('minlength')" class="error-text">*Password must be at least 6 characters*</small>
           </div>
 
           <div class="extra-row">
             <label for="confirmPassword" class="form-label">Confirm password</label>
             <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your new password" formControlName="confirmPassword">
-            <small *ngIf="resetPasswordForm.controls['confirmPassword'].touched && resetPasswordForm.controls['confirmPassword'].hasError('required')" class="error-text">*Confirm password is required*</small>
-          </div>
-
-          <div *ngIf="resetPasswordForm.hasError('passwordMismatch')" class="error-text">
-            *Passwords do not match!*
           </div>
         </div>
       </div>
       <button id="send" (click)="Send()">Send</button>
     </form>
   </div>
-</div> -->
+</div>

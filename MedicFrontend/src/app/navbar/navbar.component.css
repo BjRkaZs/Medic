@@ -1,54 +1,72 @@
-nav{
+nav {
   position: fixed;
   top: 0;
-  height: 120px;
   width: 100%;
-  display: flex;
-  align-items: center;
   background-color: rgb(34, 91, 124);
   color: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   z-index: 1000;
+  padding: 10px 20px;
 }
 
-button{
+.navbar-toggler {
+  border: none;
+  background: transparent;
+}
+
+.navbar-toggler-icon {
+  filter: invert(1);
+}
+
+
+.d-flex {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+}
+
+button {
   background-color: #225b7c;
   color: aliceblue;
   font-weight: bold;
   border: none;
   transition: all 0.3s ease-in-out;
-  gap: 8px;
 }
 
-a{
+a {
   color: white;
   text-decoration: none;
 }
 
 #calendar, #profile, #signOut {
-  width: 100%;
-  max-width: 200px;
+  width: 180px;
   height: 50px;
   border-radius: 25px;
   font-size: 18px;
+  text-align: center;
 }
 
-#calendar:hover, #profile:hover, #signOut:hover {
-  transform: scale(1.05);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
 
-#calendar:hover{
-  background-color: #023e8a;
-  color: black;
-}
+#calendar:hover { background-color: #023e8a; }
+#profile:hover { background-color: #2ca788; }
+#signOut:hover { background-color: rgb(216, 6, 6); }
 
-#profile:hover{
-  background-color: #2ca788 ;
-  color: black;
-}
 
-#signOut:hover{
-  background-color: rgb(216, 6, 6);
-  color: aliceblue;
+@media (max-width: 992px) {
+  .navbar-collapse {
+    justify-content: center;
+  }
+
+  .d-flex {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #calendar, #profile, #signOut {
+    width: 90%;
+    max-width: 250px;
+  }
 }

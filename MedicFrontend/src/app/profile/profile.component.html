@@ -1,4 +1,4 @@
-<div class="parent" *ngIf="isLoggedIn">
+<div class="parent" *ngIf="isLoggedIn"> 
     <div class="container">
         <form>
             <div class="profpic">
@@ -9,9 +9,10 @@
             <h1>Profile</h1>
             <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.uname" name="uname">
             <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
-            <button  class="btn btn-sm" id="save" (click)="saveProfile()">Save</button>
-            <button  class="btn btn-sm" id="delete" onclick="deleteProfile()">Delete</button>
+            <div class="button-container">
+                <button class="btn btn-sm" id="save" (click)="saveProfile()">Save</button>
+                <button class="btn btn-sm" id="delete" onclick="deleteProfile()">Delete</button>
+            </div>
         </form>
     </div>
 </div>
-

@@ -239,22 +239,18 @@ color: aliceblue;
   text-align: center;
 }
 
-#add{
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-}
-
 #addPopup{
   margin-top: 5px;
   padding: 3px;
-  border-radius: 10px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
   background-color: #2ca788;
   color: white;
 }
 
 #addPopup:hover{
-  background-color: #2ca788;
+  background-color: #312a9e;
   color: white;
 }
 
@@ -343,4 +339,14 @@ li.reminder-item {
   justify-content: center; 
   display: flex; 
   width: 100%
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 30px;
+  }
+  h1 button {
+    font-size: 16px;
+    padding: 5px 10px;
+  }
 }

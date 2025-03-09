@@ -27,6 +27,7 @@ export class ProfileComponent implements OnInit {
       reader.onload = (e: ProgressEvent<FileReader>) => {
         if (e.target?.result) {
           this.profilePicUrl = e.target.result as string;
+          this.user.profilePic = this.profilePicUrl;
         }
       };
       reader.readAsDataURL(file);
@@ -37,6 +38,7 @@ export class ProfileComponent implements OnInit {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.auth.getLoggedUser().subscribe(user => {
       this.user = user;
+      this.profilePicUrl = user.profilePic || '';
     });
   }
   saveProfile(): void {
