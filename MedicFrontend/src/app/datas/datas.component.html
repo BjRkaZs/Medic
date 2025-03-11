@@ -1,52 +1,84 @@
-<div class="parent" *ngIf="isLoggedIn && (admin?.role === 'admin' || admin?.role === 'superAdmin')">    
+<div class="parent" *ngIf="isLoggedIn && isAdmin">    
   <nav>
-      <!-- <button class="btn btn-outline-primary me-3" id="datas">
+      <button class="btn btn-outline-primary me-3" id="datas">
         <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
             <i class="bi bi-capsule"></i> Medications
         </a>
-    </button> -->
-      <!-- <button class="btn btn-outline-primary me-3" id="users">
+    </button> 
+      <button class="btn btn-outline-primary me-3" id="users" *ngIf="isSuper">
         <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
             <i class="bi bi-person-circle"></i> Users
         </a>
-    </button> -->
+    </button>
     <h1>Medications</h1>
     <button class="btn btn-outline-danger me-3" (click)="signOut()" id="signOut">
       <i class="bi bi-box-arrow-right"></i> Sign Out
   </button>
   </nav>
   <div class="container mt-4">
-      <form>
-          <input id="search" type="text" class="searchbar" placeholder="Search"/>
-          <div class="form-group">
-              <input id="name" name="name" class="form-control" placeholder="Name" [(ngModel)]="addModel.name" required />
-              <input id="form" name="form" class="form-control" placeholder="Form" [(ngModel)]="addModel.form" required />
-              <input id="substance" name="substance" class="form-control" placeholder="Substance" [(ngModel)]="addModel.substance" required />
-              <button type="submit" (ngSubmit)="addData()" class="btn btn-primary" id="add">+</button>
-            </div>
-      </form>
+    <form (ngSubmit)="addMedicine()">
+      <div class="form-group">
+        <input id="name" name="name" class="form-control" placeholder="Name" 
+                [(ngModel)]="addModel.name" required />
+        <input id="form" name="form" class="form-control" placeholder="Form" 
+                [(ngModel)]="addModel.form" required />
+        <input id="substance" name="substance" class="form-control" placeholder="Substance" 
+                [(ngModel)]="addModel.substance" required />
+        <button type="submit" class="btn btn-primary" id="add">+</button>
+      </div>
+    </form>
   
       <table class="table table-striped">
           <thead>
             <tr>
               <th>Name</th>
+              <th>Form</th>
               <th>Substance</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td><!-- {{ data.name }} --></td>
-              <td><!-- {{ data.form }} --></td>
-              <td><!-- {{ data.substance }} --></td>
+            <tr *ngFor="let data of datas">
+              <td>
+                <span *ngIf="editingData?.id !== data.id">{{ data.name }}</span>
+                <input *ngIf="editingData?.id === data.id" 
+                       type="text" 
+                       class="form-control"
+                       [(ngModel)]="editingData.name">
+              </td>
+              <td>
+                <span *ngIf="editingData?.id !== data.id">{{ data.form }}</span>
+                <input *ngIf="editingData?.id === data.id" 
+                       type="text" 
+                       class="form-control"
+                       [(ngModel)]="editingData.form">
+              </td>
+              <td>
+                <span *ngIf="editingData?.id !== data.id">{{ data.substance }}</span>
+                <input *ngIf="editingData?.id === data.id" 
+                       type="text" 
+                       class="form-control"
+                       [(ngModel)]="editingData.substance">
+              </td>
               <td>
                 <div class="buttons">
-                  <button class="btn btn-sm" id="edit">
+                  <button class="btn btn-warning btn-sm" 
+                          *ngIf="editingData?.id !== data.id"
+                          (click)="updateMedicine(data)">
                     <i class="bi bi-pencil"></i>
                   </button>
-                  <button class="btn btn-sm" id="save">
+                  <button class="btn btn-success btn-sm" 
+                          *ngIf="editingData?.id === data.id"
+                          (click)="saveMedicine(data)">
                     <i class="bi bi-floppy"></i>
                   </button>
-                  <button class="btn btn-sm" id="delete">
+                  <button class="btn btn-secondary btn-sm" 
+                          *ngIf="editingData?.id === data.id"
+                          (click)="cancelEdit()">
+                    <i class="bi bi-x"></i>
+                  </button>
+                  <button class="btn btn-danger btn-sm" 
+                          *ngIf="editingData?.id !== data.id"
+                          (click)="deleteMedicine(data)">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>

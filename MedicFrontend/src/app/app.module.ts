@@ -13,6 +13,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
 import { UsersComponent } from './users/users.component';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -32,7 +35,7 @@ import { UsersComponent } from './users/users.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [provideHttpClient()],
+  providers: [provideHttpClient(), provideAnimationsAsync(), { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

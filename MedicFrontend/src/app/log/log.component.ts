@@ -14,27 +14,41 @@ export class LogComponent {
 
 
   regModel: any = {
-    uname: '',
+    name: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    password_confirmation: ''
   };
 
   Register() {
-    if (this.regModel.password !== this.regModel.confirmPassword) {
+    console.log('Registration data:', this.regModel);
+
+    if (this.regModel.password !== this.regModel.password_confirmation) {
       alert("Passwords do not match!");
       return;
     }
 
     this.auth.Register(this.regModel).subscribe({
       next: (response) => {
-        console.log("Registration successful", response);
-        alert("Registration successful!");
-        this.router.navigate(['/signin']);
+        console.log('Registration response:', response); 
+        if (response.success) {  
+          console.log("Registration successful", response);
+          alert(response.message); 
+          this.router.navigate(['/login']);
+        } else {
+          alert(response.message || "Registration failed");
+        }
       },
       error: (error) => {
         console.error("Registration failed", error);
-        alert("Registration failed");
+        if (error.error?.errors) {
+          const errorMessages = Object.values(error.error.errors).flat();
+          alert(errorMessages.join('\n'));
+        } else if (error.error?.message) {
+          alert(error.error.message);
+        } else {
+          alert('Regisztrációs hiba történt');
+        }
       }
     });
   }
@@ -48,27 +62,25 @@ export class LogComponent {
     this.auth.Login(this.loginModel).subscribe({
       next: (response: any) => {
         console.log("Login successful", response);
-        if (response && response.length > 0) {
-          const user = response[0];
-          sessionStorage.setItem('email', user.email);
-          alert("Login successful!");
-    
-          if (user.role === 'user') {
-            this.router.navigate(['/calendar']);
-          } else if (user.role === 'admin') {
-            this.router.navigate(['/datas']);
-          } else if (user.role === 'superAdmin') {
+        if (response.success) {  
+          console.log("Login response:", response);
+          const adminLevel = response.data.user.admin;
+          localStorage.setItem('token', response.data.token);
+          sessionStorage.setItem('email', this.loginModel.email);
+          sessionStorage.setItem('role', adminLevel);
+          if (adminLevel === 2) {
             this.router.navigate(['/users']);
+          } else if (adminLevel === 1) {
+            this.router.navigate(['/datas']);
           } else {
-            alert("Login failed: Invalid role");
+            this.router.navigate(['/calendar']);
           }
-        } else {
-          alert("Login failed: Invalid credentials");
+          alert("Login successful!");
         }
       },
       error: (error) => {
         console.error("Login failed", error);
-        alert("Login failed: " + (error.error?.message || "Unknown error"));
+        alert(error.error.message || "Login failed");
       }
     });
   }
