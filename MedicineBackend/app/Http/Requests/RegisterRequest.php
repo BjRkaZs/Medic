@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|max:10|unique:users,name",
+            "name" => "required|max:15",
             "email" => "required|email|unique:users,email",
             "password" => [
                             "required",
@@ -38,7 +38,6 @@ class RegisterRequest extends FormRequest
     }
 
     public function messages() {
-
         return [
             "name.required" => "Név nem lehet üres",
             "name.max" => "Túl hosszú név",
@@ -54,9 +53,7 @@ class RegisterRequest extends FormRequest
     }
 
     public function failedValidation( Validator $validator ) {
-
         throw new HttpResponseException( response()->json([
-
             "success" => false,
             "message" => "Beviteli hiba",
             "data" => $validator->errors()

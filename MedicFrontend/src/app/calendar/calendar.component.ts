@@ -55,8 +55,6 @@ export class CalendarComponent implements OnInit {
       restockReminder: '',
       repeat: [0, [Validators.min(0)]]
     });
-    
-
   }
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
