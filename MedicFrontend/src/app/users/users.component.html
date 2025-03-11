@@ -1,59 +1,48 @@
-<div class="parent" *ngIf="isLoggedIn && (admin?.role ==='superAdmin')" >
-    <nav>
-        <!-- <button class="btn btn-outline-primary me-3" id="datas">
-            <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
-                <i class="bi bi-capsule"></i> Medications
-            </a>
-        </button> -->
-        <!-- <button class="btn btn-outline-primary me-3" id="users">
-          <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
-              <i class="bi bi-person-circle"></i> Users
+<div class="parent" *ngIf="isLoggedIn && isSuper" >
+  <nav>
+      <button class="btn btn-outline-primary me-3" id="datas">
+          <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
+              <i class="bi bi-capsule"></i> Medications
           </a>
-        </button> -->
-        <h1>Users</h1>
-        <button class="btn btn-outline-danger" (click)="signOut()" id="signOut">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
-        </button>
-  </nav>
-    <div class="container mt-4">
-    
-        <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><!-- {{ user.name }} --></td>
-                <td><!-- {{ user.email }} --></td>
-                <td><!-- {{ user.status }} -->
-                  <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                      <!-- {{ user.role || 'Select Role' }} -->
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="roleDropdown">
-                      <li><a class="dropdown-item" href="#" (click)="setRole(user, 'admin')">Admin</a></li>
-                      <li><a class="dropdown-item" href="#" (click)="setRole(user, 'super admin')">Super Admin</a></li>
-                      <li><a class="dropdown-item" href="#" (click)="setRole(user, 'user')">User</a></li>
-                    </ul>
-                  </div>
-                </td>
-
-                <td>
-                  <div class="buttons">
-                    <button class="btn btn-sm" id="save">
-                      <i class="bi bi-floppy"></i>
-                    </button>
-                    <button class="btn btn-sm" id="delete">
-                      <i class="bi bi-trash"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-        </table>
-    </div>
+      </button>
+      <button class="btn btn-outline-primary me-3" id="users">
+        <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
+            <i class="bi bi-person-circle"></i> Users
+        </a>
+      </button>
+      <h1>Users</h1>
+      <button class="btn btn-outline-danger" (click)="signOut()" id="signOut">
+          <i class="bi bi-box-arrow-right"></i> Sign Out
+      </button>
+</nav>
+  <div class="container mt-4">
+  
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ user.admin === 2 ? 'Super Admin' : user.admin === 1 ? 'Admin' : 'User' }}
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="roleDropdown">
+                <li><a class="dropdown-item" (click)="setRole(user, 'admin')">Admin</a></li>
+                <li><a class="dropdown-item" (click)="setRole(user, 'super')">Super Admin</a></li>
+                <li><a class="dropdown-item" (click)="setRole(user, 'user')">User</a></li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+  </table>
   </div>
+</div>

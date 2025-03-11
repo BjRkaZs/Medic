@@ -1,12 +1,13 @@
 <div class="parent" *ngIf="isLoggedIn">
+
   <div class="container">
       <h1>
           <button class="btn btn-outline-primary btn-lg me-3" (click)="changeMonth(-1)" id="left">
-              <i class="bi bi-chevron-compact-left left"></i>
+            <i class="bi bi-chevron-compact-left left"></i>
           </button>
           {{ currentYear }} / {{ currentMonth + 1 }}
           <button class="btn btn-outline-primary btn-lg ms-3" (click)="changeMonth(1)" id="right">
-              <i class="bi bi-chevron-compact-right right"></i>
+            <i class="bi bi-chevron-compact-right right"></i>
           </button>
       </h1>
 
@@ -17,31 +18,19 @@
       <div class="calendar-grid">
           <div *ngFor="let day of displayedDays" class="calendar-cell">
               <div *ngIf="day !== null"
-                  class="day-box"
-                  [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}">
+                      class="day-box"
+                      [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}"
+                      (click)="selectDay(day)">
                   <div class="day-number">{{ day }}</div>
-
-                  <div *ngFor="let med of getMedicationsForDay(day); let i = index" class="med-name">
-                    <span (click)="openPopup(med)" style="cursor: pointer;">
-                      {{ med.name || 'No Medication' | slice:0:10 }}
-                    </span>
-                      <button id="removeName" type="button" class="btn btn-sm btn-danger" (click)="deleteMedication(med.id); $event.stopPropagation()">
-                          <i class="bi bi-x"></i>
-                      </button>
-                  </div>
-
-                  <button id="addPopup" type="button" class="btn btn-sm" (click)="newPopup(day)">
-                    +
-                  </button>
               </div>
           </div>
       </div>
 
+      
+
       <div class="pop-up" *ngIf="showForm">
-          <form [formGroup]="medicationForm" (ngSubmit)="addMedication()">
-              
-              <div class="row">
-                <div class="d-flex justify-content-between mt-3 buttons">
+          <form [formGroup]="medicationForm" (ngSubmit)="addCalendar()">
+              <div class="d-flex justify-content-between mt-3 buttons">
                   <button type="submit" class="btn btn-success" id="save">
                       <i class="bi bi-floppy"></i>
                   </button>
@@ -49,79 +38,113 @@
                       <i class="bi bi-x-circle"></i>
                   </button>
               </div>
-                  <div class="col-6 leftSide">
+              <div class="row">
+                                
+                  <div class="col-6 leftSide">                   
+                      
                       <div class="extras">
-                          <div class="extra-row">
-                              <label for="name" class="form-label mt-2">Name</label>
-                              <input id="name" formControlName="name" class="form-control"/>
+                        <div class="extra-row">
+                          <label for="name" class="form-label mt-2">Name</label>
+                          <div class="search-container" (click)="onSearchContainerClick($event)">
+                            <input id="name" 
+                                   formControlName="name" 
+                                   class="form-control"
+                                   (input)="searchMedicine($event)"
+                                   autocomplete="off"/>
+                            
+                            <div class="search-results" *ngIf="showSearchResults">
+                              <div class="result-item" 
+                                  *ngFor="let medicine of searchResults"
+                                  [class.not-found]="medicine.name === 'Medication not available'"
+                                  (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
+                                {{ medicine.name }}
+                              </div>
+                            </div>
                           </div>
-                          <div class="extra-row">
-                              <label for="form" class="form-label mt-2">Form</label>
-                              <input id="form" formControlName="form" class="form-control"/>
+                        </div>
+                        <div class="extra-row">
+                          <label for="form" class="form-label mt-2">Form</label>
+                          <div class="form-container">
+                            <input id="form" 
+                                   formControlName="form" 
+                                   class="form-control"
+                                   readonly
+                                   (click)="showForms = medicineForms.length > 0"/>
+                            
+                            <div class="forms-dropdown" *ngIf="showForms && medicineForms.length > 0">
+                              <div class="form-item" 
+                                   *ngFor="let form of medicineForms"
+                                   (click)="selectForm(form)">
+                                {{ form.form }}
+                              </div>
+                            </div>
                           </div>
-                          <div class="extra-row">
-                              <label for="description" class="form-label mt-2">Description</label>
-                              <textarea id="description" formControlName="description" maxlength="100" class="form-control"></textarea>
-                          </div>
-                          <div class="extra-row">
-                              <label for="startDate" class="form-label mt-2">Start</label>
-                              <input id="startDate" formControlName="startDate" type="date" required class="form-control"/>
-                          </div>
-                          <div class="extra-row">
-                              <label for="endDate" class="form-label mt-2">End</label>
-                              <input id="endDate" formControlName="endDate" type="date" required class="form-control"/>
-                          </div>
+                        </div>
+                        <div class="extra-row">
+                          <label for="description" class="form-label mt-2">Description</label>
+                          <textarea id="description" formControlName="description" maxlength="100" class="form-control"></textarea>
+                        </div>
+                        <div class="extra-row">
+                          <label for="startDate" class="form-label mt-2">Start</label>
+                          <input id="startDate" formControlName="startDate" type="date" required class="form-control"/>
+                        </div>
+                        <div class="extra-row">
+                          <label for="endDate" class="form-label mt-2">End</label>
+                          <input id="endDate" formControlName="endDate" type="date" required class="form-control"/>
+                        </div>
                       </div>
+
                   </div>
                   <div class="col-6 rightSide">
                       <div class="extras">
-                          <div class="extra-row">
-                              <label for="stock" class="form-label mt-2">Stock</label>
-                              <input id="stock" formControlName="stock" type="number" required class="form-control" min="0"/>
-                          </div>
-                          <div class="extra-row">
-                              <label for="dosage" class="form-label mt-2">Dosage</label>
-                              <input id="dosage" formControlName="dosage" type="number" class="form-control" min="0"/>
-                              <div class="dropdown">
-                                  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                  <ul class="dropdown-menu" aria-labelledby="roleDropdown">
-                                      <li><a class="dropdown-item" href="#" (click)="setRole('g')">g</a></li>
-                                      <li><a class="dropdown-item" href="#" (click)="setRole('ml')">ml</a></li>
-                                      <li><a class="dropdown-item" href="#" (click)="setRole('pieces')">pieces</a></li>
-                                  </ul>
-                              </div>
-                          </div>
-                          <div class="extra-row">
-                            <label for="reminderTime" class="form-label mt-2">Reminder Time</label>
-                            <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
-                            <button id="add" type="button" class="btn btn-sm" (click)="addReminder()">
-                                <i class="bi bi-plus fs-4"></i>
-                            </button>
+                        <div class="extra-row">
+                          <label for="stock" class="form-label mt-2">Stock</label>
+                          <input id="stock" formControlName="stock" type="number" required class="form-control" min="0"/>
+                        </div>
+                        <div class="extra-row">
+                          <label for="dosage" class="form-label mt-2">Dosage</label>
+                          <input id="dosage" formControlName="dosage" type="number" class="form-control" min="0"/>
+                          <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                              <ul class="dropdown-menu" aria-labelledby="roleDropdown">
+                                <li><a class="dropdown-item" (click)="setRole( 'g')">g</a></li>
+                                <li><a class="dropdown-item" (click)="setRole( 'ml')">ml</a></li>
+                                <li><a class="dropdown-item" (click)="setRole( 'pieces')">pieces</a></li>
+                              </ul>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <div class="extra-row">
+                          <label for="reminderTime" class="form-label mt-2">Reminder Time</label>
+                          <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
+                          <button id="add" type="button" class="btn btn-sm" (click)="addReminder()">
+                            <i class="bi bi-plus fs-4"></i>
+                          </button>
                         </div>
 
                         <div *ngIf="reminders.length > 0">
                           <ul class="reminder-list">
                             <li *ngFor="let reminder of reminders; let i = index" class="reminder-item">
-                              {{ reminder.reminderTime }}
+                              {{ reminder }}
                               <button type="button" class="btn btn-sm btn-danger" id="removeReminder" (click)="removeReminder(i)">
                                 <i class="bi bi-x-circle"></i>
                               </button>
                             </li>
                           </ul>
                         </div>
-
-                          <div class="extra-row">
-                              <label for="restockReminder" class="form-label mt-2">Restock reminder (days)</label>
-                              <input id="restockReminder" formControlName="restockReminder" type="number" min="0" class="form-control"/>
-                          </div>
-
-                          <div class="extra-row">
-                            <label for="repeat" class="form-label mt-2">Repeat (days)</label>
-                            <input id="repeat" formControlName="repeat" type="number" class="form-control" min="0"/>
-                          </div>
+                      
+                        <div class="extra-row">
+                          <label for="restockReminder" class="form-label mt-2">Restock reminder (days)</label>
+                          <input id="restockReminder" formControlName="restockReminder" type="number" min="0" class="form-control"/>
+                      </div>
+                        
+                        <div class="extra-row">
+                          <label for="repeat" class="form-label mt-2">Repeat (days)</label>
+                          <input id="repeat" formControlName="repeat" type="number" class="form-control" min="0"/>
+                        </div>
                       </div>
                   </div>
-              </div>
           </form>
       </div>
   </div>
