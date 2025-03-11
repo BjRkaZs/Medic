@@ -55,8 +55,9 @@ class RegisterRequest extends FormRequest
     public function failedValidation( Validator $validator ) {
         throw new HttpResponseException( response()->json([
             "success" => false,
-            "message" => "Beviteli hiba",
-            "data" => $validator->errors()
+            "message" => "Regisztrációs hiba",
+            "data" => $validator->errors(),
+            "source" => "Medicine App"
         ]));
     }
 }

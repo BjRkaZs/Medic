@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { AlertService } from '../alert.service';
 
 @Component({
   selector: 'app-log',
@@ -10,7 +11,7 @@ import { AuthService } from '../auth.service';
 export class LogComponent {
   isSignDivVisiable: boolean  = true;
 
-  constructor(private router: Router, private auth: AuthService){}
+  constructor(private router: Router, private auth: AuthService, private alertService: AlertService){}
 
 
   regModel: any = {
@@ -21,36 +22,34 @@ export class LogComponent {
   };
 
   Register() {
-    console.log('Registration data:', this.regModel);
-
-    if (this.regModel.password !== this.regModel.password_confirmation) {
-      alert("Passwords do not match!");
-      return;
-    }
-
     this.auth.Register(this.regModel).subscribe({
       next: (response) => {
         console.log('Registration response:', response); 
         if (response.success) {  
           console.log("Registration successful", response);
-          alert(response.message); 
-          this.router.navigate(['/login']);
+          this.alertService.show(response.message); 
+          this.regModel = {
+            name: '',
+            email: '',
+            password: '',
+            password_confirmation: ''
+          };
+          this.isSignDivVisiable = false;
+        }else {
+        console.log('Validation errors:', response.data);
+        if (response.data) {
+          const errorMessages = Object.values(response.data).flat();
+          this.alertService.show(errorMessages.join('\n'));
         } else {
-          alert(response.message || "Registration failed");
-        }
-      },
-      error: (error) => {
-        console.error("Registration failed", error);
-        if (error.error?.errors) {
-          const errorMessages = Object.values(error.error.errors).flat();
-          alert(errorMessages.join('\n'));
-        } else if (error.error?.message) {
-          alert(error.error.message);
-        } else {
-          alert('Regisztrációs hiba történt');
+          this.alertService.show(response.message || 'Regisztrációs hiba történt');
         }
       }
-    });
+    },
+    error: (error) => {
+      console.error("Registration failed", error);
+      this.alertService.show('Szerver hiba történt');
+    }
+  });
   }
 
   loginModel:any={
@@ -75,12 +74,19 @@ export class LogComponent {
           } else {
             this.router.navigate(['/calendar']);
           }
-          alert("Login successful!");
+          this.alertService.show("Login successful!");
+        } else {
+          if (response.data) {
+            const errorMessages = Object.values(response.data).flat();
+            this.alertService.show(errorMessages.join('\n'));
+          } else {
+            this.alertService.show(response.message || 'Bejelentkezési hiba történt');
+          }
         }
       },
       error: (error) => {
         console.error("Login failed", error);
-        alert(error.error.message || "Login failed");
+        this.alertService.show(error.error.message || "Login failed");
       }
     });
   }
