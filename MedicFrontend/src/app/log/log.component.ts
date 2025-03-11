@@ -100,4 +100,5 @@ export class LogComponent {
       iconElement.classList.add("bi-eye-slash");
     }
   }
+
 }

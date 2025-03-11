@@ -111,16 +111,29 @@ export class AuthService {
       });
   }
 
-  update(user: any) {
-    console.log('update', user);
-    let head = {
-      headers: new HttpHeaders({
-        'Authorization': 'Bearer ' + this.token,
-        'Content-Type': 'application/json'
-      })
-    };
-    return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
+  update(user: any): Observable<any> {
+    console.log('Updating user:', user);
+  
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+  
+    return this.http.put(`${this.apiUrl}/${user.id}`, user, { headers });
   }
+
+  
+  
+
+  // update(user: any) {
+  //   console.log('update', user);
+  //   let head = {
+  //     headers: new HttpHeaders({
+  //       'Authorization': 'Bearer ' + this.token,
+  //       'Content-Type': 'application/json'
+  //     })
+  //   };
+  //   return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
+  // }
 
   // ResetPassword(data: any): Observable<any> {
   //   return this.http.post(`${this.apiUrl}/reset-password`, data);

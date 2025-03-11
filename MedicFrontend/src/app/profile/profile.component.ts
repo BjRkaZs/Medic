@@ -15,20 +15,47 @@ export class ProfileComponent implements OnInit {
 
   constructor(private auth: AuthService,private http: HttpClient, private router: Router) {}
 
-  // onFileChange(event: Event): void {
-  //   const target = event.target as HTMLInputElement;
-  //   const file = target.files ? target.files[0] : null;
-
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e: ProgressEvent<FileReader>) => {
-  //       if (e.target?.result) {
-  //         this.profilePicUrl = e.target.result as string;
+  onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files ? target.files[0] : null;
+  
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          this.profilePicUrl = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(file);
+  
+      this.uploadProfilePicture(file);
+    }
+  }
+  
+  uploadProfilePicture(file: File): void {
+  //   const token = localStorage.getItem('token');
+  //   const formData = new FormData();
+  //   formData.append('profile_picture', file);
+  
+  //   const headers = { 'Authorization': `Bearer ${token}` };
+  
+  //   this.http.post('http://localhost:8000/api/upload-profile-picture', formData, { headers })
+  //     .subscribe({
+  //       next: (response: any) => {
+  //         if (response.success) {
+  //           console.log('Profile picture uploaded:', response.data);
+  //           this.profilePicUrl = response.data.profilePicUrl;
+  //           alert('Profile picture updated successfully');
+  //         }
+  //       },
+  //       error: (error) => {
+  //         console.error('Error uploading profile picture:', error);
+  //         alert('Failed to upload profile picture');
   //       }
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+  //     });
+   }
+
+  
 
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
@@ -70,7 +97,8 @@ export class ProfileComponent implements OnInit {
 
     const body = {
       name: this.user.name,
-      email: this.user.email
+      email: this.user.email,
+      profilePicUrl: this.user.profilePic || ''
     };
 
     this.http.put('http://localhost:8000/api/modifyprofile', body, { headers })

@@ -43,17 +43,17 @@ export class CalendarComponent implements OnInit {
   isLoggedIn : boolean = false;
   constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
     this.medicationForm = this.fb.group({
-      name: '',
-      form: '',
-      medicine_id: [''],
-      description: '',
-      stock: '',
-      dosage: 'db',      
-      startDate: '',
-      endDate: '',
-      reminderTime: '',
-      restockReminder: '',
-      repeat: [0, [Validators.min(0)]]
+      name: ['', Validators.required],
+      form: [''],
+      description: [''],
+      stock: [0, Validators.required],
+      dosage: [''],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      reminderTime: [''],
+      restockReminder: ['', Validators.required],
+      repeat: [1],
+      medicationName: [0, [Validators.min(0)]]
     });
   }
   ngOnInit(): void {
@@ -339,6 +339,8 @@ export class CalendarComponent implements OnInit {
     this.selectedRole = role;
   }
 
+
+
   addReminder(): void {
     const reminderTime = this.medicationForm.get('reminderTime')?.value;
     if (reminderTime) {
@@ -346,6 +348,7 @@ export class CalendarComponent implements OnInit {
       this.medicationForm.patchValue({ reminderTime: '' });
     }
   }
+
   
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
