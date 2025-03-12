@@ -1,0 +1,23 @@
+<div class="parent">
+    <div class="container">
+      <form [formGroup]="resetForm">
+        <h1>Reset Password</h1>
+        <div class="mb-3">
+          <div class="extras">
+            <div class="extra-row">
+              <label for="password">New Password</label>
+              <input type="password" id="password" formControlName="password" placeholder="Enter new password">
+            </div>
+            <div class="extra-row">
+              <label for="password_confirmation">Confirm Password</label>
+              <input type="password" id="password_confirmation" formControlName="password_confirmation" placeholder="Confirm new password">
+            </div>
+          </div>
+        </div>
+        <div class="button-container">
+          <button (click)="resetPassword()">Reset Password</button>
+          <button routerLink="/signin">Back to Login</button>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -121,53 +121,11 @@ export class AuthService {
     return this.http.put(`${this.apiUrl}/${user.id}`, user, { headers });
   }
 
-  
-  
+  forgotPassword(email: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/sendpassreset`, { email });
+  }
 
-  // update(user: any) {
-  //   console.log('update', user);
-  //   let head = {
-  //     headers: new HttpHeaders({
-  //       'Authorization': 'Bearer ' + this.token,
-  //       'Content-Type': 'application/json'
-  //     })
-  //   };
-  //   return this.http.put(`${this.apiUrl}/${user.id}`, user, head);
-  // }
-
-  // ResetPassword(data: any): Observable<any> {
-  //   return this.http.post(`${this.apiUrl}/reset-password`, data);
-  // }
-  
-
-  // signIn(): void {
-  //   this.isLoggedUser = true;
-  //   this.loggedUserSub.next(true);
-  // }
-
-  // getCurrentUser() {
-  //   return this.userSub;
-  // }
-
-  // getUsers() {
-  //   let headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
-  //   return this.http.get(this.apiUrl + 'userlist', { headers: headers });
-  // }
-
-  // getUser(id: any) {
-  //   let headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
-  //   return this.http.get(this.apiUrl + 'user/' + id, { headers: headers });
-  // }
-
-  // getClaims(id: any) {
-  //   let headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
-  //   return this.http.get(this.apiUrl + 'userClaims/' + id, { headers: headers });
-  // }
-
-  // setClaims(id: any, claims: any) {
-  //   let body = { id: id, roles: claims };
-  //   let headers = new HttpHeaders().set('Authorization', 'Bearer ' + this.token);
-  //   return this.http.post(this.apiUrl + 'userClaims/', body, { headers: headers });
-  // }
-
+  resetPassword(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/passreset`, data);
+  }
 }

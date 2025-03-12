@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Medicine;
-use App\Http\Requests\MedicineRequest;
 use App\Http\Requests\MedicineModRequest;
 use App\Http\Resources\Medicine as MedicineResource;
 

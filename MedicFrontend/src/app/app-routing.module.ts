@@ -8,6 +8,7 @@ import { LogComponent } from './log/log.component';
 import { DatasComponent } from './datas/datas.component';
 import { adminGuard } from './admin.guard';
 import { UsersComponent } from './users/users.component';
+import { PassresetComponent } from './passreset/passreset.component';
 
 
 const routes: Routes = [
@@ -17,6 +18,7 @@ const routes: Routes = [
     { path: 'calendar', component: CalendarComponent, canActivate: [loggedUserGuard] },
     { path: 'datas', component: DatasComponent, canActivate: [loggedUserGuard, adminGuard] },
     { path: 'users', component: UsersComponent, canActivate: [loggedUserGuard, adminGuard] },
+    { path: 'passreset', component: PassresetComponent },
     { path: '', redirectTo: 'signin', pathMatch: 'full' },
   
 ];

@@ -18,7 +18,6 @@ Route::middleware( "auth:sanctum" )->group( function(){
 
     Route::get( "/getprofile", [ ProfileController::class, "getProfile" ]);
     Route::put( "/modifyprofile", [ ProfileController::class, "setProfile" ]);
-    Route::put( "/modifypassword", [ ProfileController::class, "setPassword" ]);
     Route::delete("/deleteprofile", [ ProfileController::class, "deleteProfile" ]);
 
     Route::get( "/users", [ AuthController::class, "getUsers" ]);
@@ -42,3 +41,5 @@ Route::post( "/register", [ UserController::class, "register" ]);
 Route::post( "/login", [ UserController::class, "login" ]);
 Route::get( "/tokens", [ UserController::class, "getTokens" ]);
 
+Route::post( "/sendpassreset", [ ProfileController::class, "passResetLink" ]);
+Route::post('/passreset', [ProfileController::class, 'resetPassword']);

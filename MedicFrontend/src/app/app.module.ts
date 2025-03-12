@@ -16,6 +16,7 @@ import { UsersComponent } from './users/users.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { PassresetComponent } from './passreset/passreset.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { AuthInterceptor } from './auth.interceptor';
     NavbarComponent,
     LogComponent,
     DatasComponent,
-    UsersComponent
+    UsersComponent,
+    PassresetComponent
   ],
   imports: [
     BrowserModule,

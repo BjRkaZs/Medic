@@ -4,24 +4,17 @@
       <h1>Reset password</h1>
       <div class="mb-3">
         <div class="extras">
-
           <div class="extra-row">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter your email" formControlName="email">
-          </div>
-
-          <div class="extra-row">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter new password" formControlName="password">
-          </div>
-
-          <div class="extra-row">
-            <label for="confirmPassword" class="form-label">Confirm password</label>
-            <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm your new password" formControlName="confirmPassword">
+            <input type="email" class="form-control" id="email" 
+                   placeholder="Enter your email" formControlName="email">
           </div>
         </div>
       </div>
-      <button id="send" (click)="Send()">Send</button>
+      <div class="button-container">
+        <button id="send" (click)="requestReset()">Send Reset Link</button>
+        <button routerLink="/signin">Back to Login</button>
+      </div>
     </form>
   </div>
 </div>

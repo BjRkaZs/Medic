@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { resetPassword } from '../../../models/fsign.model';
 import { Router } from '@angular/router';
 import { AlertService } from '../alert.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-fpass',
@@ -10,33 +10,36 @@ import { AlertService } from '../alert.service';
   styleUrl: './fpass.component.css'
 })
 export class FpassComponent {
+  resetPasswordForm: FormGroup;
 
-  resetPasswordForm!: FormGroup;
-  emailToReset!: string;
-  emailToken!: string;
-  resetPasswordObj = new resetPassword();
-
-  constructor(private fb: FormBuilder,private router: Router, private alertService: AlertService) { }
-  ngOnInit(): void {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router, 
+    private alertService: AlertService, 
+    private auth: AuthService
+  ) {
     this.resetPasswordForm = this.fb.group({
-      password: [null, Validators.required],
-      confirmPassword: [null, Validators.required]
+      email: ['', [Validators.required, Validators.email]]
     });
   }
 
-  Send() {
-
-    this.resetPasswordObj.newpassword = this.resetPasswordForm.value.password;
-    this.resetPasswordObj.confirmPassword = this.resetPasswordForm.value.confirmPassword;
-
-    if (this.resetPasswordObj.newpassword !== this.resetPasswordObj.confirmPassword) {
-      this.alertService.show("Passwords do not match!");
-      return;
+  requestReset(): void {
+    if (this.resetPasswordForm.valid) {
+      const email = this.resetPasswordForm.get('email')?.value || '';
+      
+      if (email) {
+        this.auth.forgotPassword(email).subscribe({
+          next: (response) => {
+            this.alertService.show('Jelszó visszaállítási link elküldve az e-mail címedre.');
+            this.router.navigate(['/signin']);
+          },
+          error: (error) => {
+            this.alertService.show(error.error?.message || 'Hiba történt');
+          }
+        });
+      }
+    } else {
+      this.alertService.show('Kérjük, adj meg egy érvényes e-mail címet');
     }
-
-    console.log("Password reset successful", this.resetPasswordObj);
-    this.alertService.show("Password reset successful!");
-    this.router.navigate(['/signin']);
   }
-
 }
