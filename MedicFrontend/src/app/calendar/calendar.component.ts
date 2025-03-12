@@ -314,18 +314,14 @@ export class CalendarComponent implements OnInit {
     const reminderCount = this.reminders.length;
   
     if (startDate && stock && reminderCount > 0) {
-      // Calculate days until restock needed: (stock / daily doses) * repeat
-      const dailyDoses = reminderCount;  // number of reminder times = doses per day
+      const dailyDoses = reminderCount;
       const daysUntilRestock = Math.floor((stock / dailyDoses) * repeat);
       
-      // Calculate restock date
       const restockDate = new Date(startDate);
       restockDate.setDate(restockDate.getDate() + daysUntilRestock);
       
-      // Format date to YYYY-MM-DD
       const formattedDate = restockDate.toISOString().split('T')[0];
       
-      // Update form
       this.medicationForm.patchValue({
         restock: formattedDate
       });
