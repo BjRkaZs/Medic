@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AlertService } from '../alert.service';
 
 @Component({
   selector: 'app-datas',
@@ -10,7 +11,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class DatasComponent implements OnInit {
   
-  constructor(private auth: AuthService, private router: Router, private http: HttpClient) { }
+  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService) { }
   
   admin: any = {};
   datas: any[] = [];
@@ -81,12 +82,12 @@ export class DatasComponent implements OnInit {
               substance: ''
             };
             this.loadData();
-            alert('Medicine added successfully');
+            this.alertService.show('Medicine added successfully');
           }
         },
         error: (error) => {
           console.error('Error adding medicine:', error);
-          alert(error.error.message || 'Error adding medicine');
+          this.alertService.show(error.error.message || 'Error adding medicine');
         }
       });
   }
@@ -110,12 +111,12 @@ export class DatasComponent implements OnInit {
             console.log('Medicine updated:', response.data);
             this.editingData = null;
             this.loadData();
-            alert('Medicine updated successfully');
+            this.alertService.show('Medicine updated successfully');
           }
         },
         error: (error) => {
           console.error('Error updating medicine:', error);
-          alert(error.error.message || 'Error updating medicine');
+          this.alertService.show(error.error.message || 'Error updating medicine');
         }
       });
   }
@@ -140,12 +141,12 @@ export class DatasComponent implements OnInit {
           if (response.success) {
             console.log('Medicine deleted:', response.data);
             this.loadData();
-            alert('Medicine deleted successfully');
+            this.alertService.show('Medicine deleted successfully');
           }
         },
         error: (error) => {
           console.error('Error deleting medicine:', error);
-          alert(error.error.message || 'Error deleting medicine');
+          this.alertService.show(error.error.message || 'Error deleting medicine');
         }
       });
     }

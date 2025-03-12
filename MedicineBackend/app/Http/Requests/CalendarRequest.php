@@ -35,7 +35,8 @@ class CalendarRequest extends FormRequest
             'reminder_time3' => "nullable|date_format:H:i",
             'reminder_time4' => "nullable|date_format:H:i",
             'reminder_time5' => "nullable|date_format:H:i",
-            'restock_reminder' => "date",
+            'restock' => "date",
+            'restock_reminder' => "numeric",
             'repeat' => "integer"
         ];
     }

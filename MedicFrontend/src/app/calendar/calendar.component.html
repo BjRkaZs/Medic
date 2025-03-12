@@ -1,32 +1,32 @@
 <div class="parent" *ngIf="isLoggedIn">
 
-    <div class="container">
-        <h1>
-            <button class="btn btn-outline-primary btn-lg me-3" (click)="changeMonth(-1)" id="left">
-              <i class="bi bi-chevron-compact-left left"></i>
-            </button>
-            {{ currentYear }} / {{ currentMonth + 1 }}
-            <button class="btn btn-outline-primary btn-lg ms-3" (click)="changeMonth(1)" id="right">
-              <i class="bi bi-chevron-compact-right right"></i>
-            </button>
-        </h1>
+  <div class="container">
+      <h1>
+          <button class="btn btn-outline-primary btn-lg me-3" (click)="changeMonth(-1)" id="left">
+            <i class="bi bi-chevron-compact-left left"></i>
+          </button>
+          {{ currentYear }} / {{ currentMonth + 1 }}
+          <button class="btn btn-outline-primary btn-lg ms-3" (click)="changeMonth(1)" id="right">
+            <i class="bi bi-chevron-compact-right right"></i>
+          </button>
+      </h1>
 
-        <div class="row day-names">
-            <div class="col" *ngFor="let day of weekDays">{{ day }}</div>
-        </div>
+      <div class="row day-names">
+          <div class="col" *ngFor="let day of weekDays">{{ day }}</div>
+      </div>
 
-        <div class="calendar-grid">
-            <div *ngFor="let day of displayedDays" class="calendar-cell">
-                <div *ngIf="day !== null"
-                        class="day-box"
-                        [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}"
-                        (click)="selectDay(day)">
-                    <div class="day-number">{{ day }}</div>
-                </div>
-            </div>
-        </div>
+      <div class="calendar-grid">
+          <div *ngFor="let day of displayedDays" class="calendar-cell">
+              <div *ngIf="day !== null"
+                      class="day-box"
+                      [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}"
+                      (click)="selectDay(day)">
+                  <div class="day-number">{{ day }}</div>
+              </div>
+          </div>
+      </div>
 
-        
+      
 
         <div class="pop-up" *ngIf="showForm">
             <form [formGroup]="medicationForm" (ngSubmit)="addCalendar()">
@@ -135,8 +135,13 @@
                           </div>
                         
                           <div class="extra-row">
-                            <label for="restockReminder" class="form-label mt-2">Restock</label>
-                            <input id="restockReminder" formControlName="restockReminder" type="date" class="form-control"/>
+                            <label for="restock" class="form-label mt-2">Restock</label>
+                            <input id="restock" formControlName="restock" type="date" class="form-control"/>
+                          </div>
+
+                          <div class="extra-row">
+                            <label for="restockReminder" class="form-label mt-2">Restock reminder (days)</label>
+                            <input id="restockReminder" formControlName="restockReminder" type="number" min="0" class="form-control"/>
                           </div>
                           
                           <div class="extra-row">
@@ -149,6 +154,3 @@
         </div>
     </div>
 </div>
-
-
-

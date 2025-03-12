@@ -2,19 +2,8 @@ import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-
-// interface Medication{
-//   id: number;
-//   name: string;
-//   description: string;
-//   stock: number;
-//   dosage: number;  
-//   startDate: string;
-//   endDate?: string;
-//   reminderTime: string;
-//   restockReminder: string;
-//   repeat: number;
-// }
+import { AlertService } from '../alert.service';
+import { clippingParents } from '@popperjs/core';
 
 @Component({
   selector: 'app-calendar',
@@ -28,10 +17,7 @@ export class CalendarComponent implements OnInit {
   displayedDays: (number | null)[] = [];
   selectedDay: number | null = null;
   showForm: boolean = false;
-  // medications: Medication[] = [];
   medicationForm: FormGroup;
-  // user: any = {};
-  // admin: any = {};
   reminders: string[] = [];
 
   searchResults: any[] = [];
@@ -41,7 +27,7 @@ export class CalendarComponent implements OnInit {
   calendarEntries: any[] = [];
 
   isLoggedIn : boolean = false;
-  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient) {
+  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService) {
     this.medicationForm = this.fb.group({
       name: '',
       form: '',
@@ -52,9 +38,13 @@ export class CalendarComponent implements OnInit {
       startDate: '',
       endDate: '',
       reminderTime: '',
+      restock: '',
       restockReminder: '',
       repeat: [0, [Validators.min(0)]]
     });
+    this.medicationForm.get('startDate')?.valueChanges.subscribe(() => this.calculateRestockDate());
+    this.medicationForm.get('stock')?.valueChanges.subscribe(() => this.calculateRestockDate());
+    this.medicationForm.get('repeat')?.valueChanges.subscribe(() => this.calculateRestockDate());
   }
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
@@ -110,6 +100,7 @@ export class CalendarComponent implements OnInit {
           dosage: entry.dosage,
           startDate: entry.start_date,
           endDate: entry.end_date,
+          restock: entry.restock,
           restockReminder: entry.restock_reminder,
           repeat: entry.repeat
         });
@@ -222,7 +213,7 @@ export class CalendarComponent implements OnInit {
     };
 
     if (!this.medicationForm.get('medicine_id')?.value) {
-      alert('Please select a medicine first');
+      this.alertService.show('Please select a medicine first');
       return;
     }
 
@@ -236,12 +227,12 @@ export class CalendarComponent implements OnInit {
   
     if (missingFields.length > 0) {
       console.error('Missing required fields:', missingFields);
-      alert(`Please fill in: ${missingFields.join(', ')}`);
+      this.alertService.show(`Please fill in: ${missingFields.join(', ')}`);
       return;
     }
   
     if (this.reminders.length === 0) {
-      alert('At least one reminder time is required');
+      this.alertService.show('At least one reminder time is required');
       return;
     }
 
@@ -259,6 +250,7 @@ export class CalendarComponent implements OnInit {
       dosage: this.medicationForm.get('dosage')?.value,
       start_date: this.medicationForm.get('startDate')?.value,
       end_date: this.medicationForm.get('endDate')?.value,
+      restock: this.medicationForm.get('restock')?.value,
       restock_reminder: this.medicationForm.get('restockReminder')?.value,
       repeat: this.medicationForm.get('repeat')?.value,
       ...reminderFields
@@ -278,7 +270,7 @@ export class CalendarComponent implements OnInit {
               this.reminders = [];
           } else {
               console.error('Response indicates failure:', response.body);
-              alert('Failed to save calendar entry');
+              this.alertService.show('Failed to save calendar entry');
           }
       },
       error: (error) => {
@@ -288,7 +280,7 @@ export class CalendarComponent implements OnInit {
               error: error.error,
               headers: error.headers?.keys()
           });
-          alert(`Error: ${error.error?.message || 'Failed to save calendar entry'}`);
+          this.alertService.show(`Error: ${error.error?.message || 'Failed to save calendar entry'}`);
       }
       });
   }
@@ -306,12 +298,38 @@ export class CalendarComponent implements OnInit {
         next: (response: any) => {
           if (response.success) {
             this.calendarEntries = response.data;
+            console.log('Calendar entries loaded:', this.calendarEntries);
           }
         },
         error: (error) => {
           console.error('Error loading calendar entries:', error);
         }
       });
+  }
+
+  calculateRestockDate(): void {
+    const startDate = this.medicationForm.get('startDate')?.value;
+    const stock = this.medicationForm.get('stock')?.value;
+    const repeat = this.medicationForm.get('repeat')?.value;
+    const reminderCount = this.reminders.length;
+  
+    if (startDate && stock && reminderCount > 0) {
+      // Calculate days until restock needed: (stock / daily doses) * repeat
+      const dailyDoses = reminderCount;  // number of reminder times = doses per day
+      const daysUntilRestock = Math.floor((stock / dailyDoses) * repeat);
+      
+      // Calculate restock date
+      const restockDate = new Date(startDate);
+      restockDate.setDate(restockDate.getDate() + daysUntilRestock);
+      
+      // Format date to YYYY-MM-DD
+      const formattedDate = restockDate.toISOString().split('T')[0];
+      
+      // Update form
+      this.medicationForm.patchValue({
+        restock: formattedDate
+      });
+    }
   }
 
   getEntriesForDay(day: number): any[] {
@@ -344,11 +362,13 @@ export class CalendarComponent implements OnInit {
     if (reminderTime) {
       this.reminders.push(reminderTime);
       this.medicationForm.patchValue({ reminderTime: '' });
+      this.calculateRestockDate();
     }
   }
   
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
+    this.calculateRestockDate();
   }
   
   signOut(): void {

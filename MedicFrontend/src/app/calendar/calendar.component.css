@@ -26,6 +26,7 @@
   background-color:#225b7c;;
 }
 
+
 button .left,
 button .right{
   color: #e0e1dd;
@@ -40,7 +41,7 @@ h1 {
 }
 
 .day-names {
-  display: grid;
+  display: grid, flex;
   grid-template-columns: repeat(7, 1fr);
   font-weight: bold;
   text-transform: uppercase;
@@ -57,6 +58,8 @@ h1 {
   padding: 10px;
   border-radius: 30px;
   background-color:#e0e1dd;
+  max-width: 100%;
+  overflow: hidden;
 }
 
 .calendar-cell {
@@ -69,12 +72,21 @@ h1 {
 .day-box {
   width: 100%;
   min-height: 120px;
+  max-height: 120px;
   text-align: center;
   padding: 12px;
   border-radius: 30px;
   transition: 0.2s ease-in-out;  
   background-color: rgb(255, 251, 248);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-color: lightgray transparent;
+}
+
+.day-box::-webkit-scrollbar-track {
+  background: transparent;
+  background-color: transparent;
 }
 
 .day-number {
@@ -91,6 +103,14 @@ h1 {
   overflow: hidden;
   white-space: nowrap;
   max-width: 100%;
+  display: flex;
+}
+
+.med-name {
+  background-color: #eeebff;
+  margin-bottom: 2px;
+  border-radius: 20px;
+  color: black !important;
 }
 
 .hover-effect:hover {
@@ -106,6 +126,7 @@ h1 {
 
 .pop-up {
   position: fixed;
+  display: flex;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -116,7 +137,7 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 85%;
   max-height: 100vh;
-  overflow: hidden;
+  overflow-y: scroll;
   display: block !important;
   justify-content: center;
 }
@@ -124,7 +145,7 @@ h1 {
 textarea,
 input{
 height: 80px;
-width: 500px;
+width: 100%;
 justify-content: center;
 display: flex;
 border-radius: 20px;
@@ -177,6 +198,7 @@ color: aliceblue;
 .leftSide, .rightSide{
   flex: 1;
   min-width: 280px;
+  width: 100%;
 }
 
 
@@ -205,13 +227,14 @@ color: aliceblue;
 
 .extra-row label {
   padding: 12px 10px;
-  width: 100px;
+  width: 30%;
   text-align: left;
   font-size: 16px;
   color: #6c757d;
 }
 
 .extra-row input {
+  width: 100%;;
   flex: 1;
   height: 35px;
   border-width: 1px;
@@ -220,12 +243,23 @@ color: aliceblue;
   text-align: center;
 }
 
-#add{
+#addPopup{
+  margin-top: 5px;
+  padding: 3px;
   width: 35px;
   height: 35px;
   border-radius: 50%;
+  background-color: #2ca788;
+  color: white;
 }
-button#removeReminder {
+
+#addPopup:hover{
+  background-color: #312a9e;
+  color: white;
+}
+
+button#removeReminder,
+button#removeName {
   border: none;
   background-color: transparent;
   color: red;
@@ -235,7 +269,8 @@ button#removeReminder {
   margin-left: 2px;
 }
 
-button#removeReminder i {
+button#removeReminder i,
+button#removeName{
   font-size: 1rem;
   color: red;
 }
@@ -368,4 +403,23 @@ li.reminder-item {
 
 .form-item:hover {
   background-color: #f5f5f5;
+}
+
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 320px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }

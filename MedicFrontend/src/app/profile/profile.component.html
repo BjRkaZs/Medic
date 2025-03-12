@@ -1,4 +1,4 @@
-<div class="parent" *ngIf="isLoggedIn">
+<div class="parent" *ngIf="isLoggedIn"> 
     <div class="container">
         <form>
             <!-- <div class="form-floating mb-3">
@@ -16,22 +16,19 @@
                 <button type="button" class="btn btn-danger" (click)="deleteProfile()">Delete</button>
             </div> -->
             <div class="profpic">
-                <img id="profilePic" [src]="profilePicUrl" class="profilePic">
+                <img id="profilePic" [src]="profilePicUrl || 'default-profile.png'" class="profilePic">
                 <label for="fileInput" class="upload-icon">+</label>
-                <input type="file" id="fileInput"  accept="image/*"> <!--(change)="onFileChange($event)" -->
+                <input type="file" id="fileInput" accept="image/*" (change)="onFileChange($event)">
             </div>
-            <div class="profile">
+            
+
             <h1>Profile</h1>
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.name" name="name">
-                <label for="name">email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email">
-                <div class="buttons">
-                    <button  class="btn btn-sm" id="save" (click)="saveProfile()">Save</button>
-                    <button  class="btn btn-sm" id="delete" (click)="deleteProfile()">Delete</button>
-                </div>
+            <input type="text" class="form-control" id="displayName" placeholder="Display Name" [(ngModel)]="user.name" name="name">
+            <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
+            <div class="button-container">
+                <button class="btn btn-sm" id="save" (click)="saveProfile()">Save</button>
+                <button class="btn btn-sm" id="delete" onclick="deleteProfile()">Delete</button>
             </div>
         </form>
     </div>
 </div>
-

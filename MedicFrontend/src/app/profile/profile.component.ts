@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { AlertService } from '../alert.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,26 +14,34 @@ export class ProfileComponent implements OnInit {
   isLoggedIn: boolean = false;
   profilePicUrl: string = '';
 
-  constructor(private auth: AuthService,private http: HttpClient, private router: Router) {}
+  constructor(private auth: AuthService,private http: HttpClient, private router: Router, private alertService: AlertService) {}
 
-  // onFileChange(event: Event): void {
-  //   const target = event.target as HTMLInputElement;
-  //   const file = target.files ? target.files[0] : null;
+  onFileChange(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const file = target.files ? target.files[0] : null;
+  
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        if (e.target?.result) {
+          this.profilePicUrl = e.target.result as string;
+          localStorage.setItem('profilePic', this.profilePicUrl);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+  
 
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onload = (e: ProgressEvent<FileReader>) => {
-  //       if (e.target?.result) {
-  //         this.profilePicUrl = e.target.result as string;
-  //       }
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+  
 
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.loadProfile();
+    const savedPic = localStorage.getItem('profilePic');
+     if (savedPic) {
+    this.profilePicUrl = savedPic;
+    }
   }
 
   loadProfile(): void {
@@ -70,7 +79,8 @@ export class ProfileComponent implements OnInit {
 
     const body = {
       name: this.user.name,
-      email: this.user.email
+      email: this.user.email,
+      profilePicUrl: this.user.profilePic || ''
     };
 
     this.http.put('http://localhost:8000/api/modifyprofile', body, { headers })
@@ -78,13 +88,13 @@ export class ProfileComponent implements OnInit {
         next: (response: any) => {
           if (response.success) {
             console.log('Profile updated:', response.data);
-            alert('Profile updated successfully');
+            this.alertService.show('Profile updated successfully');
             this.loadProfile();
           }
         },
         error: (error) => {
           console.error('Error updating profile:', error);
-          alert(error.error?.message || 'Failed to update profile');
+          this.alertService.show(error.error?.message || 'Failed to update profile');
         }
       });
   }
@@ -107,12 +117,12 @@ export class ProfileComponent implements OnInit {
               sessionStorage.clear();
               this.auth.signOut();
               this.router.navigate(['/signin']);
-              alert('Profile deleted successfully');
+              this.alertService.show('Profile deleted successfully');
             }
           },
           error: (error) => {
             console.error('Error deleting profile:', error);
-            alert(error.error?.message || 'Failed to delete profile');
+            this.alertService.show(error.error?.message || 'Failed to delete profile');
           }
         });
       }

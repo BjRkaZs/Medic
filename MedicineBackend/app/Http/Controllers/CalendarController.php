@@ -24,6 +24,7 @@ class CalendarController extends ResponseController
         $calendar->reminder_time3 = $request["reminder_time3"];
         $calendar->reminder_time4 = $request["reminder_time4"];
         $calendar->reminder_time5 = $request["reminder_time5"];
+        $calendar->restock = $request["restock"];
         $calendar->restock_reminder = $request["restock_reminder"];
         $calendar->repeat = $request["repeat"];
 

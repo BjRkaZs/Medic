@@ -23,19 +23,21 @@ class Calendar extends Model
         'reminder_time3',
         'reminder_time4',
         'reminder_time5',
+        'restock',
         'restock_reminder',
         'repeat'
     ];
 
     protected $casts = [
-        'start_date' => 'date',
-        'end_date' => 'date',
+        'start_date' => 'date:d-m-Y',
+        'end_date' => 'date:d-m-Y',
         'reminder_time1' => 'datetime:H:i',
         'reminder_time2' => 'datetime:H:i',
         'reminder_time3' => 'datetime:H:i',
         'reminder_time4' => 'datetime:H:i',
         'reminder_time5' => 'datetime:H:i',
-        'restock_reminder' => 'date',
+        'restock' => 'date:d-m-Y',
+        'restock_reminder' => 'integer',
         'dosage' => 'double',
         'stock' => 'integer',
         'repeat' => 'integer'

@@ -25,7 +25,8 @@ return new class extends Migration
             $table->timeTz('reminder_time3')->nullable();
             $table->timeTz('reminder_time4')->nullable();
             $table->timeTz('reminder_time5')->nullable();
-            $table->date('restock_reminder')->nullable();
+            $table->date('restock')->nullable();
+            $table->integer('restock_reminder')->nullable();
             $table->integer('repeat');
             $table->timestamps();
 
