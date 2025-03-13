@@ -67,13 +67,6 @@ export class LogComponent {
           localStorage.setItem('token', response.data.token);
           sessionStorage.setItem('email', this.loginModel.email);
           sessionStorage.setItem('role', adminLevel);
-          if (adminLevel === 2) {
-            this.router.navigate(['/users']);
-          } else if (adminLevel === 1) {
-            this.router.navigate(['/datas']);
-          } else {
-            this.router.navigate(['/calendar']);
-          }
           this.alertService.show("Login successful!");
         } else {
           if (response.data) {

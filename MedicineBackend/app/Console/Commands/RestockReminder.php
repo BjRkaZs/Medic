@@ -10,7 +10,7 @@ use Carbon\Carbon;
 
 class RestockReminder extends Command
 {
-    protected $signature = 'check:restock-reminders';
+    protected $signature = 'check:restock-reminder';
     protected $description = 'Check and send restock reminder emails';
 
     public function handle()
