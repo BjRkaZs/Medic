@@ -6,9 +6,10 @@ import { AlertService } from '../alert.service';
 import { clippingParents } from '@popperjs/core';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css'
+    selector: 'app-calendar',
+    templateUrl: './calendar.component.html',
+    styleUrl: './calendar.component.css',
+    standalone: false
 })
 export class CalendarComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
@@ -19,7 +20,7 @@ export class CalendarComponent implements OnInit {
   showForm: boolean = false;
   medicationForm: FormGroup;
   reminders: string[] = [];
-
+  medicines: any[] = [];
   searchResults: any[] = [];
   showSearchResults: boolean = false;
   medicineForms: any[] = [];
@@ -366,7 +367,14 @@ export class CalendarComponent implements OnInit {
     this.reminders.splice(index, 1);
     this.calculateRestockDate();
   }
-  
+  getMedicineForDay(day: number) {
+    return this.calendarEntries.find(entry => {
+        const entryDate = new Date(entry.start_date);
+        return entryDate.getDate() === day &&
+               entryDate.getMonth() === this.currentMonth &&
+               entryDate.getFullYear() === this.currentYear;
+    })?.medicine;
+}
   signOut(): void {
     this.auth.signOut();
     this.isLoggedIn = false;

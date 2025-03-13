@@ -17,6 +17,8 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { PassresetComponent } from './passreset/passreset.component';
+import { MymedsComponent } from './mymeds/mymeds.component';
+
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { PassresetComponent } from './passreset/passreset.component';
     LogComponent,
     DatasComponent,
     UsersComponent,
-    PassresetComponent
+    PassresetComponent,
+    MymedsComponent,
   ],
   imports: [
     BrowserModule,

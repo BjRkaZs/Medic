@@ -5,9 +5,10 @@ import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
 
 @Component({
-  selector: 'app-datas',
-  templateUrl: './datas.component.html',
-  styleUrls: ['./datas.component.css']
+    selector: 'app-datas',
+    templateUrl: './datas.component.html',
+    styleUrls: ['./datas.component.css'],
+    standalone: false
 })
 export class DatasComponent implements OnInit {
   

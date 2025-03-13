@@ -128,4 +128,23 @@ export class AuthService {
   resetPassword(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/passreset`, data);
   }
+
+
+  getMedications(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+    return this.http.get<any[]>(`${this.apiUrl}/calendar`, { headers })
+      .pipe(
+        tap(response => {
+          console.log('Calendar API Response:', response);
+          return response;
+        })
+      );
+}
+
+
 }

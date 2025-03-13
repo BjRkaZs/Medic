@@ -5,9 +5,10 @@ import { AuthService } from '../auth.service';
 import { AlertService } from '../alert.service';
 
 @Component({
-  selector: 'app-passreset',
-  templateUrl: './passreset.component.html',
-  styleUrl: './passreset.component.css'
+    selector: 'app-passreset',
+    templateUrl: './passreset.component.html',
+    styleUrl: './passreset.component.css',
+    standalone: false
 })
 export class PassresetComponent implements OnInit {
   resetForm: FormGroup;

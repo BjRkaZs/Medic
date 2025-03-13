@@ -16,15 +16,20 @@
       </div>
 
       <div class="calendar-grid">
-          <div *ngFor="let day of displayedDays" class="calendar-cell">
-              <div *ngIf="day !== null"
-                      class="day-box"
-                      [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}"
-                      (click)="selectDay(day)">
-                  <div class="day-number">{{ day }}</div>
-              </div>
-          </div>
-      </div>
+        <div *ngFor="let day of displayedDays" class="calendar-cell">
+            <div *ngIf="day !== null"
+                    class="day-box"
+                    [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}"
+                    (click)="selectDay(day)">
+                <div class="day-number">{{ day }}</div>
+                <div *ngIf="getMedicineForDay(day)">
+                    {{ getMedicineForDay(day).name }}
+                    <i class="bi bi-x"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
       
 

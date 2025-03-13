@@ -4,9 +4,10 @@ import { AuthService } from '../auth.service';
 import { AlertService } from '../alert.service';
 
 @Component({
-  selector: 'app-log',
-  templateUrl: './log.component.html',
-  styleUrl: './log.component.css'
+    selector: 'app-log',
+    templateUrl: './log.component.html',
+    styleUrl: './log.component.css',
+    standalone: false
 })
 export class LogComponent {
   isSignDivVisiable: boolean  = true;
@@ -27,7 +28,7 @@ export class LogComponent {
         console.log('Registration response:', response); 
         if (response.success) {  
           console.log("Registration successful", response);
-          this.alertService.show(response.message); 
+          this.alertService.show(response.message);
           this.regModel = {
             name: '',
             email: '',

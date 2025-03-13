@@ -1,0 +1,45 @@
+<div class="parent" *ngIf="isLoggedIn">
+    <div class="container">
+      <h1>Look through your added medications</h1>
+  
+      <div class="search-container" (click)="onSearchContainerClick($event)">
+        <input id="name" 
+               formControlName="name" 
+               class="form-control"
+               (input)="searchMedicine($event)"
+               autocomplete="off"/>
+  
+        <div class="search-results" *ngIf="showSearchResults">
+          <div class="result-item" 
+              *ngFor="let medicine of searchResults"
+              [class.not-found]="medicine.name === 'Medication not available'"
+              (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
+            {{ medicine.name }}
+          </div>
+        </div>
+      </div>
+  
+      <div *ngIf="medications && medications.length > 0; else noMeds">
+        <div *ngFor="let med of medications" class="medication-item">
+          <h3>{{ med.medicine?.name }}</h3>
+          <p><strong>Form:</strong> {{ med.medicine?.form }}</p>
+          <p><strong>Description:</strong> {{ med.description }}</p>
+          <p><strong>Start Date:</strong> {{ med.start_date | date }}</p>
+          <p><strong>End Date:</strong> {{ med.end_date | date }}</p>
+          <p><strong>Stock:</strong> {{ med.stock }}</p>
+          <p><strong>Dosage:</strong> {{ med.dosage }}</p>
+          <p *ngIf="med.reminder_time1"><strong>Reminder Time 1:</strong> {{ med.reminder_time1 }}</p>
+          <p *ngIf="med.reminder_time2"><strong>Reminder Time 2:</strong> {{ med.reminder_time2 }}</p>
+          <p *ngIf="med.reminder_time3"><strong>Reminder Time 3:</strong> {{ med.reminder_time3 }}</p>
+          <p *ngIf="med.reminder_time4"><strong>Reminder Time 4:</strong> {{ med.reminder_time4 }}</p>
+          <p *ngIf="med.reminder_time5"><strong>Reminder Time 5:</strong> {{ med.reminder_time5 }}</p>
+          <p><strong>Restock Date:</strong> {{ med.restock | date }}</p>
+          <p><strong>Restock Reminder:</strong> {{ med.restock_reminder }} days</p>
+          <p><strong>Repeat:</strong> {{ med.repeat }} days</p>
+        </div>
+      </div>
+      <ng-template #noMeds>
+        <p>No medications found.</p>
+      </ng-template>
+    </div>
+</div>
