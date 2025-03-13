@@ -25,7 +25,7 @@ class CalendarRequest extends FormRequest
     {
         return [
             'medicine_id' => 'required|exists:medicine,id',
-            'description' => "max:150",
+            'description' => "max:150|nullable",
             'stock' => "required|numeric",
             'dosage' => "required|numeric",
             'start_date' => "required|date",

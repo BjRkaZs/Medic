@@ -6,6 +6,7 @@ use App\Http\Requests\CalendarRequest;
 use App\Models\Calendar;
 use Illuminate\Http\Request;
 use App\Http\Resources\Calendar as CalendarResource;
+use Illuminate\Support\Carbon;
 
 class CalendarController extends ResponseController
 {
@@ -41,5 +42,13 @@ class CalendarController extends ResponseController
                            ->get();
     
         return $this->sendResponse(CalendarResource::collection($calendar), "Sikeres lekérés");
+    }
+
+    public function calculateRestockReminderDate($restockDate, $restock_reminder) 
+    {
+        if ($restockDate && $restock_reminder) {
+            return Carbon::parse($restockDate)->subDays($restock_reminder)->format('Y-m-d');
+        }
+        return null;
     }
 }

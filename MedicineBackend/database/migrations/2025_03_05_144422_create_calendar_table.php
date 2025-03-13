@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('medicine_id');
-            $table->string('description');
+            $table->string('description')->nullable();
             $table->integer('stock');
             $table->double('dosage');
             $table->date('start_date');
