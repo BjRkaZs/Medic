@@ -19,7 +19,7 @@
         </div>
       </div>
   
-      <div *ngIf="medications && medications.length > 0; else noMeds">
+      <div *ngIf="medications && medications.length > 0; else noMeds" class="mymeds">
         <div *ngFor="let med of medications" class="medication-item">
           <h3>{{ med.medicine?.name }}</h3>
           <p><strong>Form:</strong> {{ med.medicine?.form }}</p>

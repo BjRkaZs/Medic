@@ -51,6 +51,13 @@ h1 {
   gap: 5px;
 }
 
+.med-name {
+  background-color: #eeebff;
+  margin-bottom: 2px;
+  border-radius: 20px;
+  color: black !important;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);

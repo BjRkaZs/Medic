@@ -16,6 +16,7 @@ export class MymedsComponent implements OnInit {
   medications: any[] = [];
   showSearchResults: boolean = false;
   medSearchForm: FormGroup;
+  showForm: boolean = false;
 
   constructor(private http: HttpClient, private auth: AuthService, private fb: FormBuilder) {
     this.medSearchForm = this.fb.group({

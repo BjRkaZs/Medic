@@ -84,45 +84,47 @@ export class CalendarComponent implements OnInit {
 
   selectDay(day: number): void {
     if (day !== null) {
-      this.selectedDay = day;
-      this.showForm = true;
-      const month = (this.currentMonth + 1).toString().padStart(2, '0');
-      const formattedDay = day.toString().padStart(2, '0');
-      
-      const entries = this.getEntriesForDay(day);
-      if (entries.length > 0) {
-        const entry = entries[0];
-        this.medicationForm.patchValue({
-          medicine_id: entry.medicine_id,
-          name: entry.medicine.name,
-          form: entry.medicine.form,
-          description: entry.description,
-          stock: entry.stock,
-          dosage: entry.dosage,
-          startDate: entry.start_date,
-          endDate: entry.end_date,
-          restock: entry.restock,
-          restockReminder: entry.restock_reminder,
-          repeat: entry.repeat
-        });
-        this.reminders = [];
-        for (let i = 1; i <= 5; i++) {
-          if (entry[`reminder_time${i}`]) {
-            this.reminders.push(entry[`reminder_time${i}`]);
-          }
+        this.selectedDay = day;
+        this.showForm = true;  // Make sure the form is shown
+        const month = (this.currentMonth + 1).toString().padStart(2, '0');
+        const formattedDay = day.toString().padStart(2, '0');
+        
+        const entries = this.getEntriesForDay(day);
+        if (entries.length > 0) {
+            const entry = entries[0];
+            this.medicationForm.patchValue({
+                medicine_id: entry.medicine_id,
+                name: entry.medicine.name,
+                form: entry.medicine.form,
+                description: entry.description,
+                stock: entry.stock,
+                dosage: entry.dosage,
+                startDate: entry.start_date,
+                endDate: entry.end_date,
+                restock: entry.restock,
+                restockReminder: entry.restock_reminder,
+                repeat: entry.repeat
+            });
+            this.reminders = [];
+            for (let i = 1; i <= 5; i++) {
+                if (entry[`reminder_time${i}`]) {
+                    this.reminders.push(entry[`reminder_time${i}`]);
+                }
+            }
+        } else {
+            // Reset the form if no entries exist for the selected day
+            this.medicationForm.reset();
+            this.medicationForm.patchValue({ 
+                startDate: `${this.currentYear}-${month}-${formattedDay}`,
+                dosage: 'db',
+                stock: 0,
+                repeat: 1
+            });
+            this.reminders = [];
         }
-      } else {
-        this.medicationForm.reset();
-        this.medicationForm.patchValue({ 
-          startDate: `${this.currentYear}-${month}-${formattedDay}`,
-          dosage: 'db',
-          stock: 0,
-          repeat: 1
-        });
-        this.reminders = [];
-      }
     }
-  }
+}
+
 
   isToday(day: number): boolean {
     const now = new Date();
@@ -284,6 +286,7 @@ export class CalendarComponent implements OnInit {
           this.alertService.show(`Error: ${error.error?.message || 'Failed to save calendar entry'}`);
       }
       });
+      
   }
 
   loadCalendarEntries(): void {
@@ -367,14 +370,54 @@ export class CalendarComponent implements OnInit {
     this.reminders.splice(index, 1);
     this.calculateRestockDate();
   }
-  getMedicineForDay(day: number) {
-    return this.calendarEntries.find(entry => {
+
+
+
+
+  getMedicationsForDay(day: number): any[] {
+    return this.calendarEntries.filter(entry => {
         const entryDate = new Date(entry.start_date);
         return entryDate.getDate() === day &&
-               entryDate.getMonth() === this.currentMonth &&
-               entryDate.getFullYear() === this.currentYear;
-    })?.medicine;
+            entryDate.getMonth() === this.currentMonth &&
+            entryDate.getFullYear() === this.currentYear;
+    }).map(entry => entry.medicine);
+  }
+  
+
+newPopup(): void {
+    this.medicationForm.reset();
+    this.reminders = [];
+    this.showForm = true;
 }
+
+
+
+editMedicine(medicine: any): void {
+  this.showForm = true;
+  this.medicationForm.patchValue({
+    medicine_id: medicine.medicine_id,
+    name: medicine.name,
+    form: medicine.form,
+    description: medicine.description,
+    stock: medicine.stock,
+    dosage: medicine.dosage,
+    startDate: medicine.start_date,
+    endDate: medicine.end_date,
+    restock: medicine.restock,
+    restockReminder: medicine.restock_reminder,
+    repeat: medicine.repeat
+  });
+
+  this.reminders = [];
+  for (let i = 1; i <= 5; i++) {
+    if (medicine[`reminder_time${i}`]) {
+      this.reminders.push(medicine[`reminder_time${i}`]);
+    }
+  }
+}
+
+
+
   signOut(): void {
     this.auth.signOut();
     this.isLoggedIn = false;
