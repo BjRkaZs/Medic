@@ -33,8 +33,7 @@ class ProfileController extends ResponseController{
         return $this->sendResponse( $user, "Profil módosítva");
     }
 
-    public function passResetLink(PassResetRequest $request)
-    {
+    public function passResetLink(PassResetRequest $request){
         $token = Str::random(64);
         
         DB::table('password_reset_tokens')->updateOrInsert(
@@ -50,8 +49,7 @@ class ProfileController extends ResponseController{
         return $this->sendResponse([], 'Jelszó visszaállítási link elküldve.');
     }
 
-    public function resetPassword(Request $request)
-    {
+    public function resetPassword(Request $request){
         $request->validate([
             'token' => 'required',
             'email' => 'required|email',

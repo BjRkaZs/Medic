@@ -9,6 +9,7 @@ interface AuthResponse {
     user: {
       name: string;
       email: string;
+      admin: number;
     };
     token: string;
     time?: string;
@@ -20,8 +21,6 @@ interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  
-
   apiUrl = 'http://localhost:8000/api';
   private token = '';
   private user: any = {};
@@ -30,8 +29,57 @@ export class AuthService {
   private adminSub = new BehaviorSubject<boolean>(false);
   private loggedUserSub = new BehaviorSubject<boolean>(false);
   private isLoggedUser = false;
+  private isLoading = new BehaviorSubject<boolean>(true);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+    this.checkAuthStatus(); 
+  }
+
+  private checkAuthStatus() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.token = token;
+      this.isLoggedUser = true;
+      this.loggedUserSub.next(true);
+
+      this.http.get(`${this.apiUrl}/getprofile`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      }).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.user = response.data;
+            this.userSub.next(this.user);
+          } else {
+            this.handleAuthFailure();
+          }
+          this.isLoading.next(false);
+        },
+        error: () => {
+          this.handleAuthFailure();
+          this.isLoading.next(false);
+        }
+      });
+    } else {
+      this.isLoading.next(false);
+    }
+  }
+
+  isLoading$(): Observable<boolean> {
+    return this.isLoading.asObservable();
+  }
+
+  private handleAuthFailure() {
+    localStorage.removeItem('token');
+    sessionStorage.clear();
+    this.token = '';
+    this.isLoggedUser = false;
+    this.loggedUserSub.next(false);
+    this.userSub.next(null);
+  }
   
   Register(userData: any): Observable<any> {
     const registerData = {
@@ -54,10 +102,11 @@ export class AuthService {
     }).pipe(
       tap((response: AuthResponse) => {
         console.log('Login response:', response, this.token);
-  
         if (response.success) {
+          const adminLevel = response.data.user.admin;
           localStorage.setItem('token', response.data.token);
           sessionStorage.setItem('email', response.data.user.email);
+          sessionStorage.setItem('role', adminLevel.toString());
           this.token = response.data.token;
           this.user = response.data.user;
           this.isLoggedUser = true;
