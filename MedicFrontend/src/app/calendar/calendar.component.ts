@@ -352,6 +352,12 @@ export class CalendarComponent implements OnInit {
     return date.toLocaleDateString('en-US', { weekday: 'long' }).slice(0, 10);
   }
 
+
+  selectedDosageUnit: string = '';
+  setDosageUnit(unit: string): void {
+    this.selectedDosageUnit = unit;
+  }
+
   selectedRole: string = 'No repeat';
   setRole(role: string) {
     this.selectedRole = role;
@@ -359,17 +365,22 @@ export class CalendarComponent implements OnInit {
 
   addReminder(): void {
     const reminderTime = this.medicationForm.get('reminderTime')?.value;
-    if (reminderTime) {
+    
+    if (this.reminders.length < 5 && reminderTime) {
       this.reminders.push(reminderTime);
       this.medicationForm.patchValue({ reminderTime: '' });
       this.calculateRestockDate();
+    } else if (this.reminders.length >= 5) {
+      alert('Maximum 5 reminders can be added.');
     }
   }
+  
   
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
     this.calculateRestockDate();
   }
+
 
 
 
@@ -389,7 +400,6 @@ newPopup(): void {
     this.reminders = [];
     this.showForm = true;
 }
-
 
 
 editMedicine(medicine: any): void {

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -17,6 +17,7 @@ export class MymedsComponent implements OnInit {
   showSearchResults: boolean = false;
   medSearchForm: FormGroup;
   showForm: boolean = false;
+  selectedMedicine: any = null;
 
   constructor(private http: HttpClient, private auth: AuthService, private fb: FormBuilder) {
     this.medSearchForm = this.fb.group({
@@ -35,33 +36,23 @@ export class MymedsComponent implements OnInit {
   }
 
   onSearchContainerClick(event: Event) {
-    event.stopPropagation(); 
+    event.stopPropagation();
   }
 
   searchMedicine(event: any) {
-    const searchTerm = event.target.value;
+    const searchTerm = event.target.value.toLowerCase();
     if (searchTerm.length > 0) {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
+      const localMatches = this.medications.filter(med => 
+        med.medicine?.name.toLowerCase().includes(searchTerm)
+      );
 
-      this.http.get(`http://localhost:8000/api/searchmedname?name=${searchTerm}`, { headers })
-        .subscribe({
-          next: (response: any) => {
-            if (response.success) {
-              this.searchResults = response.data;
-              this.showSearchResults = true;
-            }
-          },
-          error: (error) => {
-            this.searchResults = [{ name: 'Medication not available' }];
-            this.showSearchResults = true;
-            console.error('Error searching medicines:', error);
-          }
-        });
+      if (localMatches.length === 0) {
+        this.searchResults = [{ name: 'Medication not available' }];
+      } else {
+        this.searchResults = localMatches;
+      }
+
+      this.showSearchResults = true;
     } else {
       this.searchResults = [];
       this.showSearchResults = false;
@@ -69,23 +60,29 @@ export class MymedsComponent implements OnInit {
   }
 
   selectMedicine(medicine: any) {
-    console.log("Selected Medicine:", medicine);
+    this.selectedMedicine = medicine;
     this.showSearchResults = false;
+
+    this.scrollToMedicine(medicine.id);
+  }
+
+  scrollToMedicine(medicationId: number): void {
+    const medElement = document.getElementById(`med-${medicationId}`);
+    if (medElement) {
+      medElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   loadMedications(): void {
     this.auth.getMedications().subscribe({
       next: (response: any) => {
-        console.log('Raw response:', response);
         if (response.data) {
-          console.log('Raw response:', response.data);
           this.medications = response.data;
         } else if (Array.isArray(response)) {
           this.medications = response;
         } else {
           this.medications = [];
         }
-        console.log('Processed medications:', this.medications);
       },
       error: (error) => {
         console.error('Error loading medications:', error);
@@ -94,4 +91,25 @@ export class MymedsComponent implements OnInit {
     });
   }
 
+  deleteMedication(medicationId: number): void {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+    this.http.delete(`http://localhost:8000/api/calendar/deletemedicine`, {
+      headers,
+      body: { medicine_id: medicationId }
+    }).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.medications = this.medications.filter(med => med.id !== medicationId);
+        }
+      },
+      error: (error) => {
+        console.error('Error deleting medication:', error);
+      }
+    });
+  }
 }

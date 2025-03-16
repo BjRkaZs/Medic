@@ -77,9 +77,10 @@ input:focus {
 }
 
 .result-item {
-  padding: 8px 12px;
+  padding: 10px 12px;
   cursor: pointer;
   color: #333;
+  font-size: 1rem;
 }
 
 .result-item:hover {
@@ -91,6 +92,8 @@ input:focus {
   cursor: default;
   pointer-events: none;
 }
+
+
 
 .mymeds {
   background-color: aliceblue;
@@ -123,6 +126,37 @@ input:focus {
   color: #333;
   margin-bottom: 8px;
 }
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Jobbra tolja a tartalmat */
+  padding-right: 20px;
+}
+
+#cancel {
+  background-color: #2ca788;
+  color: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin-bottom: 10px;
+}
+
+
+#cancel:hover {
+transform: scale(1.05);
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+#cancel:hover{
+background-color: rgb(216, 6, 6);
+color: aliceblue;
+}
+
 
 @media (max-width: 768px) {
   .container {

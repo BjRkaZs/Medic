@@ -27,7 +27,7 @@
                 </div>
                 </div>
                 <button id="addPopup" type="button" class="btn btn-sm" (click)="newPopup(); $event.stopPropagation()">
-                  <i class="bi bi-plus"></i>
+                    +
                 </button>
             </div>
         </div>
@@ -88,25 +88,34 @@
                             <label for="stock" class="form-label mt-2">Stock</label>
                             <input id="stock" formControlName="stock" type="number" required class="form-control" min="0"/>
                         </div>
+
                         <div class="extra-row">
                             <label for="dosage" class="form-label mt-2">Dosage</label>
-                            <input id="dosage" formControlName="dosage" type="number" class="form-control" min="0"/>
-                            <div class="dropdown">
-                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
-                                <ul class="dropdown-menu" aria-labelledby="roleDropdown">
-                                    <li><a class="dropdown-item" (click)="setRole('g')">g</a></li>
-                                    <li><a class="dropdown-item" (click)="setRole('ml')">ml</a></li>
-                                    <li><a class="dropdown-item" (click)="setRole('pieces')">pieces</a></li>
-                                </ul>
+                            <div class="input-group">
+                              <input id="dosage" formControlName="dosage" type="number" class="form-control" min="0"/>
+                          
+                              <span class="input-group-text" *ngIf="selectedDosageUnit">{{ selectedDosageUnit }}</span>
+                        
+                              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                              <ul class="dropdown-menu" aria-labelledby="roleDropdown">
+                                <li><a class="dropdown-item" (click)="setDosageUnit('g')">g</a></li>
+                                <li><a class="dropdown-item" (click)="setDosageUnit('ml')">ml</a></li>
+                                <li><a class="dropdown-item" (click)="setDosageUnit('pieces')">pieces</a></li>
+                              </ul>
                             </div>
-                        </div>
+                          </div>
+                          
+                        
                         <div class="extra-row">
                             <label for="reminderTime" class="form-label mt-2">Reminder Time</label>
-                            <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
-                            <button id="add" type="button" class="btn btn-sm" (click)="addReminder()">
-                                <i class="bi bi-plus fs-4"></i>
-                            </button>
+                            <div class="input-group">
+                                <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
+                                <button id="add" type="button" class="btn btn-sm" (click)="addReminder()">
+                                    <i class="bi bi-plus fs-4"></i>
+                                </button>
+                            </div>
                         </div>
+                        
                         <div *ngIf="reminders.length > 0">
                             <ul class="reminder-list">
                                 <li *ngFor="let reminder of reminders; let i = index" class="reminder-item">
