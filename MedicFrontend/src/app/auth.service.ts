@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -31,8 +32,39 @@ export class AuthService {
   private isLoggedUser = false;
   private isLoading = new BehaviorSubject<boolean>(true);
 
-  constructor(private http: HttpClient) { 
-    this.checkAuthStatus(); 
+  public languageSignal = new BehaviorSubject<string>(
+    JSON.parse(localStorage.getItem('languageSignal') ?? '"hu"')
+  );
+
+
+  constructor(private http: HttpClient, private translate: TranslateService) { 
+    this.checkAuthStatus();
+    this.initLanguageSubscription();
+  }
+
+  private initLanguageSubscription(): void {
+    this.languageSignal.subscribe(language => {
+      localStorage.setItem('languageSignal', JSON.stringify(language));
+      this.translate.use(language);
+      console.log('Language changed:', language);
+    });
+  }
+
+  getLanguageObservable(): Observable<string> {
+    return this.languageSignal.asObservable();
+  }
+
+  updateLanguage(language: string): void {
+    this.languageSignal.next(language);
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
   }
 
   private checkAuthStatus() {

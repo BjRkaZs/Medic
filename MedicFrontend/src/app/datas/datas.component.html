@@ -2,27 +2,26 @@
   <nav>
       <button class="btn btn-outline-primary me-3" id="datas">
         <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
-            <i class="bi bi-capsule"></i> Medications
+            <i class="bi bi-capsule"></i> {{"users.meds" | translate}}
         </a>
     </button> 
       <button class="btn btn-outline-primary me-3" id="users" *ngIf="isSuper">
         <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
-            <i class="bi bi-person-circle"></i> Users
+            <i class="bi bi-person-circle"></i> {{"users.users" | translate}}
         </a>
     </button>
-    <h1>Medications</h1>
     <button class="btn btn-outline-danger me-3" (click)="signOut()" id="signOut">
-      <i class="bi bi-box-arrow-right"></i> Sign Out
+      <i class="bi bi-box-arrow-right"></i> {{'navbar.signOut' | translate}}
   </button>
   </nav>
   <div class="container mt-4">
     <form (ngSubmit)="addMedicine()">
       <div class="form-group">
-        <input id="name" name="name" class="form-control" placeholder="Name" 
+        <input id="name" name="name" class="form-control" placeholder="{{'log.name' | translate}}" 
                 [(ngModel)]="addModel.name" required />
-        <input id="form" name="form" class="form-control" placeholder="Form" 
+        <input id="form" name="form" class="form-control" placeholder="{{'datas.form' | translate}}" 
                 [(ngModel)]="addModel.form" required />
-        <input id="substance" name="substance" class="form-control" placeholder="Substance" 
+        <input id="substance" name="substance" class="form-control" placeholder="{{'datas.substance' | translate}}" 
                 [(ngModel)]="addModel.substance" required />
         <button type="submit" class="btn btn-primary" id="add">+</button>
       </div>
@@ -31,9 +30,9 @@
       <table class="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
-              <th>Form</th>
-              <th>Substance</th>
+              <th>{{'log.name' | translate}}</th>
+              <th>{{'datas.form' | translate}}</th>
+              <th>{{'datas.substance' | translate}}</th>
             </tr>
           </thead>
           <tbody>

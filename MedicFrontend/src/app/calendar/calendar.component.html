@@ -47,7 +47,7 @@
                 <div class="col-6 leftSide">
                     <div class="extras">
                         <div class="extra-row">
-                            <label for="name" class="form-label mt-2">Name</label>
+                            <label for="name" class="form-label mt-2">{{'calendar.name' |translate}}</label>
                             <div class="search-container" (click)="onSearchContainerClick($event)">
                                 <input id="name" formControlName="name" class="form-control" (input)="searchMedicine($event)" autocomplete="off"/>
                                 <div class="search-results" *ngIf="showSearchResults">
@@ -58,7 +58,7 @@
                             </div>
                         </div>
                         <div class="extra-row">
-                            <label for="form" class="form-label mt-2">Form</label>
+                            <label for="form" class="form-label mt-2">{{'mymeds.form' | translate}}</label>
                             <div class="form-container">
                                 <input id="form" formControlName="form" class="form-control" readonly (click)="showForms = medicineForms.length > 0"/>
                                 <div class="forms-dropdown" *ngIf="showForms && medicineForms.length > 0">
@@ -69,15 +69,15 @@
                             </div>
                         </div>
                         <div class="extra-row">
-                            <label for="description" class="form-label mt-2">Description</label>
+                            <label for="description" class="form-label mt-2">{{'mymeds.description' | translate}}</label>
                             <textarea id="description" formControlName="description" maxlength="100" class="form-control"></textarea>
                         </div>
                         <div class="extra-row">
-                            <label for="startDate" class="form-label mt-2">Start</label>
+                            <label for="startDate" class="form-label mt-2">{{'mymeds.startdate' | translate}}</label>
                             <input id="startDate" formControlName="startDate" type="date" required class="form-control"/>
                         </div>
                         <div class="extra-row">
-                            <label for="endDate" class="form-label mt-2">End</label>
+                            <label for="endDate" class="form-label mt-2">{{'mymeds.enddate' | translate}}</label>
                             <input id="endDate" formControlName="endDate" type="date" required class="form-control"/>
                         </div>
                     </div>
@@ -85,12 +85,12 @@
                 <div class="col-6 rightSide">
                     <div class="extras">
                         <div class="extra-row">
-                            <label for="stock" class="form-label mt-2">Stock</label>
+                            <label for="stock" class="form-label mt-2">{{'mymeds.stock' | translate}}</label>
                             <input id="stock" formControlName="stock" type="number" required class="form-control" min="0"/>
                         </div>
 
                         <div class="extra-row">
-                            <label for="dosage" class="form-label mt-2">Dosage</label>
+                            <label for="dosage" class="form-label mt-2">{{'mymeds.dosage' | translate}}</label>
                             <div class="input-group">
                               <input id="dosage" formControlName="dosage" type="number" class="form-control" min="0"/>
                           
@@ -98,16 +98,16 @@
                         
                               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
                               <ul class="dropdown-menu" aria-labelledby="roleDropdown">
-                                <li><a class="dropdown-item" (click)="setDosageUnit('g')">g</a></li>
-                                <li><a class="dropdown-item" (click)="setDosageUnit('ml')">ml</a></li>
-                                <li><a class="dropdown-item" (click)="setDosageUnit('pieces')">pieces</a></li>
+                                <li><a class="dropdown-item" (click)="setDosageUnit('g')">{{'calendar.g' | translate}}</a></li>
+                                <li><a class="dropdown-item" (click)="setDosageUnit('ml')">{{'calendar.ml' | translate}}</a></li>
+                                <li><a class="dropdown-item" (click)="setDosageUnit('pieces')">{{'calendar.pieces' | translate}}</a></li>
                               </ul>
                             </div>
                           </div>
                           
                         
                         <div class="extra-row">
-                            <label for="reminderTime" class="form-label mt-2">Reminder Time</label>
+                            <label for="reminderTime" class="form-label mt-2">{{'mymeds.remindertime' | translate}}</label>
                             <div class="input-group">
                                 <input id="reminderTime" formControlName="reminderTime" type="time" class="form-control"/>
                                 <button id="add" type="button" class="btn btn-sm" (click)="addReminder()">
@@ -127,15 +127,15 @@
                             </ul>
                         </div>
                         <div class="extra-row">
-                            <label for="restock" class="form-label mt-2">Restock</label>
+                            <label for="restock" class="form-label mt-2">{{'mymeds.restockdate' | translate}}</label>
                             <input id="restock" formControlName="restock" type="date" class="form-control"/>
                         </div>
                         <div class="extra-row">
-                            <label for="restockReminder" class="form-label mt-2">Restock reminder (days)</label>
+                            <label for="restockReminder" class="form-label mt-2">{{'calendar.restockreminder' | translate}}</label>
                             <input id="restockReminder" formControlName="restockReminder" type="number" min="0" class="form-control"/>
                         </div>
                         <div class="extra-row">
-                            <label for="repeat" class="form-label mt-2">Repeat (days)</label>
+                            <label for="repeat" class="form-label mt-2">{{'calendar.repeat' | translate}}</label>
                             <input id="repeat" formControlName="repeat" type="number" class="form-control" min="0"/>
                         </div>
                     </div>

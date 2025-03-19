@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-navbar',
@@ -13,7 +14,9 @@ export class NavbarComponent implements OnInit {
   admin: any = {};
   isLoggedIn: boolean = false;
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(private auth: AuthService, private router: Router, private translate: TranslateService) {
+    this.translate.setDefaultLang('hu');
+  }
 
   ngOnInit(): void {
     this.auth.getIsLoggedUserObservable().subscribe(status => {

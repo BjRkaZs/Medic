@@ -172,3 +172,26 @@ a{
 .container.active .toggle-right{
     transform: translateX(200%);
 }
+
+.langbut {
+    position: absolute;
+    top: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 8px;
+    background: none;
+    z-index: 9999;
+}
+
+.langbut-left {
+    left: 20px;
+}
+
+.langbut-right {
+    right: 20px;
+}
+
+.fi {
+    font-size: 1.5em;
+}

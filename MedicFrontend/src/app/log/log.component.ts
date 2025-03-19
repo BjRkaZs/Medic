@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { AlertService } from '../alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-log',
@@ -12,7 +13,7 @@ import { AlertService } from '../alert.service';
 export class LogComponent {
   isSignDivVisiable: boolean  = true;
 
-  constructor(private router: Router, private auth: AuthService, private alertService: AlertService){}
+  constructor(private router: Router, private auth: AuthService, private alertService: AlertService, private translate: TranslateService){}
 
 
   regModel: any = {
@@ -98,6 +99,24 @@ export class LogComponent {
       inputElement.type = "password";
       iconElement.classList.remove("bi-eye");
       iconElement.classList.add("bi-eye-slash");
+    }
+  }
+
+  toggleLanguage(language: string): void {
+    if (this.auth.languageSignal.value !== language) {
+      this.auth.updateLanguage(language);
+      console.log('language changed to', language);
+    }
+  }
+
+  getLanguageIconClass(language: string): string {
+    switch(language) {
+      case 'en':
+        return 'fi fi-us';
+      case 'hu':
+        return 'fi fi-hu';
+      default: 
+        return 'fi fi-hu';
     }
   }
 

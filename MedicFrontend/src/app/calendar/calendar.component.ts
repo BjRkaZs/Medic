@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
 import { clippingParents } from '@popperjs/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-calendar',
@@ -28,7 +29,7 @@ export class CalendarComponent implements OnInit {
   calendarEntries: any[] = [];
 
   isLoggedIn : boolean = false;
-  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService) {
+  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) {
     this.medicationForm = this.fb.group({
       name: '',
       form: '',
@@ -51,6 +52,9 @@ export class CalendarComponent implements OnInit {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.updateCalendar();
     this.loadCalendarEntries();
+    this.weekDays = this.translate.instant('calendar.weekDays'); 
+    console.log('Weekdays:', this.weekDays);
+    this.updateCalendar();
   }
 
 
@@ -85,7 +89,7 @@ export class CalendarComponent implements OnInit {
   selectDay(day: number): void {
     if (day !== null) {
         this.selectedDay = day;
-        this.showForm = true;  // Make sure the form is shown
+        this.showForm = true; 
         const month = (this.currentMonth + 1).toString().padStart(2, '0');
         const formattedDay = day.toString().padStart(2, '0');
         
@@ -112,7 +116,7 @@ export class CalendarComponent implements OnInit {
                 }
             }
         } else {
-            // Reset the form if no entries exist for the selected day
+
             this.medicationForm.reset();
             this.medicationForm.patchValue({ 
                 startDate: `${this.currentYear}-${month}-${formattedDay}`,
@@ -343,7 +347,7 @@ export class CalendarComponent implements OnInit {
     });
   }
   
-  weekDays: string[] = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  weekDays: string[] = [];
 
   getDayName(day: number | null): string {
     if (day === null) return '';
@@ -356,7 +360,14 @@ export class CalendarComponent implements OnInit {
   selectedDosageUnit: string = '';
   setDosageUnit(unit: string): void {
     this.selectedDosageUnit = unit;
+    
+    this.translate.get(`calendar.${unit}`).subscribe(translatedUnit => {
+      this.selectedDosageUnit = translatedUnit;
+      console.log('Selected dosage unit:', translatedUnit);
+    });
+    
   }
+
 
   selectedRole: string = 'No repeat';
   setRole(role: string) {
