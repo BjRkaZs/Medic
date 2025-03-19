@@ -39,16 +39,16 @@ class RegisterRequest extends FormRequest
 
     public function messages() {
         return [
-            "name.required" => "Név nem lehet üres",
-            "name.max" => "Túl hosszú név",
-            "name.unique" => "Létező név",
-            "email.required" => "Email nem lehet üres",
-            "email.unique" => "Létező email",
-            "password.required" => "Jelszó nem lehet üres",
-            "password.min" => "Túl rövid jelszó",
-            "password.regex" => "A jelszónak tartalmazia kell kisbetűt, nagybetűt és számot",
-            "password_confirmation.same" => "Nem egyező jelszó",
-            "password_confirmation.required" => "A jelszó megerősítése kötelező"
+            "name.required" => __('messages.validation.auth.name.required'),
+            "name.max" => __('messages.validation.auth.name.max'),
+            "email.required" => __('messages.validation.auth.email.required'),
+            "email.email" => __('messages.validation.auth.email.email'),
+            "email.unique" => __('messages.validation.auth.email.unique'),
+            "password.required" => __('messages.validation.auth.password.required'),
+            "password.min" => __('messages.validation.auth.password.min'),
+            "password.regex" => __('messages.validation.auth.password.regex'),
+            "password_confirmation.same" => __('messages.validation.auth.password.confirmed'),
+            "password_confirmation.required" => __('messages.validation.auth.password.confirmation_required')
         ];
     }
 

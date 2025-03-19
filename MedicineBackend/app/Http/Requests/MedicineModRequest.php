@@ -33,12 +33,12 @@ class MedicineModRequest extends FormRequest
     public function messages() 
     {
         return [
-            "name.required" => "Gyógyszer nevének megadása kötelező",
-            "name.max" => "Túl hosszú gyógyszer név",
-            "form.required" => "Forma megadása kötelező",
-            "form.max" => "Túl hosszú gyógyszer forma",
-            "substance.required" => "Aktív hatóanyag megadása kötelező",
-            "substance.max" => "Túl hosszú aktív hatóanyag",
+            "name.required" => __('messages.validation.medicine.name.required'),
+            "name.max" => __('messages.validation.medicine.name.max'),
+            "form.required" => __('messages.validation.medicine.form.required'),
+            "form.max" => __('messages.validation.medicine.form.max'),
+            "substance.required" => __('messages.validation.medicine.substance.required'),
+            "substance.max" => __('messages.validation.medicine.substance.max'),
         ];
     }
 

@@ -18,7 +18,7 @@ const routes: Routes = [
     { path: 'calendar', component: CalendarComponent, canActivate: [loggedUserGuard] },
     { path: 'datas', component: DatasComponent, canActivate: [loggedUserGuard, adminGuard] },
     { path: 'users', component: UsersComponent, canActivate: [loggedUserGuard, adminGuard] },
-    { path: 'passreset', component: PassresetComponent },
+    { path: 'passreset', component: PassresetComponent, canActivate: [] },
     { path: '', redirectTo: 'signin', pathMatch: 'full' },
   
 ];

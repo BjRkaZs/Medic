@@ -38,10 +38,10 @@ class LoginRequest extends FormRequest
 
     public function messages() {
         return [
-            "email.required" => "E-mail elvárt",
-            "email.email" => "Érvénytelen email formátum",
-            "email.exists" => "Ehhez az email címhez nem tartozik felhasználó",
-            "password.required" => "Jelszó elvárt"
+            "email.required" => __('messages.validation.auth.email.required'),
+            "email.email" => __('messages.validation.auth.email.email'),
+            "email.exists" => __('messages.validation.auth.email.exists'),
+            "password.required" => __('messages.validation.auth.password.required')
         ];
     }
 

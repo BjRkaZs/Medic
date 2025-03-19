@@ -11,7 +11,7 @@ class BanController extends Controller{
     public function getLoginCounter( $email ) {
         $user = User::where( "email", $email )->first();
         if (!$user) {
-            return 0; // Return 0 if user not found
+            return 0;
         }
         $counter = $user->login_counter;
 

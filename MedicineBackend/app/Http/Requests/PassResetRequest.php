@@ -21,9 +21,9 @@ class PassResetRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => 'E-mail cím megadása kötelező',
-            'email.email' => 'Érvénytelen e-mail formátum',
-            'email.exists' => 'Nem található felhasználó ezzel az e-mail címmel'
+            'email.required' => __('messages.validation.auth.email.required'),
+            'email.email' => __('messages.validation.auth.email.email'),
+            'email.exists' => __('messages.validation.auth.email.exists')
         ];
     }
 }

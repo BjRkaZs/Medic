@@ -43,24 +43,27 @@ class CalendarRequest extends FormRequest
 
     public function messages() {
         return [
-            "description.max" => "Túl hosszú leírás",
-            "stock.required" => "Készlet megadása kötelező",
-            "stock.numeric" => "Készlet csak szám lehet",
-            "dosage"=> "Adag megadása kötelező",
-            "dosage.numeric" => "Adag csak szám lehet",
-            "start_date.required" => "Kezdési dátum megadása kötelező",
-            "start_date.date" => "Érvénytelen kezdési dátum",
-            "end_date.required" => "Befejezési dátum megadása kötelező",
-            "end_date.date" => "Érvénytelen befejezési dátum",
-            "end_date.after_or_equal" => "Befejezési dátum nem lehet korábbi a kezdési dátumnál",
-            "reminder_time1.required" => "Emlékeztető idő megadása kötelező",
-            "reminder_time1.date_format" => "Érvénytelen emlékeztető idő formátum",
-            "reminder_time2.date_format" => "Érvénytelen emlékeztető idő formátum",
-            "reminder_time3.date_format" => "Érvénytelen emlékeztető idő formátum",
-            "reminder_time4.date_format" => "Érvénytelen emlékeztető idő formátum",
-            "reminder_time5.date_format" => "Érvénytelen emlékeztető idő formátum",
-            "restock_reminder.date" => "Érvénytelen újra raktározási emlékeztető dátum",
-            "repeat.integer" => "Ismétlést kérem napokban adja meg"
+            "medicine_id.required" => __('messages.validation.calendar.medicine_id.required'),
+            "medicine_id.exists" => __('messages.validation.calendar.medicine_id.exists'),
+            "description.max" => __('messages.validation.calendar.description.max'),
+            "stock.required" => __('messages.validation.calendar.stock.required'),
+            "stock.numeric" => __('messages.validation.calendar.stock.numeric'),
+            "dosage.required" => __('messages.validation.calendar.dosage.required'),
+            "dosage.numeric" => __('messages.validation.calendar.dosage.numeric'),
+            "start_date.required" => __('messages.validation.calendar.start_date.required'),
+            "start_date.date" => __('messages.validation.calendar.start_date.date'),
+            "end_date.required" => __('messages.validation.calendar.end_date.required'),
+            "end_date.date" => __('messages.validation.calendar.end_date.date'),
+            "end_date.after" => __('messages.validation.calendar.end_date.after'),
+            "reminder_time1.required" => __('messages.validation.calendar.reminder_time1.required'),
+            "reminder_time1.date_format" => __('messages.validation.calendar.reminder_time1.date_format'),
+            "reminder_time2.date_format" => __('messages.validation.calendar.reminder_time2.date_format'),
+            "reminder_time3.date_format" => __('messages.validation.calendar.reminder_time3.date_format'),
+            "reminder_time4.date_format" => __('messages.validation.calendar.reminder_time4.date_format'),
+            "reminder_time5.date_format" => __('messages.validation.calendar.reminder_time5.date_format'),
+            "restock.date" => __('messages.validation.calendar.restock.date'),
+            "restock_reminder.numeric" => __('messages.validation.calendar.restock_reminder.numeric'),
+            "repeat.integer" => __('messages.validation.calendar.repeat.integer')
         ];
     }
 

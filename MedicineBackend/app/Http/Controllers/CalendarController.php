@@ -44,6 +44,52 @@ class CalendarController extends ResponseController
         return $this->sendResponse(CalendarResource::collection($calendar), "Sikeres lekérés");
     }
 
+    public function editCalendar(CalendarRequest $request, $id) {
+        $calendar = Calendar::find($id);
+    
+        if (!$calendar) {
+            return $this->sendError("Calendar entry not found", [], 404);
+        }
+        if ($calendar->user_id !== auth("sanctum")->user()->id) {
+            return $this->sendError("Unauthorized", [], 403);
+        }
+    
+        $calendar->medicine_id = $request["medicine_id"];
+        $calendar->description = $request["description"];
+        $calendar->stock = $request["stock"];
+        $calendar->dosage = $request["dosage"];
+        $calendar->start_date = $request["start_date"];
+        $calendar->end_date = $request["end_date"];
+        $calendar->reminder_time1 = $request["reminder_time1"];
+        $calendar->reminder_time2 = $request["reminder_time2"];
+        $calendar->reminder_time3 = $request["reminder_time3"];
+        $calendar->reminder_time4 = $request["reminder_time4"];
+        $calendar->reminder_time5 = $request["reminder_time5"];
+        $calendar->restock = $request["restock"];
+        $calendar->restock_reminder = $request["restock_reminder"];
+        $calendar->repeat = $request["repeat"];
+    
+        $calendar->save();
+        $calendar->load('medicine');
+    
+        return $this->sendResponse(new CalendarResource($calendar), "Sikeres módosítás");
+    }
+
+    public function deleteCalendar(Request $request) {
+        $calendar = Calendar::find($request->id);
+
+        if (!$calendar) {
+            return $this->sendError("Calendar entry not found", [], 404);
+        }
+        if ($calendar->user_id !== auth("sanctum")->user()->id) {
+            return $this->sendError("Unauthorized", [], 403);
+        }
+    
+        $calendar->delete();
+    
+        return $this->sendResponse([], "Sikeres törlés");
+    }
+
     public function calculateRestockReminderDate($restockDate, $restock_reminder) 
     {
         if ($restockDate && $restock_reminder) {

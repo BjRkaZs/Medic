@@ -13,6 +13,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.auth.getIsLoggedUserObservable().subscribe(isLoggedIn => {
       const currentUrl = this.router.url;
+      const publicRoutes = ['/signin', '/passreset', '/fpass', '/' ];
       const role = parseInt(sessionStorage.getItem('role') || '0');
       if (isLoggedIn) {
         console.log(role);
@@ -29,7 +30,7 @@ export class AppComponent implements OnInit {
           }
         }
       } else {
-        if (!currentUrl.includes('/signin')) {
+        if (!publicRoutes.includes(currentUrl.split('?')[0])) {
           this.router.navigate(['/signin']);
         }
       }
