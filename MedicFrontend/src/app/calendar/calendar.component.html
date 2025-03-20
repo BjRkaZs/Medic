@@ -21,10 +21,12 @@
                     class="day-box"
                     [ngClass]="{'bg-success text-white': isToday(day), 'hover-effect': !isToday(day)}">
                 <div class="day-number">{{ day }}</div>
-                <div *ngIf="getMedicationsForDay(day)">
-                <div *ngFor="let medicine of getMedicationsForDay(day)" class="med-name">
-                    <span (click)="editMedicine(medicine); $event.stopPropagation()">{{ medicine.name | slice:0:10 }}</span>
-                </div>
+                <div *ngIf="getEntriesForDay(day).length > 0">
+                    <div *ngFor="let entry of getEntriesForDay(day)" class="med-name">
+                        <span (click)="editMedicine(entry); $event.stopPropagation()">
+                            {{ entry.medicine.name | slice:0:10 }}
+                        </span>
+                    </div>
                 </div>
                 <button id="addPopup" type="button" class="btn btn-sm" (click)="newPopup(); $event.stopPropagation()">
                     +
@@ -34,7 +36,7 @@
     </div>
 
     <div class="pop-up" *ngIf="showForm">
-        <form [formGroup]="medicationForm" (ngSubmit)="addCalendar()">
+        <form [formGroup]="medicationForm" (ngSubmit)="currentEditId ? updateCalendarEntry() : addCalendar()">
             <div class="d-flex justify-content-between mt-3 buttons">
                 <button type="submit" class="btn btn-success" id="save">
                     <i class="bi bi-floppy"></i>

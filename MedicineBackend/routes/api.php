@@ -32,7 +32,7 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::post( "/calendar", [ CalendarController::class, "addCalendar" ]);
     Route::get( "/calendar", [ CalendarController::class, "getCalendar" ]);
     Route::put('/editcalendar/{id}', [CalendarController::class, 'editCalendar']);
-    Route::delete('/deletecalendar', [CalendarController::class, 'deleteCalendar']);
+    Route::delete('/deletecalendar/{id}', [CalendarController::class, 'deleteCalendar']);
 });
 
 Route::get( "/searchmedicine", [ MedController::class, "searchMedicine" ]);

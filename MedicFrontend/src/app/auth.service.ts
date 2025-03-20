@@ -58,15 +58,6 @@ export class AuthService {
     this.languageSignal.next(language);
   }
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token');
-    return new HttpHeaders({
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
-  }
-
   private checkAuthStatus() {
     const token = localStorage.getItem('token');
     if (token) {
@@ -226,27 +217,4 @@ export class AuthService {
         })
       );
 }
-
-deleteMedication(medicationId: number): Observable<any> {
-  const token = localStorage.getItem('token');
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  };
-  return this.http.delete(`${this.apiUrl}/medications/${medicationId}`, { headers });
-}
-
-// A gyógyszerhez tartozó naptári események törlése
-removeMedicationFromCalendar(medicationId: number): Observable<any> {
-  const token = localStorage.getItem('token');
-  const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  };
-  return this.http.delete(`${this.apiUrl}/calendar/${medicationId}`, { headers });
-}
-
-
 }

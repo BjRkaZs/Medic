@@ -2,6 +2,7 @@ import { Component, HostListener, OnInit, ViewChild, ElementRef } from '@angular
 import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { AlertService } from '../alert.service';
 
 @Component({
   selector: 'app-mymeds',
@@ -19,7 +20,7 @@ export class MymedsComponent implements OnInit {
   showForm: boolean = false;
   selectedMedicine: any = null;
 
-  constructor(private http: HttpClient, private auth: AuthService, private fb: FormBuilder) {
+  constructor(private http: HttpClient, private auth: AuthService, private fb: FormBuilder, private alertService: AlertService) {
     this.medSearchForm = this.fb.group({
       name: ['']
     });
@@ -92,24 +93,27 @@ export class MymedsComponent implements OnInit {
   }
 
   deleteMedication(medicationId: number): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-    this.http.delete(`http://localhost:8000/api/calendar/deletemedicine`, {
-      headers,
-      body: { medicine_id: medicationId }
-    }).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.medications = this.medications.filter(med => med.id !== medicationId);
-        }
-      },
-      error: (error) => {
-        console.error('Error deleting medication:', error);
-      }
-    });
-  }
+    if (confirm('Are you sure you want to delete this medication entry?')) {
+      const token = localStorage.getItem('token');
+      const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      };
+
+      this.http.delete(`http://localhost:8000/api/deletecalendar/${medicationId}`, { headers })
+      .subscribe({
+          next: (response: any) => {
+              if (response.success) {
+                  this.medications = this.medications.filter(med => med.id !== medicationId);
+                  this.alertService.show('Medication entry deleted successfully');
+              }
+          },
+          error: (error) => {
+              console.error('Error deleting medication:', error);
+              this.alertService.show(error.error?.message || 'Failed to delete medication entry');
+          }
+      });
+    }
+}
 }

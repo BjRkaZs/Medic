@@ -27,6 +27,7 @@ export class CalendarComponent implements OnInit {
   medicineForms: any[] = [];
   showForms: boolean = false;
   calendarEntries: any[] = [];
+  currentEditId: number | null = null;
 
   isLoggedIn : boolean = false;
   constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) {
@@ -54,7 +55,6 @@ export class CalendarComponent implements OnInit {
     this.loadCalendarEntries();
     this.weekDays = this.translate.instant('calendar.weekDays'); 
     console.log('Weekdays:', this.weekDays);
-    this.updateCalendar();
   }
 
 
@@ -293,6 +293,51 @@ export class CalendarComponent implements OnInit {
       
   }
 
+  updateCalendarEntry(): void {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    const reminderFields: any = {};
+    for (let i = 0; i < 5; i++) {
+      reminderFields[`reminder_time${i + 1}`] = this.reminders[i] || null;
+    }
+
+    const formData = {
+      medicine_id: this.medicationForm.get('medicine_id')?.value,
+      description: this.medicationForm.get('description')?.value,
+      stock: this.medicationForm.get('stock')?.value,
+      dosage: this.medicationForm.get('dosage')?.value,
+      start_date: this.medicationForm.get('startDate')?.value,
+      end_date: this.medicationForm.get('endDate')?.value,
+      restock: this.medicationForm.get('restock')?.value,
+      restock_reminder: this.medicationForm.get('restockReminder')?.value,
+      repeat: this.medicationForm.get('repeat')?.value,
+      ...reminderFields
+    };
+
+    this.http.put(`http://localhost:8000/api/editcalendar/${this.currentEditId}`, formData, { headers })
+      .subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.showForm = false;
+            this.loadCalendarEntries();
+            this.medicationForm.reset();
+            this.reminders = [];
+            this.currentEditId = null;
+            this.alertService.show('Calendar entry updated successfully');
+          }
+        },
+        error: (error) => {
+          console.error('Error updating calendar entry:', error);
+          this.alertService.show(error.error?.message || 'Failed to update calendar entry');
+        }
+      });
+  }
+
   loadCalendarEntries(): void {
     const token = localStorage.getItem('token');
     const headers = {
@@ -392,33 +437,21 @@ export class CalendarComponent implements OnInit {
     this.calculateRestockDate();
   }
 
-
-
-
-
-  getMedicationsForDay(day: number): any[] {
-    return this.calendarEntries.filter(entry => {
-        const entryDate = new Date(entry.start_date);
-        return entryDate.getDate() === day &&
-            entryDate.getMonth() === this.currentMonth &&
-            entryDate.getFullYear() === this.currentYear;
-    }).map(entry => entry.medicine);
+  newPopup(): void {
+      this.medicationForm.reset();
+      this.reminders = [];
+      this.showForm = true;
+      this.currentEditId = null;
   }
-  
-
-newPopup(): void {
-    this.medicationForm.reset();
-    this.reminders = [];
-    this.showForm = true;
-}
 
 
 editMedicine(medicine: any): void {
   this.showForm = true;
+  this.currentEditId = medicine.id;
   this.medicationForm.patchValue({
     medicine_id: medicine.medicine_id,
-    name: medicine.name,
-    form: medicine.form,
+    name: medicine.medicine.name,
+    form: medicine.medicine.form,
     description: medicine.description,
     stock: medicine.stock,
     dosage: medicine.dosage,
@@ -436,9 +469,6 @@ editMedicine(medicine: any): void {
     }
   }
 }
-
-
-
   signOut(): void {
     this.auth.signOut();
     this.isLoggedIn = false;
