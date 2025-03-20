@@ -1,0 +1,73 @@
+{
+    "navbar":{
+        "calendar": "Calendar",
+        "profile": "Profile",
+        "mymeds": "My meds",
+        "signOut": "Sign Out"
+    },
+    "profile":{
+        "profile": "Profile",
+        "displayname": "Name",
+        "save": "Save",
+        "delete": "Delete"
+    },
+    "mymeds":{
+        "h1": "Look through your added medications",
+        "search": "Search for medication...",
+        "unavaible": "Medication not available",
+        "form": "Form:",
+        "description": "Description:",
+        "startdate": "Start Date:",
+        "enddate": "End Date:",
+        "stock": "Stock:",
+        "dosage": "Dosage:",
+        "remindertime": "Reminder Time",
+        "restockdate": "Restock Date:",
+        "restockreminder": "Restock Reminder:",
+        "indays": "days before",
+        "repeat": "Reminder interval: every",
+        "days": "day(s)",
+        "nomeds": "No medications found."
+    },
+    "calendar": {
+        "name": "Medicine",
+        "pieces": "pieces",
+        "ml": "ml",
+        "g": "g",
+        "restockreminder": "Restock Reminder: (days before)",
+        "repeat": "Reminder Interval: (in days)",
+        "weekDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+    },
+    "log": {
+        "signup": "Sign Up",
+        "signin": "Sign In",
+        "name": "Name",
+        "pass": "Password",
+        "cpass": "Confirm Password",
+        "h1": "Welcome to Medical",
+        "description": "This website is designed to help you manage your medications easily. You can look up medicines from a trusted database, add the ones you take to your personal schedule, and set reminders so you never miss a dose. A simple calendar view lets you see your medication plan at a glance, making it easier to stay organized and on track with your health.",
+        "fpass": "Forgot Your Password?"
+    },
+    "fpass": {
+        "h1": "Reset Password",
+        "email": "Enter your email",
+        "send": "Send Link",
+        "back": "Cancel"
+    },
+    "passreset": {
+        "h1": "Reset Password",
+        "pass": "New Password",
+        "enterpass": "Enter new password",
+        "entercpass": "Confirm new password",
+        "reset": "Reset Password"
+    },
+    "users": {
+        "meds": "Medications",
+        "users": "Users",
+        "role": "Role"
+    },
+    "datas": {
+        "form": "Form",
+        "substance": "Substance"
+    }
+}

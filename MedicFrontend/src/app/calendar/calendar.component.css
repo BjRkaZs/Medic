@@ -51,6 +51,13 @@ h1 {
   gap: 5px;
 }
 
+.med-name {
+  background-color: #eeebff;
+  margin-bottom: 2px;
+  border-radius: 20px;
+  color: black !important;
+}
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -142,16 +149,6 @@ h1 {
   justify-content: center;
 }
 
-textarea,
-input{
-height: 80px;
-width: 100%;
-justify-content: center;
-display: flex;
-border-radius: 20px;
-padding: 5px;
-}
-
 .buttons{
 display: flex;
 width: 100%;
@@ -218,30 +215,84 @@ color: aliceblue;
   flex-direction: column;
   gap: 10px;
 }
-
 .extra-row {
   display: flex;
   align-items: center;
   gap: 10px;
+  width: 100%;
 }
 
 .extra-row label {
-  padding: 12px 10px;
-  width: 30%;
+  flex: 0 0 30%;
   text-align: left;
   font-size: 16px;
   color: #6c757d;
 }
 
-.extra-row input {
-  width: 100%;;
+textarea{
+  height: 140px !important;
+}
+
+textarea,
+input{
+width: 100% !important;
+border-radius: 20px;
+padding: 10px;
+box-sizing: border-box;
+justify-content: center;
+display: flex;
+text-align: center;
+}
+
+.extra-row .search-container, 
+.extra-row .form-container, 
+.extra-row input,
+.extra-row select,
+.extra-row textarea {
   flex: 1;
-  height: 35px;
-  border-width: 1px;
-  padding: 5px;
-  border-radius: 5px;
+  min-width: 0;
+  height: 50px;
+  padding: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
   text-align: center;
 }
+
+.search-container {
+  position: relative;
+  display: flex;
+  width: 100%;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+span{
+  border-left: none;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.extra-row .button-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
 
 #addPopup{
   margin-top: 5px;
@@ -249,13 +300,15 @@ color: aliceblue;
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background-color: #2ca788;
-  color: white;
+  font-weight: bold;
+  color: black;
+  border-color: transparent;
+  transition: all 0.3s ease-in-out;
 }
 
 #addPopup:hover{
-  background-color: #312a9e;
-  color: white;
+  color:black;
+  transform: scale(2);
 }
 
 button#removeReminder,
@@ -380,6 +433,12 @@ li.reminder-item {
 
 .form-container {
   position: relative;
+  width: 100%;
+}
+
+.form-container input {
+  width: 100%;
+  cursor: pointer;
 }
 
 .forms-dropdown {

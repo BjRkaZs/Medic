@@ -1,0 +1,74 @@
+{
+    "navbar":{
+        "calendar": "Naptár",
+        "profile": "Profil",
+        "mymeds": "Gyógyszereim",
+        "signOut": "Kilépés"
+    },
+    "profile":{
+        "profile": "Profil",
+        "displayname": "Név",
+        "save": "Ment",
+        "delete": "Töröl"
+    },
+    "mymeds":{
+        "h1": "Nézd végig a hozzáadott gyógyszereid",
+        "search": "Keress a hozzáadott gyógyszereid között...",
+        "unavaible": "Gyógyszer nem található",
+        "form": "Adagolási forma:",
+        "description": "Leírás:",
+        "startdate": "Kezdés:",
+        "enddate": "Befejezés:",
+        "stock": "Mennyiség:",
+        "dosage": "Adagolás:",
+        "remindertime": "Emlékeztető",
+        "restockdate": "Elfogyási dátum:",
+        "restockreminder": "Újratöltési emlékeztető:",
+        "indays": "nappal előtte",
+        "repeat": "Emlékeztető:",
+        "days": "naponta",
+        "nomeds": "Még nincs hozzá adott gyógyszer"
+    },
+    "calendar": {
+        "name": "Gyógyszer",
+        "pieces": "db",
+        "ml": "ml",
+        "g": "g",
+        "restockreminder": "Újratöltési emlékeztető: (nappal előtte)",
+        "repeat": "Emlékeztető: (naponta)",
+        "weekDays": ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]
+    },
+    "log": {
+        "signup": "Regisztráció",
+        "signin": "Bejelentkezés",
+        "name": "Név",
+        "pass": "Jelszó",
+        "cpass": "Hitelesítő jelszó",
+        "h1": "Üdvözöllek a Medical-on",
+        "description": "Ez az oldal segít könnyedén kezelni a gyógyszereidet. Amiket hozzáadhatsz a saját személyes naptáradhoz, és emlékeztetőket állíthatsz be, hogy soha ne hagyj ki egy adagot sem. Az egyszerű naptár nézet lehetővé teszi, hogy egy pillantással áttekintsd a gyógyszeres tervedet, így könnyebben rendszerezheted és nyomon követheted az egészséged.",
+        "fpass": "Elfelejtetted a jelszavad?"
+    },
+    "fpass": {
+        "h1": "Jelszó változtatás",
+        "email": "Írd be az email címed",
+        "send": "Link küldése",
+        "back": "Mégse"
+    },
+    "passreset": {
+        "h1": "Jelszó változtatás",
+        "pass": "Új jelszó",
+        "enterpass": "Írd be az új jelszavad",
+        "entercpass": "Hitelesítsd az új jelszót",
+        "reset": "Jelszó megváltoztatása"
+    },
+    "users": {
+        "meds": "Gyógyszerek",
+        "users": "Felhasználók",
+        "role": "Felhasználói jog"
+    },
+    "datas": {
+        "form": "Adagolási forma",
+        "substance": "Hatóanyag"
+    }
+}
+

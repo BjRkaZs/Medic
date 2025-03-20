@@ -4,11 +4,13 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
 import { clippingParents } from '@popperjs/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-  selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrl: './calendar.component.css'
+    selector: 'app-calendar',
+    templateUrl: './calendar.component.html',
+    styleUrl: './calendar.component.css',
+    standalone: false
 })
 export class CalendarComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
@@ -19,7 +21,7 @@ export class CalendarComponent implements OnInit {
   showForm: boolean = false;
   medicationForm: FormGroup;
   reminders: string[] = [];
-
+  medicines: any[] = [];
   searchResults: any[] = [];
   showSearchResults: boolean = false;
   medicineForms: any[] = [];
@@ -27,7 +29,7 @@ export class CalendarComponent implements OnInit {
   calendarEntries: any[] = [];
 
   isLoggedIn : boolean = false;
-  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService) {
+  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) {
     this.medicationForm = this.fb.group({
       name: '',
       form: '',
@@ -50,6 +52,9 @@ export class CalendarComponent implements OnInit {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.updateCalendar();
     this.loadCalendarEntries();
+    this.weekDays = this.translate.instant('calendar.weekDays'); 
+    console.log('Weekdays:', this.weekDays);
+    this.updateCalendar();
   }
 
 
@@ -83,45 +88,47 @@ export class CalendarComponent implements OnInit {
 
   selectDay(day: number): void {
     if (day !== null) {
-      this.selectedDay = day;
-      this.showForm = true;
-      const month = (this.currentMonth + 1).toString().padStart(2, '0');
-      const formattedDay = day.toString().padStart(2, '0');
-      
-      const entries = this.getEntriesForDay(day);
-      if (entries.length > 0) {
-        const entry = entries[0];
-        this.medicationForm.patchValue({
-          medicine_id: entry.medicine_id,
-          name: entry.medicine.name,
-          form: entry.medicine.form,
-          description: entry.description,
-          stock: entry.stock,
-          dosage: entry.dosage,
-          startDate: entry.start_date,
-          endDate: entry.end_date,
-          restock: entry.restock,
-          restockReminder: entry.restock_reminder,
-          repeat: entry.repeat
-        });
-        this.reminders = [];
-        for (let i = 1; i <= 5; i++) {
-          if (entry[`reminder_time${i}`]) {
-            this.reminders.push(entry[`reminder_time${i}`]);
-          }
+        this.selectedDay = day;
+        this.showForm = true; 
+        const month = (this.currentMonth + 1).toString().padStart(2, '0');
+        const formattedDay = day.toString().padStart(2, '0');
+        
+        const entries = this.getEntriesForDay(day);
+        if (entries.length > 0) {
+            const entry = entries[0];
+            this.medicationForm.patchValue({
+                medicine_id: entry.medicine_id,
+                name: entry.medicine.name,
+                form: entry.medicine.form,
+                description: entry.description,
+                stock: entry.stock,
+                dosage: entry.dosage,
+                startDate: entry.start_date,
+                endDate: entry.end_date,
+                restock: entry.restock,
+                restockReminder: entry.restock_reminder,
+                repeat: entry.repeat
+            });
+            this.reminders = [];
+            for (let i = 1; i <= 5; i++) {
+                if (entry[`reminder_time${i}`]) {
+                    this.reminders.push(entry[`reminder_time${i}`]);
+                }
+            }
+        } else {
+
+            this.medicationForm.reset();
+            this.medicationForm.patchValue({ 
+                startDate: `${this.currentYear}-${month}-${formattedDay}`,
+                dosage: 'db',
+                stock: 0,
+                repeat: 1
+            });
+            this.reminders = [];
         }
-      } else {
-        this.medicationForm.reset();
-        this.medicationForm.patchValue({ 
-          startDate: `${this.currentYear}-${month}-${formattedDay}`,
-          dosage: 'db',
-          stock: 0,
-          repeat: 1
-        });
-        this.reminders = [];
-      }
     }
-  }
+}
+
 
   isToday(day: number): boolean {
     const now = new Date();
@@ -283,6 +290,7 @@ export class CalendarComponent implements OnInit {
           this.alertService.show(`Error: ${error.error?.message || 'Failed to save calendar entry'}`);
       }
       });
+      
   }
 
   loadCalendarEntries(): void {
@@ -339,7 +347,7 @@ export class CalendarComponent implements OnInit {
     });
   }
   
-  weekDays: string[] = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  weekDays: string[] = [];
 
   getDayName(day: number | null): string {
     if (day === null) return '';
@@ -348,6 +356,19 @@ export class CalendarComponent implements OnInit {
     return date.toLocaleDateString('en-US', { weekday: 'long' }).slice(0, 10);
   }
 
+
+  selectedDosageUnit: string = '';
+  setDosageUnit(unit: string): void {
+    this.selectedDosageUnit = unit;
+    
+    this.translate.get(`calendar.${unit}`).subscribe(translatedUnit => {
+      this.selectedDosageUnit = translatedUnit;
+      console.log('Selected dosage unit:', translatedUnit);
+    });
+    
+  }
+
+
   selectedRole: string = 'No repeat';
   setRole(role: string) {
     this.selectedRole = role;
@@ -355,18 +376,69 @@ export class CalendarComponent implements OnInit {
 
   addReminder(): void {
     const reminderTime = this.medicationForm.get('reminderTime')?.value;
-    if (reminderTime) {
+    
+    if (this.reminders.length < 5 && reminderTime) {
       this.reminders.push(reminderTime);
       this.medicationForm.patchValue({ reminderTime: '' });
       this.calculateRestockDate();
+    } else if (this.reminders.length >= 5) {
+      alert('Maximum 5 reminders can be added.');
     }
   }
+  
   
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
     this.calculateRestockDate();
   }
+
+
+
+
+
+  getMedicationsForDay(day: number): any[] {
+    return this.calendarEntries.filter(entry => {
+        const entryDate = new Date(entry.start_date);
+        return entryDate.getDate() === day &&
+            entryDate.getMonth() === this.currentMonth &&
+            entryDate.getFullYear() === this.currentYear;
+    }).map(entry => entry.medicine);
+  }
   
+
+newPopup(): void {
+    this.medicationForm.reset();
+    this.reminders = [];
+    this.showForm = true;
+}
+
+
+editMedicine(medicine: any): void {
+  this.showForm = true;
+  this.medicationForm.patchValue({
+    medicine_id: medicine.medicine_id,
+    name: medicine.name,
+    form: medicine.form,
+    description: medicine.description,
+    stock: medicine.stock,
+    dosage: medicine.dosage,
+    startDate: medicine.start_date,
+    endDate: medicine.end_date,
+    restock: medicine.restock,
+    restockReminder: medicine.restock_reminder,
+    repeat: medicine.repeat
+  });
+
+  this.reminders = [];
+  for (let i = 1; i <= 5; i++) {
+    if (medicine[`reminder_time${i}`]) {
+      this.reminders.push(medicine[`reminder_time${i}`]);
+    }
+  }
+}
+
+
+
   signOut(): void {
     this.auth.signOut();
     this.isLoggedIn = false;

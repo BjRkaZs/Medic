@@ -1,0 +1,51 @@
+<div class="parent" *ngIf="isLoggedIn">
+  <div class="container">
+    <h1>{{'mymeds.h1' | translate}}</h1>
+
+    <div class="search-container" (click)="onSearchContainerClick($event)">
+      <form [formGroup]="medSearchForm">
+        <input id="name"
+               formControlName="name"
+               class="form-control"
+               (input)="searchMedicine($event)"
+               autocomplete="off" placeholder="{{'mymeds.search' | translate}}"/>
+        <div class="search-results" *ngIf="showSearchResults">
+          <div class="result-item"
+              *ngFor="let medicine of searchResults"
+              [class.not-found]="medicine.name === '{Medication not available}'"
+              (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
+            {{ medicine.name }}
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="medications && medications.length > 0; else noMeds" class="mymeds">
+      <div *ngFor="let med of medications" class="medication-item" [id]="'med-' + med.id">
+        <div class="button-container">
+          <button type="button" class="btn btn-sm" (click)="deleteMedication(med.id)" id="cancel">
+            <i class="bi bi-trash-fill"></i>
+          </button>
+        </div>
+        <h3>{{ med.medicine?.name }}</h3>
+        <p><strong>{{'mymeds.form' | translate}}</strong> {{ med.medicine?.form }}</p>
+        <p><strong>{{'mymeds.description' | translate}}</strong> {{ med.description }}</p>
+        <p><strong>{{'mymeds.startdate' | translate}}</strong> {{ med.start_date | date }}</p>
+        <p><strong>{{'mymeds.enddate' | translate}}</strong> {{ med.end_date | date }}</p>
+        <p><strong>{{'mymeds.stock' | translate}}</strong> {{ med.stock }}</p>
+        <p><strong>{{'mymeds.dosage' | translate}}</strong> {{ med.dosage }}</p>
+        <p *ngIf="med.reminder_time1"><strong>{{'mymeds.remindertime' | translate}} 1:</strong> {{ med.reminder_time1 }}</p>
+        <p *ngIf="med.reminder_time2"><strong>{{'mymeds.remindertime' | translate}}e 2:</strong> {{ med.reminder_time2 }}</p>
+        <p *ngIf="med.reminder_time3"><strong>{{'mymeds.remindertime' | translate}} 3:</strong> {{ med.reminder_time3 }}</p>
+        <p *ngIf="med.reminder_time4"><strong>{{'mymeds.remindertime' | translate}} 4:</strong> {{ med.reminder_time4 }}</p>
+        <p *ngIf="med.reminder_time5"><strong>{{'mymeds.remindertime' | translate}} 5:</strong> {{ med.reminder_time5 }}</p>
+        <p><strong>{{'mymeds.restockdate' | translate}}</strong> {{ med.restock | date }}</p>
+        <p><strong>{{'mymeds.restockreminder' | translate}}</strong> {{ med.restock_reminder }} {{'mymeds.indays' | translate}}</p>
+        <p><strong>{{'mymeds.repeat' | translate}}</strong> {{ med.repeat }} {{'mymeds.days' | translate}}</p>
+      </div>
+    </div>
+    <ng-template #noMeds>
+      <p id="nomeds">{{'mymeds.unavaible' | translate}}</p>
+    </ng-template>
+  </div>
+</div>

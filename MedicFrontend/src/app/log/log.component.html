@@ -1,53 +1,55 @@
 <div class="parent" >
+    <button (click)="toggleLanguage('en')" id="langbut-en" class="langbut langbut-left">
+        <span class="fi fi-gb"></span>
+    </button>
+    <button (click)="toggleLanguage('hu')" id="langbut-hu" class="langbut langbut-right">
+        <span class="fi fi-hu"></span>
+    </button>
     <div class="container" [ngClass]="isSignDivVisiable ? 'active' :'' " id="container">
+
         <div class="form-container signup">
             <form (ngSubmit)="Register()" #registerForm="ngForm">
-                <h1>Sign Up</h1>
+                <h1>{{'log.signup' | translate}}</h1>
                     <div class="social-icon">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
                     </div>
-                    <input type="text" name="name" [(ngModel)]="regModel.name" placeholder="Name">
+                    <input type="text" name="name" [(ngModel)]="regModel.name" placeholder="{{'log.name' | translate}}">
                     <input type="email" name="email" [(ngModel)]="regModel.email" placeholder="Email">
-                    <input type="password" name="password" [(ngModel)]="regModel.password" placeholder="Password">
+                    <input type="password" name="password" [(ngModel)]="regModel.password" placeholder="{{'log.pass' | translate}}">
                     <!-- <i id="togglePassword3" class="bi bi-eye-slash" (click)="togglePasswordVisibility('pass', 'togglePassword3')"></i> -->
-                    <input type="password" id="password_confirmation" name="password_confirmation" [(ngModel)]="regModel.password_confirmation" placeholder="Confirm Password">
-                    <button type="submit">Sign Up</button>
+                    <input type="password" id="password_confirmation" name="password_confirmation" [(ngModel)]="regModel.password_confirmation" placeholder="{{'log.cpass' | translate}}">
+                    <button type="submit">{{'log.signup' | translate}}</button>
             </form>
         </div>
 
         <div class="form-container signin">
             <form>
-                <h1>Sign In</h1>
+
+                <h1>{{'log.signin' | translate}}</h1>
                     <div class="social-icon">
                     <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
                     </div>
                     <input type="email" name="email" [(ngModel)]="loginModel.email" placeholder="Email">
-                    <input type="password" name="password" [(ngModel)]="loginModel.password" placeholder="Password">
-                    <a routerLink="/fpass">Forgot Your Password?</a>
-                    <button (click)="Login()" routerLinkActive="active">Sign In</button>
+                    <input type="password" name="password" [(ngModel)]="loginModel.password" placeholder="{{'log.pass' | translate}}">
+                    <a routerLink="/fpass">{{'log.fpass' | translate}}</a>
+                    <button (click)="Login()" routerLinkActive="active">{{'log.signin' |translate}}</button>
             </form>
         </div>
         <div class="toggle-container">
             <div class="toggle">
                 <div class="toggle-panel toggle-left">
-                    <h1>Welcome to Medical</h1>
+                    <h1>{{'log.h1' | translate}}</h1>
                         <p>
-                            This website is designed to help you manage your medications easily. You can look up medicines
-                            from a trusted database, add the ones you take to your personal schedule, and set reminders so you
-                            never miss a dose. A simple calendar view lets you see your medication plan at a glance, making it
-                            easier to stay organized and on track with your health.
+                        {{'log.description' | translate}}
                         </p>
-                        <button type="button" class="hidden" id="login" (click)="isSignDivVisiable = false">Sign In</button>
+                        <button type="button" class="hidden" id="login" (click)="isSignDivVisiable = false">{{'log.signin' | translate}}</button>
                 </div>
                 <div class="toggle-panel toggle-right">
-                    <h1>Welcome back to Medical</h1>
+                    <h1>{{'log.h1' | translate}}</h1>
                         <p>
-                            This website is designed to help you manage your medications easily. You can look up medicines
-                            from a trusted database, add the ones you take to your personal schedule, and set reminders so you
-                            never miss a dose. A simple calendar view lets you see your medication plan at a glance, making it
-                            easier to stay organized and on track with your health.
+                            {{'log.description' | translate}}
                         </p>
-                        <button type="button" class="hidden" id="register" (click)="isSignDivVisiable = true">Sign Up</button>
+                        <button type="button" class="hidden" id="register" (click)="isSignDivVisiable = true">{{'log.signup' | translate}}</button>
                 </div>
             </div>
         </div>
@@ -55,3 +57,6 @@
 </div>
 
 <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"/>

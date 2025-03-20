@@ -2,17 +2,16 @@
     <nav>
         <button class="btn btn-outline-primary me-3" id="datas">
             <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
-                <i class="bi bi-capsule"></i> Medications
+                <i class="bi bi-capsule"></i> {{"users.meds" | translate}}
             </a>
         </button>
         <button class="btn btn-outline-primary me-3" id="users">
           <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
-              <i class="bi bi-person-circle"></i> Users
+              <i class="bi bi-person-circle"></i> {{"users.users" | translate}}
           </a>
         </button>
-        <h1>Users</h1>
         <button class="btn btn-outline-danger" (click)="signOut()" id="signOut">
-            <i class="bi bi-box-arrow-right"></i> Sign Out
+            <i class="bi bi-box-arrow-right"></i> {{'navbar.signOut' | translate}}
         </button>
   </nav>
     <div class="container mt-4">
@@ -20,9 +19,9 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Name</th>
+            <th>{{'log.name' | translate}}</th>
             <th>Email</th>
-            <th>Role</th>
+            <th>{{'users.role' | translate}}</th>
           </tr>
         </thead>
         <tbody>

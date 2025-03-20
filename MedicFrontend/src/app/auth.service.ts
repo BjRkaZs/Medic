@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -31,8 +32,39 @@ export class AuthService {
   private isLoggedUser = false;
   private isLoading = new BehaviorSubject<boolean>(true);
 
-  constructor(private http: HttpClient) { 
-    this.checkAuthStatus(); 
+  public languageSignal = new BehaviorSubject<string>(
+    JSON.parse(localStorage.getItem('languageSignal') ?? '"hu"')
+  );
+
+
+  constructor(private http: HttpClient, private translate: TranslateService) { 
+    this.checkAuthStatus();
+    this.initLanguageSubscription();
+  }
+
+  private initLanguageSubscription(): void {
+    this.languageSignal.subscribe(language => {
+      localStorage.setItem('languageSignal', JSON.stringify(language));
+      this.translate.use(language);
+      console.log('Language changed:', language);
+    });
+  }
+
+  getLanguageObservable(): Observable<string> {
+    return this.languageSignal.asObservable();
+  }
+
+  updateLanguage(language: string): void {
+    this.languageSignal.next(language);
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    });
   }
 
   private checkAuthStatus() {
@@ -177,4 +209,44 @@ export class AuthService {
   resetPassword(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/passreset`, data);
   }
+
+
+  getMedications(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+    return this.http.get<any[]>(`${this.apiUrl}/calendar`, { headers })
+      .pipe(
+        tap(response => {
+          console.log('Calendar API Response:', response);
+          return response;
+        })
+      );
+}
+
+deleteMedication(medicationId: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  };
+  return this.http.delete(`${this.apiUrl}/medications/${medicationId}`, { headers });
+}
+
+// A gyógyszerhez tartozó naptári események törlése
+removeMedicationFromCalendar(medicationId: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = {
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'Accept': 'application/json'
+  };
+  return this.http.delete(`${this.apiUrl}/calendar/${medicationId}`, { headers });
+}
+
+
 }

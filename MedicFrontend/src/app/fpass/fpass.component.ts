@@ -5,9 +5,10 @@ import { AlertService } from '../alert.service';
 import { AuthService } from '../auth.service';
 
 @Component({
-  selector: 'app-fpass',
-  templateUrl: './fpass.component.html',
-  styleUrl: './fpass.component.css'
+    selector: 'app-fpass',
+    templateUrl: './fpass.component.html',
+    styleUrl: './fpass.component.css',
+    standalone: false
 })
 export class FpassComponent {
   resetPasswordForm: FormGroup;
