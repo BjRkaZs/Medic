@@ -437,11 +437,22 @@ export class CalendarComponent implements OnInit {
     this.calculateRestockDate();
   }
 
-  newPopup(): void {
-      this.medicationForm.reset();
-      this.reminders = [];
-      this.showForm = true;
-      this.currentEditId = null;
+  newPopup(selectedDay: number): void {
+    this.medicationForm.reset();
+    this.reminders = [];
+    this.showForm = true;
+    this.currentEditId = null;
+
+    const month = (this.currentMonth + 1).toString().padStart(2, '0');
+    const day = selectedDay.toString().padStart(2, '0');
+    const formattedDate = `${this.currentYear}-${month}-${day}`;
+
+    this.medicationForm.patchValue({
+        startDate: formattedDate,
+        dosage: 'db',
+        stock: 0,
+        repeat: 1
+    });
   }
 
 
