@@ -3,21 +3,19 @@
     <h1>{{'mymeds.h1' | translate}}</h1>
 
     <div class="search-container" (click)="onSearchContainerClick($event)">
-      <form [formGroup]="medSearchForm">
-        <input id="name"
-               formControlName="name"
-               class="form-control"
-               (input)="searchMedicine($event)"
-               autocomplete="off" placeholder="{{'mymeds.search' | translate}}"/>
-        <div class="search-results" *ngIf="showSearchResults">
-          <div class="result-item"
-              *ngFor="let medicine of searchResults"
-              [class.not-found]="medicine.name === '{Medication not available}'"
-              (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
-            {{ medicine.name }}
-          </div>
+      <input id="searchInput"
+             #searchInput
+             class="form-control"
+             (input)="searchMedicine($event)"
+             autocomplete="off" placeholder="{{'mymeds.search' | translate}}"/>
+      <div class="search-results" *ngIf="showSearchResults">
+        <div class="result-item"
+            *ngFor="let medicine of searchResults"
+            [class.not-found]="medicine.name === 'Medication not available'"
+            (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
+          {{ medicine.name }}
         </div>
-      </form>
+      </div>
     </div>
 
     <div *ngIf="medications && medications.length > 0; else noMeds" class="mymeds">

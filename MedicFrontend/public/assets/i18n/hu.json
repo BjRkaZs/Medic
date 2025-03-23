@@ -25,7 +25,7 @@
         "restockdate": "Elfogyási dátum:",
         "restockreminder": "Újratöltési emlékeztető:",
         "indays": "nappal előtte",
-        "repeat": "Emlékeztető:",
+        "repeat": "Beszedés:",
         "days": "naponta",
         "nomeds": "Még nincs hozzá adott gyógyszer"
     },
@@ -35,8 +35,11 @@
         "ml": "ml",
         "g": "g",
         "restockreminder": "Újratöltési emlékeztető: (nappal előtte)",
-        "repeat": "Emlékeztető: (naponta)",
-        "weekDays": ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"]
+        "repeat": "Beszedés: (naponta)",
+        "weekDays": ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"],
+        "header1": "Gyógyszer",
+        "header2": "Orvoshoz vizsgálati időpont",
+        "appointment": "Időpont"
     },
     "log": {
         "signup": "Regisztráció",
