@@ -39,7 +39,10 @@
         "weekDays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
         "header1": "Medication",
         "header2": "Doctor's appointment",
-        "appointment": "Appointment"
+        "doctorname": "Name",
+        "category": "Doctor's category",
+        "appointment": "Appointment",
+        "description": "Description"
     },
     "log": {
         "signup": "Sign Up",

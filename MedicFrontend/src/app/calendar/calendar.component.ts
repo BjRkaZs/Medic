@@ -47,7 +47,8 @@ export class CalendarComponent implements OnInit {
       restockReminder: '',
       repeat: [0, [Validators.min(0)]],
 
-
+      doctorname: '',
+      category: '',
       description2: '',
       appointment: '' 
 
@@ -116,7 +117,8 @@ export class CalendarComponent implements OnInit {
                 restockReminder: entry.restock_reminder,
                 repeat: entry.repeat,
 
-
+                doctorname: entry.doctorname,
+                category: entry.category,
                 description2: entry.description2,
                 appointment: entry.appointment,
             });
@@ -392,16 +394,40 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  getDatesBetween(startDate: string, endDate: string): string[] {
+    const dates: string[] = [];
+    let currentDate = new Date(startDate);
+    const lastDate = new Date(endDate);
+  
+    while (currentDate <= lastDate) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return dates;
+  }
+
   getEntriesForDay(day: number): any[] {
     if (!this.calendarEntries) return [];
-    
+  
+    const currentDate = new Date(this.currentYear, this.currentMonth, day).toISOString().split('T')[0];
+  
     return this.calendarEntries.filter(entry => {
-      const entryDate = new Date(entry.start_date);
-      return entryDate.getDate() === day &&
-             entryDate.getMonth() === this.currentMonth &&
-             entryDate.getFullYear() === this.currentYear;
+      const dates = this.getDatesBetween(entry.start_date, entry.end_date);
+      return dates.includes(currentDate);
     });
   }
+
+  // getEntriesForDay(day: number): any[] {
+  //   if (!this.calendarEntries) return [];
+    
+  //   return this.calendarEntries.filter(entry => {
+  //     const entryDate = new Date(entry.start_date);
+  //     return entryDate.getDate() === day &&
+  //            entryDate.getMonth() === this.currentMonth &&
+  //            entryDate.getFullYear() === this.currentYear;
+  //   });
+  // }
   
   weekDays: string[] = [];
 
@@ -463,24 +489,32 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  saveSlide2() {
+  saveSlide2(): void {
     if (this.medicationForm.valid) {
-      const formData = this.medicationForm.value;
-      const newEntry = {
-        description: formData.description2,
-        appointment: formData.appointment
+      const formData = {
+        doctorname: this.medicationForm.get('doctorname')?.value,
+        category: this.medicationForm.get('category')?.value,
+        description: this.medicationForm.get('description2')?.value,
+        appointment: this.medicationForm.get('appointment')?.value,
       };
   
-      console.log("Saving Slide 2 Data:", newEntry);
+      console.log('Saving doctor appointment:', formData);
   
-      this.entries.push(newEntry);
-  
-      this.showForm = false;
+      this.http.post('http://localhost:8000/api/appointments', formData).subscribe({
+        next: (response) => {
+          console.log('Appointment saved successfully:', response);
+          this.showForm = false;
+        },
+        error: (error) => {
+          console.error('Error saving appointment:', error);
+          this.alertService.show('Failed to save appointment.');
+        },
+      });
     } else {
-      console.error("Form is invalid");
+      console.error('Form is invalid');
+      this.alertService.show('Please fill in all required fields.');
     }
   }
-  
 
   addCalendarEntry(): void {
     const token = localStorage.getItem('token');
@@ -589,19 +623,5 @@ editMedicine(medicine: any): void {
 
 toggleSlide(slideNumber: number): void {
   this.isSlide1Visible = slideNumber === 1;
-  const icon1 = document.querySelector('.bi-1-circle') as HTMLElement;
-  const icon2 = document.querySelector('.bi-2-circle') as HTMLElement;
-
-  if (slideNumber === 1) {
-    icon1.classList.add('bi-1-circle-fill');
-    icon1.classList.remove('bi-1-circle');
-    icon2.classList.add('bi-2-circle');
-    icon2.classList.remove('bi-2-circle-fill');
-  } else {
-    icon1.classList.add('bi-1-circle');
-    icon1.classList.remove('bi-1-circle-fill');
-    icon2.classList.add('bi-2-circle-fill');
-    icon2.classList.remove('bi-2-circle');
-  }
 }
 }

@@ -39,7 +39,10 @@
         "weekDays": ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"],
         "header1": "Gyógyszer",
         "header2": "Orvoshoz vizsgálati időpont",
-        "appointment": "Időpont"
+        "doctorname": "Név",
+        "category": "Orvos kategória",
+        "appointment": "Időpont",
+        "description": "Leírás"
     },
     "log": {
         "signup": "Regisztráció",

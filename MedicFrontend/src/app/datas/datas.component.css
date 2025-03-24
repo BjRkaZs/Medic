@@ -87,23 +87,8 @@ table{
     margin-top: 50px;
 }
 
-.searchbar {
-    margin-top: 10px;
-    width: 900px;
-    height: 60px;
-    border: none;
-    border-radius: 30px;
-    padding: 10px;
-    font-size: 16px;
-    transition: all 0.3s ease-in-out;
-}
-
-.searchbar:focus {
-    outline: none;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.918);
-}
-form #search{
-    margin-bottom: 25px;
+#searchInput{
+    width: 50%;
 }
 .form-group{
     display: flex;
