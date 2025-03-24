@@ -22,12 +22,12 @@
                   <div class="day-number">{{ day }}</div>
                   <div *ngIf="getEntriesForDay(day).length > 0">
                       <div *ngFor="let entry of getEntriesForDay(day)" class="med-name">
-                          <span (click)="editMedicine(entry); $event.stopPropagation()">
+                          <span *ngIf="!entry.isAppointment" (click)="editMedicine(entry); $event.stopPropagation()">
                               {{ entry.medicine.name | slice:0:10 }}
                           </span>
-                          <div *ngIf="entry.appointment">
-                              Doctor: {{ entry.appointment | date:'yyyy/MM/dd HH:mm' }}
-                          </div>
+                          <span *ngIf="entry.isAppointment" (click)="editAppointment(entry); $event.stopPropagation()">
+                                {{ entry.appointment.specialty }}
+                          </span>
                       </div>
                   </div>
                   <button id="addPopup" type="button" class="btn btn-sm" (click)="newPopup(day); $event.stopPropagation()">
@@ -38,13 +38,15 @@
       </div>
   
       <div class="pop-up" *ngIf="showForm">
-          <div class="toggle-buttons">
-              <button class="toggle-btn" [ngClass]="{'active': isSlide1Visible}" (click)="toggleSlide(1)">
-                  <i class="bi" [ngClass]="isSlide1Visible ? 'bi-1-circle-fill' : 'bi-1-circle'"></i>
-              </button>
-              <button class="toggle-btn" [ngClass]="{'active': !isSlide1Visible}" (click)="toggleSlide(2)">
-                  <i class="bi" [ngClass]="!isSlide1Visible ? 'bi-2-circle-fill' : 'bi-2-circle'"></i>
-              </button>
+        <div class="toggle-buttons">
+            <button class="toggle-btn" 
+                    [ngClass]="{'bi-1-circle-fill': isSlide1Visible, 'bi-1-circle': !isSlide1Visible}" 
+                    (click)="toggleSlide(1)">
+            </button>
+            <button class="toggle-btn" 
+                    [ngClass]="{'bi-2-circle-fill': !isSlide1Visible, 'bi-2-circle': isSlide1Visible}" 
+                    (click)="toggleSlide(2)">
+            </button>
           </div>
           
           <form [formGroup]="medicationForm">
@@ -165,8 +167,16 @@
                   <div class="row">
                       <div class="col-12">
                           <div class="extras">
+                            <div class="extra-row">
+                                <label for="doctorname" class="form-label mt-2">{{'calendar.doctorname' | translate}}</label>
+                                <input id="doctorname" formControlName="doctorname" required class="form-control"/>
+                            </div>
+                            <div class="extra-row">
+                                <label for="category" class="form-label mt-2">{{'calendar.category' | translate}}</label>
+                                <input id="category" formControlName="category" required class="form-control"/>
+                            </div>
                               <div class="extra-row">
-                                  <label for="description2" class="form-label mt-2">{{'mymeds.description' | translate}}</label>
+                                  <label for="description2" class="form-label mt-2">{{'calendar.description' | translate}}</label>
                                   <textarea id="description2" formControlName="description2" maxlength="300" class="form-control"></textarea>
                               </div>
                               <div class="extra-row">

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
 import { clippingParents } from '@popperjs/core';
 import { TranslateService } from '@ngx-translate/core';
+import { forkJoin } from 'rxjs';
 
 @Component({
     selector: 'app-calendar',
@@ -20,6 +21,7 @@ export class CalendarComponent implements OnInit {
   selectedDay: number | null = null;
   showForm: boolean = false;
   medicationForm: FormGroup;
+  appointmentForm: FormGroup;
   reminders: string[] = [];
   medicines: any[] = [];
   searchResults: any[] = [];
@@ -28,6 +30,7 @@ export class CalendarComponent implements OnInit {
   showForms: boolean = false;
   calendarEntries: any[] = [];
   currentEditId: number | null = null;
+  currentAppointmentId: number | null = null;
   isSlide1Visible: boolean = true;
   entries: { description: string; appointment: string }[] = [];
 
@@ -46,12 +49,15 @@ export class CalendarComponent implements OnInit {
       restock: '',
       restockReminder: '',
       repeat: [0, [Validators.min(0)]],
-
-
-      description2: '',
-      appointment: '' 
-
     });
+
+    this.appointmentForm = this.fb.group({
+      doctorname: ['', Validators.required],
+      category: ['', Validators.required], 
+      description2: [''],
+      appointment: ['', Validators.required]
+    });
+
     this.medicationForm.get('startDate')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('stock')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('repeat')?.valueChanges.subscribe(() => this.calculateRestockDate());
@@ -116,7 +122,8 @@ export class CalendarComponent implements OnInit {
                 restockReminder: entry.restock_reminder,
                 repeat: entry.repeat,
 
-
+                doctorname: entry.doctorname,
+                category: entry.category,
                 description2: entry.description2,
                 appointment: entry.appointment,
             });
@@ -357,18 +364,26 @@ export class CalendarComponent implements OnInit {
       'Accept': 'application/json'
     };
 
-    this.http.get('http://localhost:8000/api/calendar', { headers })
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.calendarEntries = response.data;
-            console.log('Calendar entries loaded:', this.calendarEntries);
-          }
-        },
-        error: (error) => {
-          console.error('Error loading calendar entries:', error);
-        }
-      });
+    forkJoin({
+      medicines: this.http.get('http://localhost:8000/api/calendar', { headers }),
+      appointments: this.http.get('http://localhost:8000/api/getappointment', { headers })
+    }).subscribe({
+      next: (response: any) => {
+        const medicines = response.medicines.success ? response.medicines.data : [];
+        const appointments = response.appointments.success ? 
+        response.appointments.data.map((appointment: any) => ({
+            ...appointment,
+            isAppointment: true
+        })) : [];
+        
+        this.calendarEntries = [...medicines, ...appointments];
+        console.log('All entries loaded:', this.calendarEntries);
+      },
+      error: (error) => {
+        console.error('Error loading entries:', error);
+        this.alertService.show('Failed to load calendar entries');
+      }
+    });
   }
 
   calculateRestockDate(): void {
@@ -392,16 +407,45 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  getDatesBetween(startDate: string, endDate: string): string[] {
+    const dates: string[] = [];
+    let currentDate = new Date(startDate);
+    const lastDate = new Date(endDate);
+  
+    while (currentDate <= lastDate) {
+      dates.push(currentDate.toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+  
+    return dates;
+  }
+
   getEntriesForDay(day: number): any[] {
     if (!this.calendarEntries) return [];
-    
+  
+    const currentDate = new Date(this.currentYear, this.currentMonth, day).toISOString().split('T')[0];
+  
     return this.calendarEntries.filter(entry => {
-      const entryDate = new Date(entry.start_date);
-      return entryDate.getDate() === day &&
-             entryDate.getMonth() === this.currentMonth &&
-             entryDate.getFullYear() === this.currentYear;
+      if (entry.isAppointment) {
+        const appointmentDate = entry.date.split('T')[0];
+        return appointmentDate === currentDate;
+    } else {
+        const dates = this.getDatesBetween(entry.start_date, entry.end_date);
+        return dates.includes(currentDate);
+    }
     });
   }
+
+  // getEntriesForDay(day: number): any[] {
+  //   if (!this.calendarEntries) return [];
+    
+  //   return this.calendarEntries.filter(entry => {
+  //     const entryDate = new Date(entry.start_date);
+  //     return entryDate.getDate() === day &&
+  //            entryDate.getMonth() === this.currentMonth &&
+  //            entryDate.getFullYear() === this.currentYear;
+  //   });
+  // }
   
   weekDays: string[] = [];
 
@@ -473,25 +517,6 @@ export class CalendarComponent implements OnInit {
       this.addCalendarEntry();
     }
   }
-
-  saveSlide2() {
-    if (this.medicationForm.valid) {
-      const formData = this.medicationForm.value;
-      const newEntry = {
-        description: formData.description2,
-        appointment: formData.appointment
-      };
-  
-      console.log("Saving Slide 2 Data:", newEntry);
-  
-      this.entries.push(newEntry);
-  
-      this.showForm = false;
-    } else {
-      console.error("Form is invalid");
-    }
-  }
-  
 
   addCalendarEntry(): void {
     const token = localStorage.getItem('token');
@@ -572,47 +597,136 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-editMedicine(medicine: any): void {
-  this.showForm = true;
-  this.currentEditId = medicine.id;
-  this.medicationForm.patchValue({
-    medicine_id: medicine.medicine_id,
-    name: medicine.medicine.name,
-    form: medicine.medicine.form,
-    description: medicine.description,
-    stock: medicine.stock,
-    dosage: medicine.dosage,
-    startDate: medicine.start_date,
-    endDate: medicine.end_date,
-    restock: medicine.restock,
-    restockReminder: medicine.restock_reminder,
-    repeat: medicine.repeat,
-  });
+  editMedicine(medicine: any): void {
+    this.showForm = true;
+    this.isSlide1Visible = true;
+    this.currentEditId = medicine.id;
+    this.currentAppointmentId = null;
+    this.medicationForm.patchValue({
+      medicine_id: medicine.medicine_id,
+      name: medicine.medicine.name,
+      form: medicine.medicine.form,
+      description: medicine.description,
+      stock: medicine.stock,
+      dosage: medicine.dosage,
+      startDate: medicine.start_date,
+      endDate: medicine.end_date,
+      restock: medicine.restock,
+      restockReminder: medicine.restock_reminder,
+      repeat: medicine.repeat,
+    });
 
-  this.reminders = [];
-  for (let i = 1; i <= 5; i++) {
-    if (medicine[`reminder_time${i}`]) {
-      this.reminders.push(medicine[`reminder_time${i}`]);
+    this.reminders = [];
+    for (let i = 1; i <= 5; i++) {
+      if (medicine[`reminder_time${i}`]) {
+        this.reminders.push(medicine[`reminder_time${i}`]);
+      }
     }
   }
-}
 
+  saveSlide2(): void {
+    console.log('saveSlide2 called');
+    console.log('currentAppointmentId:', this.currentAppointmentId);
+    console.log('form valid:', this.medicationForm.valid);
+    console.log('form values:', this.medicationForm.value);
+    if (this.appointmentForm.valid) { 
+      if (this.currentAppointmentId) {
+          this.updateAppointment();
+      } else {
+          this.addAppointment();
+      }
+  } else {
+      this.alertService.show('Please fill in all required fields.');
+  }
+  }
+
+  addAppointment(): void {
+    if (this.medicationForm.valid) {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      };
+
+      const formData = {
+        name: this.appointmentForm.get('doctorname')?.value,
+        specialty: this.appointmentForm.get('category')?.value,
+        description: this.appointmentForm.get('description2')?.value,
+        date: this.appointmentForm.get('appointment')?.value
+      };
+  
+      console.log('Saving doctor appointment:', formData);
+  
+      this.http.post('http://localhost:8000/api/addappointment', formData, { headers })
+        .subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              console.log('Appointment saved successfully:', response);
+              this.showForm = false;
+              this.appointmentForm.reset();
+              this.loadCalendarEntries();
+              this.alertService.show('Appointment saved successfully');
+            }
+          },
+          error: (error) => {
+            console.error('Error saving appointment:', error);
+            this.alertService.show(error.error?.message || 'Failed to save appointment');
+          }
+        });
+    } else {
+      this.alertService.show('Please fill in all required fields.');
+    }
+  }
+
+  updateAppointment(): void {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    const formData = {
+      name: this.appointmentForm.get('doctorname')?.value,
+      specialty: this.appointmentForm.get('category')?.value,
+      description: this.appointmentForm.get('description2')?.value,
+      date: this.appointmentForm.get('appointment')?.value
+    };
+
+    this.http.put(`http://localhost:8000/api/editappointment/${this.currentAppointmentId}`, formData, { headers })
+    .subscribe({
+        next: (response: any) => {
+            if (response.success) {
+                this.showForm = false;
+                this.appointmentForm.reset();
+                this.loadCalendarEntries();
+                this.currentEditId = null;
+                this.alertService.show('Appointment updated successfully');
+            }
+        },
+        error: (error) => {
+            console.error('Error updating appointment:', error);
+            this.alertService.show(error.error?.message || 'Failed to update appointment');
+        }
+    });
+  }
+
+  editAppointment(appointment: any): void {
+    this.showForm = true;
+    this.isSlide1Visible = false;
+    this.currentAppointmentId = appointment.id;
+    this.currentEditId = null;
+
+    this.medicationForm.patchValue({
+        doctorname: appointment.name,
+        category: appointment.specialty,
+        description2: appointment.description,
+        appointment: appointment.date
+    });
+}
 
 toggleSlide(slideNumber: number): void {
   this.isSlide1Visible = slideNumber === 1;
-  const icon1 = document.querySelector('.bi-1-circle') as HTMLElement;
-  const icon2 = document.querySelector('.bi-2-circle') as HTMLElement;
-
-  if (slideNumber === 1) {
-    icon1.classList.add('bi-1-circle-fill');
-    icon1.classList.remove('bi-1-circle');
-    icon2.classList.add('bi-2-circle');
-    icon2.classList.remove('bi-2-circle-fill');
-  } else {
-    icon1.classList.add('bi-1-circle');
-    icon1.classList.remove('bi-1-circle-fill');
-    icon2.classList.add('bi-2-circle-fill');
-    icon2.classList.remove('bi-2-circle');
-  }
 }
 }

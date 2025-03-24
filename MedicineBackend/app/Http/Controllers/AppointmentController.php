@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AppointmentRequest;
+use App\Http\Resources\Appointment as AppointmentResource;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
 
 class AppointmentController extends ResponseController
 {
     public function addAppointment(AppointmentRequest $request){
-        $appointment = new Appointment;
+        $appointment = new Appointment();
 
         $appointment->user_id = auth("sanctum")->user()->id;
         $appointment->name = $request["name"];
@@ -26,7 +29,7 @@ class AppointmentController extends ResponseController
         return $this->sendResponse(AppointmentResource::collection($appointment), "Sikeres lekérés");
     }
 
-    public function updateAppointment(AppointmentRequest $request, $id){
+    public function editAppointment(AppointmentRequest $request, $id){
         $appointment = Appointment::find($id);
 
         if (!$appointment) {
