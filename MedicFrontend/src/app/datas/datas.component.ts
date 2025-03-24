@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
 
 @Component({
-    selector: 'app-datas',
-    templateUrl: './datas.component.html',
-    styleUrls: ['./datas.component.css'],
-    standalone: false
+  selector: 'app-datas',
+  templateUrl: './datas.component.html',
+  styleUrls: ['./datas.component.css'],
+  standalone: false
 })
 export class DatasComponent implements OnInit {
-  
-  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService) { }
-  
+  @ViewChild('searchInput') searchInput!: ElementRef;
+  @ViewChild('dataTable') dataTable!: ElementRef;
+
+  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService) {}
+
   admin: any = {};
   datas: any[] = [];
+  searchResults: any[] = [];
+  showSearchResults: boolean = false;
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
   isSuper: boolean = false;
@@ -39,6 +43,60 @@ export class DatasComponent implements OnInit {
     this.router.navigate(['/signin']);
   }
 
+  @HostListener('document:click')
+  hideSearchResults() {
+    this.showSearchResults = false;
+  }
+
+  onSearchContainerClick(event: Event) {
+    event.stopPropagation();
+  }
+
+  searchMedicine(event: any) {
+    const searchTerm = event.target.value.toLowerCase();
+    if (searchTerm.length > 0) {
+      const token = localStorage.getItem('token');
+      const headers = {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      };
+
+      this.http.get(`http://localhost:8000/api/searchmedname?name=${searchTerm}`, { headers })
+        .subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              this.searchResults = response.data;
+              this.showSearchResults = true;
+            }
+          },
+          error: (error) => {
+            this.searchResults = [{ name: 'Medication not available' }];
+            this.showSearchResults = true;
+            console.error('Error searching medicines:', error);
+          }
+        });
+    } else {
+      this.searchResults = [];
+      this.showSearchResults = false;
+    }
+  }
+
+  selectMedicine(medicine: any) {
+    this.addModel.name = medicine.name;
+    this.showSearchResults = false;
+    this.scrollToMedicine(medicine.name);
+  }
+
+  scrollToMedicine(name: string) {
+    setTimeout(() => {
+      const element = this.dataTable.nativeElement.querySelector(`[data-name="${name}"]`);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 0);
+  }
+
   loadData(): void {
     const token = localStorage.getItem('token');
     const headers = {
@@ -46,7 +104,7 @@ export class DatasComponent implements OnInit {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
-    this.http.get('http://localhost:8000/api/allmedicine' , { headers })
+    this.http.get('http://localhost:8000/api/allmedicine', { headers })
       .subscribe({
         next: (response: any) => {
           if (response.success) {
@@ -94,7 +152,7 @@ export class DatasComponent implements OnInit {
   }
 
   updateMedicine(data: any): void {
-    this.editingData = {...data};
+    this.editingData = { ...data };
   }
 
   saveMedicine(data: any): void {
@@ -126,8 +184,7 @@ export class DatasComponent implements OnInit {
     this.editingData = null;
   }
 
-
-  deleteMedicine(data:any): void {
+  deleteMedicine(data: any): void {
     if (confirm('Are you sure you want to delete this medicine?')) {
       const token = localStorage.getItem('token');
       const headers = {
@@ -137,7 +194,7 @@ export class DatasComponent implements OnInit {
       };
 
       const body = { id: data.id };
-      this.http.delete('http://localhost:8000/api/deletemedicine',{headers, body}).subscribe({
+      this.http.delete('http://localhost:8000/api/deletemedicine', { headers, body }).subscribe({
         next: (response: any) => {
           if (response.success) {
             console.log('Medicine deleted:', response.data);

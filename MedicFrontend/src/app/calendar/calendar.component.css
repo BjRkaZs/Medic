@@ -465,6 +465,69 @@ li.reminder-item {
 }
 
 
+.toggle-btn {
+  background-color: transparent;
+  border: none;
+  margin: 0 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.toggle-buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-btn i {
+  font-size: 20px;
+}
+
+.pop-up, .popup {
+  min-height: 400px;
+}
+
+.slide1, .slide2 {
+  min-height: 400px;
+}
+
+.choices button {
+  background-color: #225b7c;
+  color: aliceblue;
+  font-weight: bold;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.choices a {
+  color: white;
+  text-decoration: none;
+}
+
+.choices #medicine, #doctor {
+  width: 180px;
+  height: 50px;
+  border-radius: 25px;
+  font-size: 18px;
+  text-align: center;
+}
+
+
+
+.slide2 h1,
+.slide1 h1{
+  color: #1b4b68;
+  font-size: 30px;
+  text-transform: uppercase;
+  font-weight: bolder;
+}
+
+.slide2 .extra-row{
+  margin:  20px;
+}
+
+
+
 @media (max-width: 768px) {
   .calendar-grid {
     grid-template-columns: repeat(4, 1fr);

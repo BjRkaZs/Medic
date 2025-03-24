@@ -28,6 +28,8 @@ export class CalendarComponent implements OnInit {
   showForms: boolean = false;
   calendarEntries: any[] = [];
   currentEditId: number | null = null;
+  isSlide1Visible: boolean = true;
+  entries: { description: string; appointment: string }[] = [];
 
   isLoggedIn : boolean = false;
   constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) {
@@ -43,7 +45,12 @@ export class CalendarComponent implements OnInit {
       reminderTime: '',
       restock: '',
       restockReminder: '',
-      repeat: [0, [Validators.min(0)]]
+      repeat: [0, [Validators.min(0)]],
+
+
+      description2: '',
+      appointment: '' 
+
     });
     this.medicationForm.get('startDate')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('stock')?.valueChanges.subscribe(() => this.calculateRestockDate());
@@ -107,7 +114,11 @@ export class CalendarComponent implements OnInit {
                 endDate: entry.end_date,
                 restock: entry.restock,
                 restockReminder: entry.restock_reminder,
-                repeat: entry.repeat
+                repeat: entry.repeat,
+
+
+                description2: entry.description2,
+                appointment: entry.appointment,
             });
             this.reminders = [];
             for (let i = 1; i <= 5; i++) {
@@ -455,6 +466,111 @@ export class CalendarComponent implements OnInit {
     });
   }
 
+  saveSlide1(): void {
+    if (this.currentEditId) {
+      this.updateCalendarEntry();
+    } else {
+      this.addCalendarEntry();
+    }
+  }
+
+  saveSlide2() {
+    if (this.medicationForm.valid) {
+      const formData = this.medicationForm.value;
+      const newEntry = {
+        description: formData.description2,
+        appointment: formData.appointment
+      };
+  
+      console.log("Saving Slide 2 Data:", newEntry);
+  
+      this.entries.push(newEntry);
+  
+      this.showForm = false;
+    } else {
+      console.error("Form is invalid");
+    }
+  }
+  
+
+  addCalendarEntry(): void {
+    const token = localStorage.getItem('token');
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
+
+    if (!this.medicationForm.get('medicine_id')?.value) {
+      this.alertService.show('Please select a medicine first');
+      return;
+    }
+
+    console.log('Form values:', this.medicationForm.value);
+    console.log('Reminders:', this.reminders);
+    
+    const requiredFields = ['medicine_id', 'stock', 'dosage', 'startDate', 'endDate'];
+    const missingFields = requiredFields.filter(field => 
+      !this.medicationForm.get(field)?.value
+    );
+
+    if (missingFields.length > 0) {
+      console.error('Missing required fields:', missingFields);
+      this.alertService.show(`Please fill in: ${missingFields.join(', ')}`);
+      return;
+    }
+  
+    if (this.reminders.length === 0) {
+      this.alertService.show('At least one reminder time is required');
+      return;
+    }
+
+    const reminderFields: any = {};
+
+    for (let i = 0; i < 5; i++) {
+      reminderFields[`reminder_time${i + 1}`] = 
+          this.reminders[i] || null;
+    }
+  
+    const formData = {
+      medicine_id: this.medicationForm.get('medicine_id')?.value,
+      description: this.medicationForm.get('description')?.value,
+      stock: this.medicationForm.get('stock')?.value,
+      dosage: this.medicationForm.get('dosage')?.value,
+      start_date: this.medicationForm.get('startDate')?.value,
+      end_date: this.medicationForm.get('endDate')?.value,
+      restock: this.medicationForm.get('restock')?.value,
+      restock_reminder: this.medicationForm.get('restockReminder')?.value,
+      repeat: this.medicationForm.get('repeat')?.value,
+      appointment: this.medicationForm.get('appointment')?.value,
+      ...reminderFields
+    };
+
+    this.http.post('http://localhost:8000/api/calendar', formData, { headers, observe: 'response' })
+      .subscribe({
+        next: (response: any) => {
+          console.log('Full response:', response);
+          if (response.body?.success) {
+              this.showForm = false;
+              this.loadCalendarEntries();
+              this.medicationForm.reset();
+              this.reminders = [];
+          } else {
+              console.error('Response indicates failure:', response.body);
+              this.alertService.show('Failed to save calendar entry');
+          }
+      },
+      error: (error) => {
+          console.error('Network error details:', {
+              status: error.status,
+              statusText: error.statusText,
+              error: error.error,
+              headers: error.headers?.keys()
+          });
+          this.alertService.show('Failed to save calendar entry');
+      }
+    });
+  }
 
 editMedicine(medicine: any): void {
   this.showForm = true;
@@ -470,7 +586,7 @@ editMedicine(medicine: any): void {
     endDate: medicine.end_date,
     restock: medicine.restock,
     restockReminder: medicine.restock_reminder,
-    repeat: medicine.repeat
+    repeat: medicine.repeat,
   });
 
   this.reminders = [];
@@ -480,8 +596,23 @@ editMedicine(medicine: any): void {
     }
   }
 }
-  signOut(): void {
-    this.auth.signOut();
-    this.isLoggedIn = false;
+
+
+toggleSlide(slideNumber: number): void {
+  this.isSlide1Visible = slideNumber === 1;
+  const icon1 = document.querySelector('.bi-1-circle') as HTMLElement;
+  const icon2 = document.querySelector('.bi-2-circle') as HTMLElement;
+
+  if (slideNumber === 1) {
+    icon1.classList.add('bi-1-circle-fill');
+    icon1.classList.remove('bi-1-circle');
+    icon2.classList.add('bi-2-circle');
+    icon2.classList.remove('bi-2-circle-fill');
+  } else {
+    icon1.classList.add('bi-1-circle');
+    icon1.classList.remove('bi-1-circle-fill');
+    icon2.classList.add('bi-2-circle-fill');
+    icon2.classList.remove('bi-2-circle');
   }
+}
 }
