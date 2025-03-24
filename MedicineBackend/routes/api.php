@@ -8,6 +8,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MedController;
 use App\Http\Controllers\ModMedController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\AppointmentController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -25,18 +26,24 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::put( "/updateuser", [ AuthController::class, "updateUser" ]);
 
     Route::post( "/addmedicine", [ ModMedController::class, "addMedicine" ]);
+    Route::get( "/allmedicine", [ ModMedController::class, "getAllMedicine" ]);
     Route::put( "/modifymedicine", [ ModMedController::class, "modifyMedicine" ]);
     Route::delete( "/deletemedicine", [ ModMedController::class, "deleteMedicine" ]);
-    Route::get( "/allmedicine", [ ModMedController::class, "getAllMedicine" ]);
+
+    Route::get('/searchusermeds', [MedController::class, 'searchUserMedicines']);
 
     Route::post( "/calendar", [ CalendarController::class, "addCalendar" ]);
     Route::get( "/calendar", [ CalendarController::class, "getCalendar" ]);
-    Route::put('/editcalendar/{id}', [CalendarController::class, 'editCalendar']);
-    Route::delete('/deletecalendar/{id}', [CalendarController::class, 'deleteCalendar']);
+    Route::put('/editcalendar/{id}', [ CalendarController::class, 'editCalendar']);
+    Route::delete('/deletecalendar/{id}', [ CalendarController::class, 'deleteCalendar']);
+
+    Route::post('/addappointment', [ AppointmentController::class, 'addAppointment']);
+    Route::get('/getappointment', [ AppointmentController::class, 'getAppointment']);
+    Route::put('/editappointment/{id}', [ AppointmentController::class, 'editAppointment']);
+    Route::delete('/deleteappointment/{id}', [ AppointmentController::class, 'deleteAppointment']);
 });
 
-Route::get( "/searchmedicine", [ MedController::class, "searchMedicine" ]);
-Route::get( "/searchmedname", [ MedController::class, "searchMedicineName" ]);
+Route::get( "/searchmedname", [ MedController::class, "searchMedicine" ]);
 Route::get( "/medforms", [ MedController::class, "getMedicineForms" ]);
 
 Route::post( "/register", [ UserController::class, "register" ]);
