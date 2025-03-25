@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 import { AlertService } from '../alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-passreset',
@@ -20,7 +21,8 @@ export class PassresetComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private auth: AuthService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private translate: TranslateService
   ) {
     this.resetForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(8)]],
@@ -33,7 +35,7 @@ export class PassresetComponent implements OnInit {
       this.token = params['token'];
       this.email = params['email'];
       if (!this.token || !this.email) {
-        this.alertService.show('Érvénytelen vagy lejárt link');
+        this.alertService.show(this.translate.instant('alerts.passreset.expired'));
         this.router.navigate(['/signin']);
       }
     });
@@ -49,11 +51,11 @@ export class PassresetComponent implements OnInit {
 
       this.auth.resetPassword(data).subscribe({
         next: () => {
-          this.alertService.show('Jelszó sikeresen megváltoztatva');
+          this.alertService.show(this.translate.instant('alerts.passreset.success'));
           this.router.navigate(['/signin']);
         },
         error: (error) => {
-          this.alertService.show(error.error?.message || 'Hiba történt');
+          this.alertService.show(error.error?.message || this.translate.instant('alerts.passreset.fail'));
         }
       });
     }

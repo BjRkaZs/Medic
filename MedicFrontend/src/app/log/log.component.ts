@@ -29,7 +29,7 @@ export class LogComponent {
         console.log('Registration response:', response); 
         if (response.success) {  
           console.log("Registration successful", response);
-          this.alertService.show(response.message);
+          this.alertService.show(this.translate.instant('alerts.log.regsuccess'));
           this.regModel = {
             name: '',
             email: '',
@@ -43,13 +43,13 @@ export class LogComponent {
           const errorMessages = Object.values(response.data).flat();
           this.alertService.show(errorMessages.join('\n'));
         } else {
-          this.alertService.show(response.message || 'Regisztrációs hiba történt');
+          this.alertService.show(response.message || this.translate.instant('alerts.log.regfail'));
         }
       }
     },
     error: (error) => {
       console.error("Registration failed", error);
-      this.alertService.show('Szerver hiba történt');
+      this.alertService.show(this.translate.instant('alerts.log.regfail'));
     }
   });
   }
@@ -69,19 +69,19 @@ export class LogComponent {
           localStorage.setItem('token', response.data.token);
           sessionStorage.setItem('email', this.loginModel.email);
           sessionStorage.setItem('role', adminLevel);
-          this.alertService.show("Login successful!");
+          this.alertService.show(this.translate.instant('alerts.log.logsuccess'));
         } else {
           if (response.data) {
             const errorMessages = Object.values(response.data).flat();
             this.alertService.show(errorMessages.join('\n'));
           } else {
-            this.alertService.show(response.message || 'Bejelentkezési hiba történt');
+            this.alertService.show(response.message || this.translate.instant('alerts.log.logfail'));
           }
         }
       },
       error: (error) => {
         console.error("Login failed", error);
-        this.alertService.show(error.error.message || "Login failed");
+        this.alertService.show(error.error.message || this.translate.instant('alerts.log.logfail'));
       }
     });
   }

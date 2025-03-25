@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-users',
@@ -13,7 +14,7 @@ import { AlertService } from '../alert.service';
 
 export class UsersComponent implements OnInit {  
   
-  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService) { }
+  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) { }
 
   isLoggedIn: boolean = false;
   isSuper: boolean = false;
@@ -84,7 +85,7 @@ export class UsersComponent implements OnInit {
         },
         error: (error) => {
           console.error('Error updating role:', error);
-          this.alertService.show(error.error?.message || 'Failed to update user role');
+          this.alertService.show(error.error?.message || this.translate.instant('alerts.users.fail'));
         }
       });
   }

@@ -75,6 +75,60 @@
     "datas": {
         "form": "Adagolási forma",
         "substance": "Hatóanyag"
+    },
+    "alerts": {
+        "calendar": {
+            "missmed" : "Kérjük válasszon egy gyógyszert",
+            "missfields" : "Kérjük töltse ki a következő mezőket: ",
+            "reminder" : "Legalább egy emlékeztető időpont szükséges",
+            "entryfail" : "Naptárbejegyzés mentése sikertelen",
+            "updatesuccess" : "Naptárbejegyzés sikeresen frissítve",
+            "updatefail" : "Naptárbejegyzés frissítése sikertelen",
+            "loadfail" : "Naptárbejegyzések betöltése sikertelen",
+            "maxrem" : "Maximum 5 emlékeztető adható hozzá.",
+            "reqfields" : "Kérjük töltse ki az összes kötelező mezőt",
+            "appsuccess" : "Orvosi vizsgálat időpontja sikeresen mentve",
+            "appfail" : "Orvosi vizsgálat időpont mentése sikertelen",
+            "appdatesuccess" : "Orvosi vizsgálat időpontja sikeresen frissítve",
+            "appdatefail" : "Orvosi vizsgálat időpont frissítése sikertelen"
+        },
+        "datas": {
+            "medsuccess" : "Gyógyszer sikeresen hozzáadva",
+            "medfail" : "Hiba történt a gyógyszer hozzáadása közben",
+            "medupdatesuccess" : "Gyógyszer sikeresen frissítve",
+            "medupdatefail" : "Hiba történt a gyógyszer frissítése közben",
+            "meddeletesuccess" : "Gyógyszer sikeresen törölve",
+            "meddeletefail" : "Hiba történt a gyógyszer törlése közben"
+        },
+        "fpass": {
+            "success": "Jelszó visszaállítási link elküldve az e-mail címedre.",
+            "fail" : "Hiba történt a jelszó visszaállítás közben.",
+            "emailfail" : "Kérjük, adj meg egy érvényes e-mail címet"
+        },
+        "log": {
+            "regsuccess" : "Sikeres regisztráció",
+            "regfail" : "Hiba történt a regisztráció közben",
+            "logsuccess" : "Sikeres bejelentkezés",
+            "logfail" : "Hiba történt a bejelentkezés közben"
+        },
+        "mymeds": {
+            "deletesuccess" : "Gyógyszer bejegyzés sikeresen törölve",
+            "deletefail" : "Hiba történt a gyógyszer bejegyzés törlése közben"
+        },
+        "passreset":{
+            "expired" : "Érvénytelen vagy lejárt link",
+            "success" : "Jelszó sikeresen megváltoztatva",
+            "fail" : "Hiba történt a jelszó megváltoztatása közben"
+        },
+        "profile": {
+            "success" : "Profil sikeresen frissítve",
+            "fail" : "Hiba történt a profil frissítése közben",
+            "deletesuccess" : "Profil sikeresen törölve",
+            "deletefail" : "Hiba történt a profil törlése közben"
+        },
+        "users":{
+            "fail": "Hiba történt a felhasználó rang frissítése közben"
+        }
     }
 }
 

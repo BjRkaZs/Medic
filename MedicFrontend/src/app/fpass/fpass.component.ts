@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertService } from '../alert.service';
 import { AuthService } from '../auth.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-fpass',
@@ -17,7 +18,8 @@ export class FpassComponent {
     private fb: FormBuilder,
     private router: Router, 
     private alertService: AlertService, 
-    private auth: AuthService
+    private auth: AuthService,
+    private translate: TranslateService
   ) {
     this.resetPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]]
@@ -31,16 +33,16 @@ export class FpassComponent {
       if (email) {
         this.auth.forgotPassword(email).subscribe({
           next: (response) => {
-            this.alertService.show('Jelszó visszaállítási link elküldve az e-mail címedre.');
+            this.alertService.show(this.translate.instant('alerts.fpass.success'));
             this.router.navigate(['/signin']);
           },
           error: (error) => {
-            this.alertService.show(error.error?.message || 'Hiba történt');
+            this.alertService.show(error.error?.message || this.translate.instant('alerts.fpass.fail'));
           }
         });
       }
     } else {
-      this.alertService.show('Kérjük, adj meg egy érvényes e-mail címet');
+      this.alertService.show(this.translate.instant('alerts.fpass.emailfail'));
     }
   }
 }

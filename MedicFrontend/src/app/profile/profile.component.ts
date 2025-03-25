@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-profile',
@@ -15,7 +16,7 @@ export class ProfileComponent implements OnInit {
   isLoggedIn: boolean = false;
   profilePicUrl: string = '';
 
-  constructor(private auth: AuthService,private http: HttpClient, private router: Router, private alertService: AlertService) {}
+  constructor(private auth: AuthService,private http: HttpClient, private router: Router, private alertService: AlertService, private translate: TranslateService) {}
 
   onFileChange(event: Event): void {
     const target = event.target as HTMLInputElement;
@@ -89,13 +90,13 @@ export class ProfileComponent implements OnInit {
         next: (response: any) => {
           if (response.success) {
             console.log('Profile updated:', response.data);
-            this.alertService.show('Profile updated successfully');
+            this.alertService.show(this.translate.instant('alerts.profile.success'));
             this.loadProfile();
           }
         },
         error: (error) => {
           console.error('Error updating profile:', error);
-          this.alertService.show(error.error?.message || 'Failed to update profile');
+          this.alertService.show(error.error?.message || this.translate.instant('alerts.profile.fail'));
         }
       });
   }
@@ -118,12 +119,12 @@ export class ProfileComponent implements OnInit {
               sessionStorage.clear();
               this.auth.signOut();
               this.router.navigate(['/signin']);
-              this.alertService.show('Profile deleted successfully');
+              this.alertService.show(this.translate.instant('alerts.profile.deletesuccess'));
             }
           },
           error: (error) => {
             console.error('Error deleting profile:', error);
-            this.alertService.show(error.error?.message || 'Failed to delete profile');
+            this.alertService.show(error.error?.message || this.translate.instant('alerts.profile.deletefail'));
           }
         });
       }

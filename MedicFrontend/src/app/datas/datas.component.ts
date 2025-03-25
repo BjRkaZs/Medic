@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-datas',
@@ -14,7 +15,7 @@ export class DatasComponent implements OnInit {
   @ViewChild('searchInput') searchInput!: ElementRef;
   @ViewChild('dataTable') dataTable!: ElementRef;
 
-  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService) {}
+  constructor(private auth: AuthService, private router: Router, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) {}
 
   admin: any = {};
   datas: any[] = [];
@@ -141,12 +142,12 @@ export class DatasComponent implements OnInit {
               substance: ''
             };
             this.loadData();
-            this.alertService.show('Medicine added successfully');
+            this.alertService.show(this.translate.instant('alerts.datas.medsuccess'));
           }
         },
         error: (error) => {
           console.error('Error adding medicine:', error);
-          this.alertService.show(error.error.message || 'Error adding medicine');
+          this.alertService.show(error.error.message || this.translate.instant('alerts.datas.medfail'));
         }
       });
   }
@@ -170,12 +171,12 @@ export class DatasComponent implements OnInit {
             console.log('Medicine updated:', response.data);
             this.editingData = null;
             this.loadData();
-            this.alertService.show('Medicine updated successfully');
+            this.alertService.show(this.translate.instant('alerts.datas.medupdatesuccess'));
           }
         },
         error: (error) => {
           console.error('Error updating medicine:', error);
-          this.alertService.show(error.error.message || 'Error updating medicine');
+          this.alertService.show(error.error.message || this.translate.instant('alerts.datas.medupdatefail'));
         }
       });
   }
@@ -199,12 +200,12 @@ export class DatasComponent implements OnInit {
           if (response.success) {
             console.log('Medicine deleted:', response.data);
             this.loadData();
-            this.alertService.show('Medicine deleted successfully');
+            this.alertService.show(this.translate.instant('alerts.datas.meddeletesuccess'));
           }
         },
         error: (error) => {
           console.error('Error deleting medicine:', error);
-          this.alertService.show(error.error.message || 'Error deleting medicine');
+          this.alertService.show(error.error.message || this.translate.instant('alerts.datas.meddeletefail'));
         }
       });
     }

@@ -238,7 +238,7 @@ export class CalendarComponent implements OnInit {
     };
 
     if (!this.medicationForm.get('medicine_id')?.value) {
-      this.alertService.show('Please select a medicine first');
+      this.alertService.show(this.translate.instant('alerts.calendar.missmed'));
       return;
     }
 
@@ -252,12 +252,12 @@ export class CalendarComponent implements OnInit {
   
     if (missingFields.length > 0) {
       console.error('Missing required fields:', missingFields);
-      this.alertService.show(`Please fill in: ${missingFields.join(', ')}`);
+      this.alertService.show(this.translate.instant('alerts.calendar.missfields' + `${missingFields.join(', ')}`));
       return;
     }
   
     if (this.reminders.length === 0) {
-      this.alertService.show('At least one reminder time is required');
+      this.alertService.show(this.translate.instant('alerts.calendar.reminder'));
       return;
     }
 
@@ -295,7 +295,7 @@ export class CalendarComponent implements OnInit {
               this.reminders = [];
           } else {
               console.error('Response indicates failure:', response.body);
-              this.alertService.show('Failed to save calendar entry');
+              this.alertService.show(this.translate.instant('alerts.calendar.entryfail'));
           }
       },
       error: (error) => {
@@ -305,7 +305,7 @@ export class CalendarComponent implements OnInit {
               error: error.error,
               headers: error.headers?.keys()
           });
-          this.alertService.show(`Error: ${error.error?.message || 'Failed to save calendar entry'}`);
+          this.alertService.show(`Error: ${error.error?.message}` || this.translate.instant('alerts.calendar.entryfail'));
       }
       });
       
@@ -346,12 +346,12 @@ export class CalendarComponent implements OnInit {
             this.medicationForm.reset();
             this.reminders = [];
             this.currentEditId = null;
-            this.alertService.show('Calendar entry updated successfully');
+            this.alertService.show(this.translate.instant('alerts.calendar.updatesuccess'));
           }
         },
         error: (error) => {
           console.error('Error updating calendar entry:', error);
-          this.alertService.show(error.error?.message || 'Failed to update calendar entry');
+          this.alertService.show(error.error?.message || this.translate.instant('alerts.calendar.updatefail'));
         }
       });
   }
@@ -381,7 +381,7 @@ export class CalendarComponent implements OnInit {
       },
       error: (error) => {
         console.error('Error loading entries:', error);
-        this.alertService.show('Failed to load calendar entries');
+        this.alertService.show(this.translate.instant('alerts.calendar.loadfail'));
       }
     });
   }
@@ -482,7 +482,7 @@ export class CalendarComponent implements OnInit {
       this.medicationForm.patchValue({ reminderTime: '' });
       this.calculateRestockDate();
     } else if (this.reminders.length >= 5) {
-      alert('Maximum 5 reminders can be added.');
+      this.alertService.show(this.translate.instant('alerts.calendar.maxrem'));
     }
   }
   
@@ -527,7 +527,7 @@ export class CalendarComponent implements OnInit {
     };
 
     if (!this.medicationForm.get('medicine_id')?.value) {
-      this.alertService.show('Please select a medicine first');
+      this.alertService.show(this.translate.instant('alerts.calendar.missmed'));
       return;
     }
 
@@ -541,12 +541,12 @@ export class CalendarComponent implements OnInit {
 
     if (missingFields.length > 0) {
       console.error('Missing required fields:', missingFields);
-      this.alertService.show(`Please fill in: ${missingFields.join(', ')}`);
+      this.alertService.show(this.translate.instant('alerts.calendar.missfields' + `${missingFields.join(', ')}`));
       return;
     }
   
     if (this.reminders.length === 0) {
-      this.alertService.show('At least one reminder time is required');
+      this.alertService.show(this.translate.instant('alerts.calendar.reminder'));
       return;
     }
 
@@ -582,7 +582,7 @@ export class CalendarComponent implements OnInit {
               this.reminders = [];
           } else {
               console.error('Response indicates failure:', response.body);
-              this.alertService.show('Failed to save calendar entry');
+              this.alertService.show(this.translate.instant('alerts.calendar.entryfail'));
           }
       },
       error: (error) => {
@@ -592,7 +592,7 @@ export class CalendarComponent implements OnInit {
               error: error.error,
               headers: error.headers?.keys()
           });
-          this.alertService.show('Failed to save calendar entry');
+          this.alertService.show(this.translate.instant('alerts.calendar.entryfail'));
       }
     });
   }
@@ -636,7 +636,7 @@ export class CalendarComponent implements OnInit {
           this.addAppointment();
       }
   } else {
-      this.alertService.show('Please fill in all required fields.');
+      this.alertService.show(this.translate.instant('alerts.calendar.reqfields'));
   }
   }
 
@@ -666,16 +666,16 @@ export class CalendarComponent implements OnInit {
               this.showForm = false;
               this.appointmentForm.reset();
               this.loadCalendarEntries();
-              this.alertService.show('Appointment saved successfully');
+              this.alertService.show(this.translate.instant('alerts.calendar.appsuccess'));
             }
           },
           error: (error) => {
             console.error('Error saving appointment:', error);
-            this.alertService.show(error.error?.message || 'Failed to save appointment');
+            this.alertService.show(error.error?.message || this.translate.instant('alerts.calendar.appfail'));
           }
         });
     } else {
-      this.alertService.show('Please fill in all required fields.');
+      this.alertService.show(this.translate.instant('alerts.calendar.reqfields'));
     }
   }
 
@@ -702,12 +702,12 @@ export class CalendarComponent implements OnInit {
                 this.appointmentForm.reset();
                 this.loadCalendarEntries();
                 this.currentEditId = null;
-                this.alertService.show('Appointment updated successfully');
+                this.alertService.show(this.translate.instant('alerts.calendar.appdatesuccess'));
             }
         },
         error: (error) => {
             console.error('Error updating appointment:', error);
-            this.alertService.show(error.error?.message || 'Failed to update appointment');
+            this.alertService.show(error.error?.message || this.translate.instant('alerts.calendar.appdatefail'));
         }
     });
   }

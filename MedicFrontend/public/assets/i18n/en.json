@@ -75,5 +75,59 @@
     "datas": {
         "form": "Form",
         "substance": "Substance"
+    },
+    "alerts": {
+        "calendar": {
+            "missmed" : "Please select a medicine first",
+            "missfields" : "Please fill in: ",
+            "reminder" : "At least one reminder time is required",
+            "entryfail" : "Failed to save calendar entry",
+            "updatesuccess" : "Calendar entry updated successfully",
+            "updatefail" : "Failed to update calendar entry",
+            "loadfail" : "Failed to load calendar entries",
+            "maxrem" : "Maximum 5 reminders can be added.",
+            "reqfields" : "Please fill in all required fields.",
+            "appsuccess" : "Appointment saved successfully",
+            "appfail" : "Failed to save appointment",
+            "appdatesuccess" : "Appointment updated successfully",
+            "appdatefail" : "Failed to update appointment"
+        },
+        "datas": {
+            "medsuccess" : "Medicine added successfully",
+            "medfail" : "Error adding medicine",
+            "medupdatesuccess" : "Medicine updated successfully",
+            "medupdatefail" : "Error updating medicine",
+            "meddeletesuccess" : "Medicine deleted successfully",
+            "meddeletefail" : "Error deleting medicine"
+        },
+        "fpass": {
+            "success": "Password reset link sent to your email.",
+            "fail" : "Failed to reset password",
+            "emailfail" : "Please enter a valid email address"
+        },
+        "log": {
+            "regsuccess" : "Registration successful",
+            "regfail" : "Registration failed",
+            "logsuccess" : "Login successful!",
+            "logfail" : "Login failed"
+        },
+        "mymeds": {
+            "deletesuccess" : "Medication entry deleted successfully",
+            "deletefail" : "Failed to delete medication entry"
+        },
+        "passreset":{
+            "expired" : "Invalid or expired link",
+            "success" : "Password changed successfully",
+            "fail" : "Failed to change password"
+        },
+        "profile": {
+            "success" : "Profile updated successfully",
+            "fail" : "Failed to update profile",
+            "deletesuccess" : "Profile deleted successfully",
+            "deletefail" : "Failed to delete profile"
+        },
+        "users":{
+            "fail": "Failed to update user role"
+        }
     }
 }

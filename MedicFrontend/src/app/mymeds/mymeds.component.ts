@@ -3,6 +3,7 @@ import { AuthService } from '../auth.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from '../alert.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mymeds',
@@ -20,7 +21,7 @@ export class MymedsComponent implements OnInit {
   showForm: boolean = false;
   selectedMedicine: any = null;
 
-  constructor(private http: HttpClient, private auth: AuthService, private fb: FormBuilder, private alertService: AlertService) {
+  constructor(private http: HttpClient, private auth: AuthService, private fb: FormBuilder, private alertService: AlertService, private translate: TranslateService) {
     this.medSearchForm = this.fb.group({
       name: ['']
     });
@@ -106,12 +107,12 @@ export class MymedsComponent implements OnInit {
           next: (response: any) => {
               if (response.success) {
                   this.medications = this.medications.filter(med => med.id !== medicationId);
-                  this.alertService.show('Medication entry deleted successfully');
+                  this.alertService.show(this.translate.instant('alerts.mymeds.deletesuccess'));
               }
           },
           error: (error) => {
               console.error('Error deleting medication:', error);
-              this.alertService.show(error.error?.message || 'Failed to delete medication entry');
+              this.alertService.show(error.error?.message || this.translate.instant('alerts.mymeds.deletefail'));
           }
       });
     }
