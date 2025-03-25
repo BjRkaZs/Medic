@@ -21,9 +21,9 @@ import { MymedsComponent } from './mymeds/mymeds.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: HttpClient) =>
-  new TranslateHttpLoader(http, './assets/i18n/', '.json');
-
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -47,7 +47,7 @@ const httpLoaderFactory: (http: HttpClient) => TranslateHttpLoader = (http: Http
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: httpLoaderFactory,
+        useFactory: HttpLoaderFactory,
         deps: [HttpClient]
       }
     })

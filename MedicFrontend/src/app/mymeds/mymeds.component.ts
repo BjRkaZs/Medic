@@ -92,6 +92,8 @@ export class MymedsComponent implements OnInit {
     });
   }
 
+  
+
   deleteMedication(medicationId: number): void {
     if (confirm('Are you sure you want to delete this medication entry?')) {
       const token = localStorage.getItem('token');
