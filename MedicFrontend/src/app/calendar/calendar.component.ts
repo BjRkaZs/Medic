@@ -1,16 +1,14 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from '../auth.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { AlertService } from '../alert.service';
-import { clippingParents } from '@popperjs/core';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
-    selector: 'app-calendar',
-    templateUrl: './calendar.component.html',
-    styleUrl: './calendar.component.css',
-    standalone: false
+  selector: 'app-calendar',
+  templateUrl: './calendar.component.html',
+  styleUrls: ['./calendar.component.css']
 })
 export class CalendarComponent implements OnInit {
   currentYear: number = new Date().getFullYear();
@@ -19,7 +17,10 @@ export class CalendarComponent implements OnInit {
   displayedDays: (number | null)[] = [];
   selectedDay: number | null = null;
   showForm: boolean = false;
+  showMedicationForm: boolean = false;
+  showDoctorForm: boolean = false;
   medicationForm: FormGroup;
+  doctorForm: FormGroup;
   reminders: string[] = [];
   medicines: any[] = [];
   searchResults: any[] = [];
@@ -28,42 +29,139 @@ export class CalendarComponent implements OnInit {
   showForms: boolean = false;
   calendarEntries: any[] = [];
   currentEditId: number | null = null;
-  isSlide1Visible: boolean = true;
   entries: { description: string; appointment: string }[] = [];
+  isLoggedIn: boolean = false;
+  weekDays: string[] = [];
 
-  isLoggedIn : boolean = false;
-  constructor(private auth: AuthService, private fb: FormBuilder, private http: HttpClient, private alertService: AlertService, private translate: TranslateService) {
+  constructor(
+    private auth: AuthService,
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private alertService: AlertService,
+    private translate: TranslateService
+  ) {
     this.medicationForm = this.fb.group({
       name: '',
       form: '',
       medicine_id: [''],
       description: '',
       stock: '',
-      dosage: 'db',      
+      dosage: 'db',
       startDate: '',
       endDate: '',
       reminderTime: '',
       restock: '',
       restockReminder: '',
-      repeat: [0, [Validators.min(0)]],
-
-      doctorname: '',
-      category: '',
-      description2: '',
-      appointment: '' 
-
+      repeat: [0, [Validators.min(0)]]
     });
+
+    this.doctorForm = this.fb.group({
+      doctorname: ['', Validators.required],
+      category: ['', Validators.required],
+      description2: ['', Validators.required],
+      appointment: ['', Validators.required]
+    });
+
     this.medicationForm.get('startDate')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('stock')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('repeat')?.valueChanges.subscribe(() => this.calculateRestockDate());
   }
+
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.updateCalendar();
     this.loadCalendarEntries();
-    this.weekDays = this.translate.instant('calendar.weekDays'); 
+    this.weekDays = this.translate.instant('calendar.weekDays');
     console.log('Weekdays:', this.weekDays);
   }
+
+  newPopup(): void {
+    this.showForm = true;
+    this.showMedicationForm = false;
+    this.showDoctorForm = false;
+  }
+
+  openMedsForm(): void {
+    this.showForm = false;
+    this.showMedicationForm = true;
+    this.showDoctorForm = false;
+    this.medicationForm.reset();
+    this.reminders = [];
+    this.currentEditId = null;
+  }
+
+  openDoctorForm(): void {
+    this.showForm = false;
+    this.showMedicationForm = false;
+    this.showDoctorForm = true;
+    this.doctorForm.reset();
+    this.reminders = [];
+    this.currentEditId = null;
+  }
+
+  closeForm(): void {
+    this.showForm = false;
+    this.showMedicationForm = false;
+    this.showDoctorForm = false;
+  }
+
+  saveMeds(): void {
+    if (this.medicationForm.valid) {
+      const formData = this.medicationForm.value;
+      console.log('Saving medication:', formData);
+
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      });
+
+      this.http.post('http://localhost:8000/api/calendar', formData, { headers }).subscribe({
+        next: (response) => {
+          console.log('Medication saved successfully:', response);
+          this.closeForm();
+          this.loadCalendarEntries();
+        },
+        error: (error) => {
+          console.error('Error saving medication:', error);
+          this.alertService.show('Failed to save medication.');
+        },
+      });
+    } else {
+      console.error('Form is invalid');
+      this.alertService.show('Please fill in all required fields.');
+    }
+  }
+
+  saveDoctor(): void {
+    if (this.doctorForm.valid) {
+      const formData = this.doctorForm.value;
+      console.log('Saving doctor appointment:', formData);
+
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      });
+
+      this.http.post('http://localhost:8000/api/appointments', formData, { headers }).subscribe({
+        next: (response) => {
+          console.log('Appointment saved successfully:', response);
+          this.closeForm();
+        },
+        error: (error) => {
+          console.error('Error saving appointment:', error);
+          this.alertService.show('Failed to save appointment.');
+        },
+      });
+    } else {
+      console.error('Form is invalid');
+      this.alertService.show('Please fill in all required fields.');
+    }
+  }
+
 
 
   updateCalendar(): void {
@@ -418,18 +516,6 @@ export class CalendarComponent implements OnInit {
     });
   }
 
-  // getEntriesForDay(day: number): any[] {
-  //   if (!this.calendarEntries) return [];
-    
-  //   return this.calendarEntries.filter(entry => {
-  //     const entryDate = new Date(entry.start_date);
-  //     return entryDate.getDate() === day &&
-  //            entryDate.getMonth() === this.currentMonth &&
-  //            entryDate.getFullYear() === this.currentYear;
-  //   });
-  // }
-  
-  weekDays: string[] = [];
 
   getDayName(day: number | null): string {
     if (day === null) return '';
@@ -472,48 +558,6 @@ export class CalendarComponent implements OnInit {
   removeReminder(index: number): void {
     this.reminders.splice(index, 1);
     this.calculateRestockDate();
-  }
-
-  newPopup(): void {
-      this.medicationForm.reset();
-      this.reminders = [];
-      this.showForm = true;
-      this.currentEditId = null;
-  }
-
-  saveSlide1(): void {
-    if (this.currentEditId) {
-      this.updateCalendarEntry();
-    } else {
-      this.addCalendarEntry();
-    }
-  }
-
-  saveSlide2(): void {
-    if (this.medicationForm.valid) {
-      const formData = {
-        doctorname: this.medicationForm.get('doctorname')?.value,
-        category: this.medicationForm.get('category')?.value,
-        description: this.medicationForm.get('description2')?.value,
-        appointment: this.medicationForm.get('appointment')?.value,
-      };
-  
-      console.log('Saving doctor appointment:', formData);
-  
-      this.http.post('http://localhost:8000/api/appointments', formData).subscribe({
-        next: (response) => {
-          console.log('Appointment saved successfully:', response);
-          this.showForm = false;
-        },
-        error: (error) => {
-          console.error('Error saving appointment:', error);
-          this.alertService.show('Failed to save appointment.');
-        },
-      });
-    } else {
-      console.error('Form is invalid');
-      this.alertService.show('Please fill in all required fields.');
-    }
   }
 
   addCalendarEntry(): void {
@@ -596,7 +640,7 @@ export class CalendarComponent implements OnInit {
   }
 
 editMedicine(medicine: any): void {
-  this.showForm = true;
+  this.showMedicationForm = true;
   this.currentEditId = medicine.id;
   this.medicationForm.patchValue({
     medicine_id: medicine.medicine_id,
@@ -618,10 +662,5 @@ editMedicine(medicine: any): void {
       this.reminders.push(medicine[`reminder_time${i}`]);
     }
   }
-}
-
-
-toggleSlide(slideNumber: number): void {
-  this.isSlide1Visible = slideNumber === 1;
 }
 }
