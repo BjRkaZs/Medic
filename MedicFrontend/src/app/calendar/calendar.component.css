@@ -294,6 +294,45 @@ span{
 }
 
 
+#addDoctor,
+#addMeds {
+  background: linear-gradient(135deg, #225b7c, #1b4b68);
+  color: white;
+  width: 270px;
+  height: 55px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+#addDoctor:hover,
+#addMeds:hover {
+  background: linear-gradient(135deg, #1a4960, #0f374b);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.add-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+
 #addPopup{
   margin-top: 5px;
   padding: 3px;
