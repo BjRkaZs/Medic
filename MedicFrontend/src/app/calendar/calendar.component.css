@@ -26,6 +26,10 @@
   background-color:#225b7c;;
 }
 
+.b-container {
+  display: flex;
+  gap: 5px;
+}
 
 button .left,
 button .right{
@@ -38,6 +42,10 @@ h1 {
   margin-bottom: 20px;
   font-weight: 700;
   color: aliceblue;
+}
+
+#h1 {
+  color: black !important;
 }
 
 .day-names {

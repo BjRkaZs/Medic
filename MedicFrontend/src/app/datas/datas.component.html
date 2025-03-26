@@ -26,21 +26,15 @@
         <button type="submit" class="btn btn-primary" id="add">+</button>
       </div>
     </form>
-
-    <div class="search-container" (click)="onSearchContainerClick($event)">
-      <input id="searchInput"
-             #searchInput
-             class="form-control"
-             (input)="searchMedicine($event)"
-             autocomplete="off" placeholder="{{'mymeds.search' | translate}}"/>
-      <div class="search-results" *ngIf="showSearchResults">
-        <div class="result-item"
-            *ngFor="let medicine of searchResults"
-            [class.not-found]="medicine.name === 'Medication not available'"
-            (click)="medicine.name !== 'Medication not available' ? selectMedicine(medicine) : null">
-          {{ medicine.name }}
-        </div>
-      </div>
+    <div class="search-container">
+      <input
+        id="searchInput"
+        #searchInput
+        class="form-control"
+        (input)="filterTable($event)"
+        autocomplete="off"
+        placeholder="{{'mymeds.search' | translate}}"
+      />
     </div>
 
     <div #dataTable>
@@ -53,7 +47,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let data of datas" [attr.data-name]="data.name">
+            <tr *ngFor="let data of filteredDatas" [attr.data-name]="data.name">
               <td>
                 <span *ngIf="editingData?.id !== data.id">{{ data.name }}</span>
                 <input *ngIf="editingData?.id === data.id" 

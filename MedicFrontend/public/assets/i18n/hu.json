@@ -38,7 +38,7 @@
         "repeat": "Beszedés: (naponta)",
         "weekDays": ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"],
         "header1": "Gyógyszer",
-        "header2": "Orvoshoz vizsgálati időpont",
+        "header2": "Orvosi vizsgálat időpont",
         "appointment": "Időpont",
         "meds": "Gyógyszer hozzáadása",
         "doctor": "Doktorhoz időpont",

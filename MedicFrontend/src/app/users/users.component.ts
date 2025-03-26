@@ -88,4 +88,8 @@ export class UsersComponent implements OnInit {
         }
       });
   }
+
+  banUser(){
+    
+  }
 }

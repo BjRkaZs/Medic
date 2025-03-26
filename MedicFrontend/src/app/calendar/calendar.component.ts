@@ -142,6 +142,9 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  deleteDoctor(){
+    
+  }
 
 
   updateCalendar(): void {
