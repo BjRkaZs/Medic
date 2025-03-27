@@ -157,6 +157,12 @@ h1 {
   justify-content: center;
 }
 
+#pop1{
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 70% !important;
+}
+
 .buttons{
 display: flex;
 width: 100%;
