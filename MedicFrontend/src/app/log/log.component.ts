@@ -59,7 +59,26 @@ export class LogComponent {
     password: ''
   }
 
+  private validateEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  }
+
   Login() {
+    if (!this.loginModel.email) {
+      this.alertService.show(this.translate.instant('alerts.log.emailRequired'));
+      return;
+    }
+
+    if (!this.validateEmail(this.loginModel.email)) {
+        this.alertService.show(this.translate.instant('alerts.log.emailInvalid'));
+        return;
+    }
+
+    if (!this.loginModel.password) {
+        this.alertService.show(this.translate.instant('alerts.log.passwordRequired'));
+        return;
+    }
     this.auth.Login(this.loginModel).subscribe({
       next: (response: any) => {
         console.log("Login successful", response);
@@ -81,8 +100,23 @@ export class LogComponent {
       },
       error: (error) => {
         console.error("Login failed", error);
-        this.alertService.show(error.error.message || this.translate.instant('alerts.log.logfail'));
-      }
+        if (error.status === 401) {
+            if (error.error?.message === "Ez a fiók ki lett tiltva") {
+                this.alertService.show(this.translate.instant('alerts.log.banned'));
+            } else if (error.error?.message.includes("Túl sok sikertelen próbálkozás")) {
+                this.alertService.show(error.error.message);
+            } else if (error.error?.message.includes("próbálkozás maradt")) {
+                this.alertService.show(error.error.message);
+            } else if (error.error?.message === "Nem megfelelő e-mail vagy jelszó") {
+                this.alertService.show(this.translate.instant('alerts.log.invalid'));
+            } else {
+                this.alertService.show(this.translate.instant('alerts.log.logfail'));
+            }
+        } else {
+            this.alertService.show(this.translate.instant('alerts.log.logfail'));
+        }
+        this.loginModel.password = '';
+    }
     });
   }
   

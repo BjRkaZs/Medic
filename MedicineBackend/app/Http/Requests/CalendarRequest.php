@@ -28,6 +28,7 @@ class CalendarRequest extends FormRequest
             'description' => "max:150|nullable",
             'stock' => "required|numeric",
             'dosage' => "required|numeric",
+            'dosage_unit' => "required|in:g,mg,ml,pieces",
             'start_date' => "required|date",
             'end_date' => "required|date|after:start_date",
             'reminder_time1' => "required|date_format:H:i",
@@ -43,34 +44,35 @@ class CalendarRequest extends FormRequest
 
     public function messages() {
         return [
-            "medicine_id.required" => __('messages.validation.calendar.medicine_id.required'),
-            "medicine_id.exists" => __('messages.validation.calendar.medicine_id.exists'),
-            "description.max" => __('messages.validation.calendar.description.max'),
-            "stock.required" => __('messages.validation.calendar.stock.required'),
-            "stock.numeric" => __('messages.validation.calendar.stock.numeric'),
-            "dosage.required" => __('messages.validation.calendar.dosage.required'),
-            "dosage.numeric" => __('messages.validation.calendar.dosage.numeric'),
-            "start_date.required" => __('messages.validation.calendar.start_date.required'),
-            "start_date.date" => __('messages.validation.calendar.start_date.date'),
-            "end_date.required" => __('messages.validation.calendar.end_date.required'),
-            "end_date.date" => __('messages.validation.calendar.end_date.date'),
-            "end_date.after" => __('messages.validation.calendar.end_date.after'),
-            "reminder_time1.required" => __('messages.validation.calendar.reminder_time1.required'),
-            "reminder_time1.date_format" => __('messages.validation.calendar.reminder_time1.date_format'),
-            "reminder_time2.date_format" => __('messages.validation.calendar.reminder_time2.date_format'),
-            "reminder_time3.date_format" => __('messages.validation.calendar.reminder_time3.date_format'),
-            "reminder_time4.date_format" => __('messages.validation.calendar.reminder_time4.date_format'),
-            "reminder_time5.date_format" => __('messages.validation.calendar.reminder_time5.date_format'),
-            "restock.date" => __('messages.validation.calendar.restock.date'),
-            "restock_reminder.numeric" => __('messages.validation.calendar.restock_reminder.numeric'),
-            "repeat.integer" => __('messages.validation.calendar.repeat.integer')
+            "medicine_id.required" => "Please select a medication",
+            "medicine_id.exists" => "Selected medication not found",
+            "description.max" => "Description cannot be longer than 255 characters",
+            "stock.required" => "Stock amount is required",
+            "stock.numeric" => "Stock must be a number",
+            "dosage.required" => "Dosage is required",
+            "dosage.numeric" => "Dosage must be a number",
+            'dosage_unit.required' => 'Please select a dosage unit',
+            "start_date.required" => "Start date is required",
+            "start_date.date" => "Please enter a valid start date",
+            "end_date.required" => "End date is required", 
+            "end_date.date" => "Please enter a valid end date",
+            "end_date.after" => "End date must be after start date",
+            "reminder_time1.required" => "At least one reminder time is required",
+            "reminder_time1.date_format" => "Invalid reminder time format (HH:mm)",
+            "reminder_time2.date_format" => "Invalid reminder time format (HH:mm)",
+            "reminder_time3.date_format" => "Invalid reminder time format (HH:mm)",
+            "reminder_time4.date_format" => "Invalid reminder time format (HH:mm)",
+            "reminder_time5.date_format" => "Invalid reminder time format (HH:mm)",
+            "restock.date" => "Please enter a valid restock date",
+            "restock_reminder.numeric" => "Restock reminder must be a number",
+            "repeat.integer" => "Repeat value must be a whole number"
         ];
     }
 
     public function failedValidation( Validator $validator ) {
         throw new HttpResponseException( response()->json([
             "success" => false,
-            "message" => "Beviteli hiba",
+            "message" => "Input error",
             "data" => $validator->errors()
         ]));
     }

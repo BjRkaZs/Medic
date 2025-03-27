@@ -52,6 +52,7 @@ class MedReminder extends Command
                         new MedReminderMail(
                             $reminder->medicine->name,
                             $reminder->dosage,
+                            $reminder->dosage_unit,
                             $reminder->description,
                             $time
                         )

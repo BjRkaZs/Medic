@@ -89,4 +89,51 @@ export class UsersComponent implements OnInit {
         }
       });
   }
-}
+
+  banUser(user: any): void {
+    const message = user.banned ? 
+      this.translate.instant('alerts.users.unbanconfirm') : 
+      this.translate.instant('alerts.users.banconfirm');
+
+    this.alertService.showConfirm(message)
+    .then((confirmed) => {
+    if (confirmed) {
+      const token = localStorage.getItem('token');
+      const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+      };
+
+    const body = {
+        id: user.id
+    };
+
+    const url = user.banned ? 
+      'http://localhost:8000/api/unbanuser' : 
+      'http://localhost:8000/api/banuser';
+
+    this.http.put(url, body, { headers })
+    .subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.loadUsers();
+          const message = user.banned ?
+              this.translate.instant('alerts.users.unbansuccess') :
+              this.translate.instant('alerts.users.bansuccess');
+          this.alertService.show(message);
+        }
+      },
+      error: (error) => {
+        console.error('Error updating ban status:', error);
+        const message = user.banned ?
+            this.translate.instant('alerts.users.unbanfail') :
+            this.translate.instant('alerts.users.banfail');
+        this.alertService.show(message);
+      }
+      });
+    }
+    });
+  }
+}   
+

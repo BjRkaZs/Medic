@@ -79,7 +79,7 @@ input:focus {
 .result-item {
   padding: 10px 12px;
   cursor: pointer;
-  color: #333;
+  color: #ffffff !important;
   font-size: 1rem;
 }
 
@@ -87,13 +87,15 @@ input:focus {
   background-color: #f5f5f5;
 }
 
-.not-found {
-  color: #999;
+.result-item.not-found {
+  color: #ffffff !important;
   cursor: default;
   pointer-events: none;
 }
 
-
+.not-found{
+  color:#ffffff !important;
+}
 
 .mymeds {
   background-color: aliceblue;

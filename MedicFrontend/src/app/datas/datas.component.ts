@@ -21,6 +21,8 @@ export class DatasComponent implements OnInit {
   datas: any[] = [];
   searchResults: any[] = [];
   showSearchResults: boolean = false;
+  filteredDatas: any[] = [];
+  searchTerm: string = '';
   isLoggedIn: boolean = false;
   isAdmin: boolean = false;
   isSuper: boolean = false;
@@ -83,19 +85,14 @@ export class DatasComponent implements OnInit {
     }
   }
 
-  selectMedicine(medicine: any) {
-    this.addModel.name = medicine.name;
-    this.showSearchResults = false;
-    this.scrollToMedicine(medicine.name);
-  }
 
-  scrollToMedicine(name: string) {
-    setTimeout(() => {
-      const element = this.dataTable.nativeElement.querySelector(`[data-name="${name}"]`);
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 0);
+  filterTable(event: any): void {
+    const searchTerm = event.target.value.toLowerCase();
+    console.log('Search term:', searchTerm);
+    this.filteredDatas = this.datas.filter((data) =>
+      data.name.toLowerCase().includes(searchTerm)
+    );
+    console.log('Filtered data:', this.filteredDatas);
   }
 
   loadData(): void {
@@ -105,22 +102,21 @@ export class DatasComponent implements OnInit {
       'Content-Type': 'application/json',
       'Accept': 'application/json'
     };
-    this.http.get('http://localhost:8000/api/allmedicine', { headers })
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            this.datas = response.data;
-            console.log('Medicines loaded:', this.datas);
-          }
-        },
-        error: (error) => {
-          console.error('Error loading medicines:', error);
-          if (error.status === 401) {
-            console.log('Token:', token);
-            this.router.navigate(['/signin']);
-          }
+
+    this.http.get('http://localhost:8000/api/allmedicine', { headers }).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.datas = response.data;
+          this.filteredDatas = [...this.datas];
         }
-      });
+      },
+      error: (error) => {
+        console.error('Error loading medicines:', error);
+        if (error.status === 401) {
+          this.router.navigate(['/signin']);
+        }
+      }
+    });
   }
 
   addMedicine(): void {

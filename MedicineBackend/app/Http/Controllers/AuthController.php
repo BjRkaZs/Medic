@@ -32,8 +32,37 @@ class AuthController extends ResponseController{
 
         return $this->sendResponse($user, "Admin jogosultság beállítva"); 
     }
+    public function banUser(Request $request) {
+        if (!Gate::allows("super")) {
+            return $this->sendError("Autentikációs hiba", "Nincs jogosultság", 401);
+        }
+    
+        $user = User::find($request["id"]);
+        if (!$user) {
+            return $this->sendError("Adathiba", "Felhasználó nem található", 404);
+        }
+    
+        $user->banned = true;
+        $user->update();
+    
+        $user->tokens()->delete();
+    
+        return $this->sendResponse($user, "Felhasználó kitiltva");
+    }
 
-    public function destroyUser() {
-        
+    public function unbanUser(Request $request) {
+        if (!Gate::allows("super")) {
+            return $this->sendError("Autentikációs hiba", "Nincs jogosultság", 401);
+        }
+    
+        $user = User::find($request["id"]);
+        if (!$user) {
+            return $this->sendError("Adathiba", "Felhasználó nem található", 404);
+        }
+    
+        $user->banned = false;
+        $user->update();
+    
+        return $this->sendResponse($user, "Felhasználó tiltása feloldva");
     }
 }

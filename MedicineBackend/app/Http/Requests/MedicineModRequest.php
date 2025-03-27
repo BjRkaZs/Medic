@@ -33,12 +33,12 @@ class MedicineModRequest extends FormRequest
     public function messages() 
     {
         return [
-            "name.required" => __('messages.validation.medicine.name.required'),
-            "name.max" => __('messages.validation.medicine.name.max'),
-            "form.required" => __('messages.validation.medicine.form.required'),
-            "form.max" => __('messages.validation.medicine.form.max'),
-            "substance.required" => __('messages.validation.medicine.substance.required'),
-            "substance.max" => __('messages.validation.medicine.substance.max'),
+            "name.required" => "Medicine name is required",
+            "name.max" => "Medicine name cannot be longer than 150 characters",
+            "form.required" => "Medicine form is required",
+            "form.max" => "Medicine form cannot be longer than 150 characters",
+            "substance.required" => "Active substance is required",
+            "substance.max" => "Active substance cannot be longer than 150 characters"
         ];
     }
 
@@ -48,7 +48,7 @@ class MedicineModRequest extends FormRequest
             [
                 "success" => false,
                 "errors" => $validator->errors(),
-                "message" => "Beviteli hiba"
+                "message" => "Input error"
             ]));
     }
 }

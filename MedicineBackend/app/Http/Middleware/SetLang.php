@@ -13,9 +13,16 @@ class SetLang
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next)
     {
-        app()->setLocale($request->header('Accept-Language', 'en'));
+        $locale = $request->header('Accept-Language', 'hu');
+        
+        if (!in_array($locale, ['en', 'hu'])) {
+            $locale = 'hu';
+        }
+
+        app()->setLocale($locale);
+
         return $next($request);
     }
 }

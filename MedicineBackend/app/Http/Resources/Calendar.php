@@ -23,6 +23,7 @@ class Calendar extends JsonResource
             'description' => $this->description,
             'stock' => $this->stock,
             'dosage' => $this->dosage,
+            'dosage_unit' => $this->dosage_unit,
             'start_date' => $this->start_date->format('Y-m-d'),
             'end_date' => $this->end_date->format('Y-m-d'),
             'reminder_time1' => $this->reminder_time1 ? $this->reminder_time1->format('H:i') : null,

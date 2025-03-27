@@ -26,6 +26,10 @@
   background-color:#225b7c;;
 }
 
+.b-container {
+  display: flex;
+  gap: 5px;
+}
 
 button .left,
 button .right{
@@ -38,6 +42,10 @@ h1 {
   margin-bottom: 20px;
   font-weight: 700;
   color: aliceblue;
+}
+
+#h1 {
+  color: black !important;
 }
 
 .day-names {
@@ -144,9 +152,15 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 85%;
   max-height: 100vh;
-  overflow-y: scroll;
+  overflow: hidden;
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
   display: block !important;
   justify-content: center;
+}
+
+.pop-up::-webkit-scrollbar {
+  display: none;
 }
 
 .buttons{
@@ -292,6 +306,45 @@ span{
   align-items: center;
   gap: 5px;
 }
+
+
+#addAppointment,
+#addMeds {
+  background: linear-gradient(135deg, #225b7c, #1b4b68);
+  color: white;
+  width: 270px;
+  height: 55px;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border: none;
+}
+
+#addAppointment:hover,
+#addMeds:hover {
+  background: linear-gradient(135deg, #1a4960, #0f374b);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+.add-buttons-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 
 
 #addPopup{
@@ -504,15 +557,13 @@ li.reminder-item {
   text-decoration: none;
 }
 
-.choices #medicine, #doctor {
+.choices #medicine, #appointment {
   width: 180px;
   height: 50px;
   border-radius: 25px;
   font-size: 18px;
   text-align: center;
 }
-
-
 
 .slide2 h1,
 .slide1 h1{
@@ -526,7 +577,11 @@ li.reminder-item {
   margin:  20px;
 }
 
-
+#pop1{
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 50% !important;
+} 
 
 @media (max-width: 768px) {
   .calendar-grid {

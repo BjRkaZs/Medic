@@ -21,9 +21,9 @@ class PassResetRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.required' => __('messages.validation.auth.email.required'),
-            'email.email' => __('messages.validation.auth.email.email'),
-            'email.exists' => __('messages.validation.auth.email.exists')
+            'email.required' => 'Email address is required',
+            'email.email' => 'Please enter a valid email address',
+            'email.exists' => 'No account found with this email address'
         ];
     }
 }

@@ -34,11 +34,11 @@ class AppointmentRequest extends FormRequest
     public function messages(): array 
     {
         return [
-            'name.max' => __('messages.validation.appointment.name.max'),
-            'specialty.required' => __('messages.validation.appointment.specialty.required'),
-            'specialty.max' => __('messages.validation.appointment.specialty.max'),
-            'date.required' => __('messages.validation.appointment.date.required'),
-            'date.date' => __('messages.validation.appointment.date.date')
+            'name.max' => 'Doctor name cannot be longer than 100 characters',
+            'specialty.required' => 'Medical specialty is required',
+            'specialty.max' => 'Specialty name cannot be longer than 120 characters',
+            'date.required' => 'Appointment date is required',
+            'date.date' => 'Please enter a valid date'
         ];
     }
 
@@ -48,7 +48,7 @@ class AppointmentRequest extends FormRequest
             [
                 "success" => false,
                 "errors" => $validator->errors(),
-                "message" => "Beviteli hiba"
+                "message" => "Input error"
             ]));
     }
 }

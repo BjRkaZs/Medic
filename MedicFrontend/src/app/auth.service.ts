@@ -58,8 +58,21 @@ export class AuthService {
     this.languageSignal.next(language);
   }
 
+  private getHeaders(): any {
+    const token = localStorage.getItem('token');
+    const currentLang = localStorage.getItem('language') || 'hu' || 'en';
+    
+    return {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Accept-Language': currentLang
+    };
+}
+
   private checkAuthStatus() {
     const token = localStorage.getItem('token');
+    const currentLang = localStorage.getItem('language') || 'hu' || 'en';
     if (token) {
       this.token = token;
       this.isLoggedUser = true;
@@ -69,7 +82,8 @@ export class AuthService {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
+          'Accept-Language': currentLang
         }
       }).subscribe({
         next: (response: any) => {
@@ -120,6 +134,7 @@ export class AuthService {
 
   Login(loginData: any): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, {
+      headers: this.getHeaders() ,
       email: loginData.email,
       password: loginData.password
     }).pipe(
@@ -154,10 +169,13 @@ export class AuthService {
 
   signOut(): void {
     const token = localStorage.getItem('token');
+    const currentLang = localStorage.getItem('language') || 'hu' || 'en';
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Accept-Language': currentLang
     };
 
     this.http.post(`${this.apiUrl}/logout`, {}, { headers })
@@ -204,10 +222,13 @@ export class AuthService {
 
   getMedications(): Observable<any[]> {
     const token = localStorage.getItem('token');
+    const currentLang = localStorage.getItem('language') || 'hu' || 'en';
+
     const headers = {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
-      'Accept': 'application/json'
+      'Accept': 'application/json',
+      'Accept-Language': currentLang
     };
     return this.http.get<any[]>(`${this.apiUrl}/calendar`, { headers })
       .pipe(

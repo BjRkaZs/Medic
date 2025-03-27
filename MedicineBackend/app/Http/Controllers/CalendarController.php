@@ -18,6 +18,7 @@ class CalendarController extends ResponseController
         $calendar->description = $request["description"];
         $calendar->stock = $request["stock"];
         $calendar->dosage = $request["dosage"];
+        $calendar->dosage_unit = $request["dosage_unit"];
         $calendar->start_date = $request["start_date"];
         $calendar->end_date = $request["end_date"];
         $calendar->reminder_time1 = $request["reminder_time1"];
@@ -58,6 +59,7 @@ class CalendarController extends ResponseController
         $calendar->description = $request["description"];
         $calendar->stock = $request["stock"];
         $calendar->dosage = $request["dosage"];
+        $calendar->dosage_unit = $request["dosage_unit"];
         $calendar->start_date = $request["start_date"];
         $calendar->end_date = $request["end_date"];
         $calendar->reminder_time1 = $request["reminder_time1"];

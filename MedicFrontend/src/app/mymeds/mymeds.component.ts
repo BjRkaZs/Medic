@@ -44,22 +44,26 @@ export class MymedsComponent implements OnInit {
   searchMedicine(event: any) {
     const searchTerm = event.target.value.toLowerCase();
     if (searchTerm.length > 0) {
-      const localMatches = this.medications.filter(med => 
-        med.medicine?.name.toLowerCase().includes(searchTerm)
-      );
-
-      if (localMatches.length === 0) {
-        this.searchResults = [{ name: 'Medication not available' }];
-      } else {
-        this.searchResults = localMatches;
-      }
-
-      this.showSearchResults = true;
+    this.auth.getMedications().subscribe({
+      next: (response: any) => {
+        if (response.data) {
+          this.medications = response.data.filter((med: any) => 
+              med.medicine?.name.toLowerCase().startsWith(searchTerm)
+          );
+        }
+      },
+      error: (error) => {
+        console.error('Error loading medications:', error);
+        this.medications = [];
+        this.searchResults = [{ name: 'Error loading medications' }];
+        this.showSearchResults = true;
+    }
+    });
     } else {
-      this.searchResults = [];
+      this.loadMedications();
       this.showSearchResults = false;
     }
-  }
+}
 
   selectMedicine(medicine: any) {
     this.selectedMedicine = medicine;
@@ -94,27 +98,30 @@ export class MymedsComponent implements OnInit {
   }
 
   deleteMedication(medicationId: number): void {
-    if (confirm('Are you sure you want to delete this medication entry?')) {
-      const token = localStorage.getItem('token');
-      const headers = {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-      };
+    this.alertService.showConfirm(this.translate.instant('alerts.mymeds.deleteconfirm'))
+    .then((confirmed) => {
+      if (confirmed) {
+        const token = localStorage.getItem('token');
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        };
 
       this.http.delete(`http://localhost:8000/api/deletecalendar/${medicationId}`, { headers })
       .subscribe({
-          next: (response: any) => {
-              if (response.success) {
-                  this.medications = this.medications.filter(med => med.id !== medicationId);
-                  this.alertService.show(this.translate.instant('alerts.mymeds.deletesuccess'));
-              }
-          },
-          error: (error) => {
-              console.error('Error deleting medication:', error);
-              this.alertService.show(error.error?.message || this.translate.instant('alerts.mymeds.deletefail'));
-          }
+        next: (response: any) => {
+            if (response.success) {
+                this.medications = this.medications.filter(med => med.id !== medicationId);
+                this.alertService.show(this.translate.instant('alerts.mymeds.deletesuccess'));
+            }
+        },
+        error: (error) => {
+            console.error('Error deleting medication:', error);
+            this.alertService.show(error.error?.message || this.translate.instant('alerts.mymeds.deletefail'));
+        }
       });
     }
+  });
 }
 }

@@ -39,23 +39,23 @@ class RegisterRequest extends FormRequest
 
     public function messages() {
         return [
-            "name.required" => __('messages.validation.auth.name.required'),
-            "name.max" => __('messages.validation.auth.name.max'),
-            "email.required" => __('messages.validation.auth.email.required'),
-            "email.email" => __('messages.validation.auth.email.email'),
-            "email.unique" => __('messages.validation.auth.email.unique'),
-            "password.required" => __('messages.validation.auth.password.required'),
-            "password.min" => __('messages.validation.auth.password.min'),
-            "password.regex" => __('messages.validation.auth.password.regex'),
-            "password_confirmation.same" => __('messages.validation.auth.password.confirmed'),
-            "password_confirmation.required" => __('messages.validation.auth.password.confirmation_required')
+            "name.required" => "Name is required",
+            "name.max" => "Name cannot be longer than 50 characters",
+            "email.required" => "Email address is required",
+            "email.email" => "Please enter a valid email address",
+            "email.unique" => "This email is already registered",
+            "password.required" => "Password is required",
+            "password.min" => "Password must be at least 8 characters",
+            "password.regex" => "Password must contain at least one lowercase letter, one uppercase letter, and one number",
+            "password.confirmed" => "Passwords do not match",
+            "password_confirmation.required" => "Please confirm your password"
         ];
     }
 
     public function failedValidation( Validator $validator ) {
         throw new HttpResponseException( response()->json([
             "success" => false,
-            "message" => "Regisztrációs hiba",
+            "message" => "Registration error",
             "data" => $validator->errors(),
             "source" => "Medicine App"
         ]));

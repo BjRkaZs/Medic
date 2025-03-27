@@ -11,6 +11,7 @@ class MedReminderMail extends Mailable
     public function __construct(
         protected $medicineName,
         protected $dosage,
+        protected $dosage_unit,
         protected $description,
         protected $reminderTime
     ) {}
@@ -29,6 +30,7 @@ class MedReminderMail extends Mailable
             with: [
                 'medicineName' => $this->medicineName,
                 'dosage' => $this->dosage,
+                'dosage_unit' => $this->dosage_unit,
                 'description' => $this->description,
                 'reminderTime' => $this->reminderTime
             ],

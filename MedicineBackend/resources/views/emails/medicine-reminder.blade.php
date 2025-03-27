@@ -54,7 +54,7 @@
         <div class="medicine-name">
             {{ $medicineName }}
         </div>
-        <p>Dosage: {{ $dosage }}</p>
+        <p>Dosage: {{ $dosage }} {{ $dosage_unit }}</p>
         @if($description)
             <p>Note: {{ $description }}</p>
         @endif

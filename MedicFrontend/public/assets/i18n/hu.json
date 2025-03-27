@@ -34,15 +34,18 @@
         "pieces": "db",
         "ml": "ml",
         "g": "g",
+        "mg": "mg",
         "restockreminder": "Újratöltési emlékeztető: (nappal előtte)",
         "repeat": "Beszedés: (naponta)",
         "weekDays": ["Hétfő", "Kedd", "Szerda", "Csütörtök", "Péntek", "Szombat", "Vasárnap"],
         "header1": "Gyógyszer",
-        "header2": "Orvoshoz vizsgálati időpont",
-        "doctorname": "Név",
-        "category": "Orvos kategória",
+        "header2": "Orvosi vizsgálat időpont",
         "appointment": "Időpont",
-        "description": "Leírás"
+        "meds": "Gyógyszer hozzáadása",
+        "doctor": "Doktorhoz időpont",
+        "description": "Leírás",
+        "specialty": "Doktor szakterülete",
+        "doctorname": "Doktor neve"
     },
     "log": {
         "signup": "Regisztráció",
@@ -78,6 +81,7 @@
     },
     "alerts": {
         "calendar": {
+            "success" : "Gyógyszer értesítés sikeresen hozzáadva",
             "missmed" : "Kérjük válasszon egy gyógyszert",
             "missfields" : "Kérjük töltse ki a következő mezőket: ",
             "reminder" : "Legalább egy emlékeztető időpont szükséges",
@@ -90,7 +94,10 @@
             "appsuccess" : "Orvosi vizsgálat időpontja sikeresen mentve",
             "appfail" : "Orvosi vizsgálat időpont mentése sikertelen",
             "appdatesuccess" : "Orvosi vizsgálat időpontja sikeresen frissítve",
-            "appdatefail" : "Orvosi vizsgálat időpont frissítése sikertelen"
+            "appdatefail" : "Orvosi vizsgálat időpont frissítése sikertelen",
+            "deletesuccess" : "Orvosi vizsgálat időpontja sikeresen törölve",
+            "deletefail" : "Orvosi vizsgálat időpontjának törlése sikertelen",
+            "deleteconfirm" : "Biztosan törölni szeretné az orvosi vizsgálat időpontját?"
         },
         "datas": {
             "medsuccess" : "Gyógyszer sikeresen hozzáadva",
@@ -109,11 +116,19 @@
             "regsuccess" : "Sikeres regisztráció",
             "regfail" : "Hiba történt a regisztráció közben",
             "logsuccess" : "Sikeres bejelentkezés",
-            "logfail" : "Hiba történt a bejelentkezés közben"
+            "logfail" : "Hiba történt a bejelentkezés közben",
+            "banned" : "Felhasználói fiókja jelenleg tiltva van",
+            "invalid": "Nem megfelelő e-mail vagy jelszó",
+            "timeout": "Túl sok sikertelen próbálkozás. Kérem várjon.",
+            "attempts": "{{count}} próbálkozás maradt",
+            "emailRequired": "Email cím megadása kötelező",
+            "emailInvalid": "Érvénytelen email cím formátum",
+            "passwordRequired": "Jelszó megadása kötelező"
         },
         "mymeds": {
             "deletesuccess" : "Gyógyszer bejegyzés sikeresen törölve",
-            "deletefail" : "Hiba történt a gyógyszer bejegyzés törlése közben"
+            "deletefail" : "Hiba történt a gyógyszer bejegyzés törlése közben",
+            "deleteconfirm" : "Biztosan törölni szeretné ezt a gyógyszer bejegyzést?"
         },
         "passreset":{
             "expired" : "Érvénytelen vagy lejárt link",
@@ -127,7 +142,9 @@
             "deletefail" : "Hiba történt a profil törlése közben"
         },
         "users":{
-            "fail": "Hiba történt a felhasználó rang frissítése közben"
+            "fail": "Hiba történt a felhasználó rang frissítése közben",
+            "banconfirm": "Biztosan tiltani szeretné ezt a felhasználót?",
+            "bansuccess": "Felhasználó sikeresen tiltva"
         }
     }
 }

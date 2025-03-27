@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->integer('stock');
             $table->double('dosage');
+            $table->string('dosage_unit');
             $table->date('start_date');
             $table->date('end_date');
             $table->timeTz('reminder_time1');

@@ -24,6 +24,8 @@ Route::middleware( "auth:sanctum" )->group( function(){
     Route::get( "/users", [ AuthController::class, "getUsers" ]);
     Route::put( "/admin", [ AuthController::class, "setAdmin" ]);
     Route::put( "/updateuser", [ AuthController::class, "updateUser" ]);
+    Route::put( "/banuser", [ AuthController::class, "banUser" ]);
+    Route::put( "/unbanuser", [ AuthController::class, "unbanUser" ]);
 
     Route::post( "/addmedicine", [ ModMedController::class, "addMedicine" ]);
     Route::get( "/allmedicine", [ ModMedController::class, "getAllMedicine" ]);

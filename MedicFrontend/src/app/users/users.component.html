@@ -26,8 +26,12 @@
         </thead>
         <tbody>
           <tr *ngFor="let user of users">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
+            <td [ngStyle]="{'text-decoration': user.banned ? 'line-through' : 'none'}">
+              {{ user.name }}
+            </td>
+            <td [ngStyle]="{'text-decoration': user.banned ? 'line-through' : 'none'}">
+              {{ user.email }}
+            </td>
             <td>
               <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdown" data-bs-toggle="dropdown" aria-expanded="false">
@@ -39,6 +43,13 @@
                   <li><a class="dropdown-item" (click)="setRole(user, 'user')">User</a></li>
                 </ul>
               </div>
+            </td>
+            <td>
+              <button class="btn btn-sm" 
+                [ngClass]="{'btn-danger': !user.banned, 'btn-success': user.banned}" 
+                (click)="banUser(user)">
+                <i class="bi" [ngClass]="{'bi-ban': !user.banned, 'bi-check-lg': user.banned}"></i>
+              </button>
             </td>
           </tr>
         </tbody>

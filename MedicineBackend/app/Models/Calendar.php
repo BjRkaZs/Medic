@@ -16,6 +16,7 @@ class Calendar extends Model
         'description',
         'stock',
         'dosage',
+        'dosage_unit',
         'start_date',
         'end_date',
         'reminder_time1',
