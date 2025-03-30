@@ -1,19 +1,4 @@
 <div class="parent" *ngIf="isLoggedIn && isAdmin">    
-  <nav>
-      <button class="btn btn-outline-primary me-3" id="datas">
-        <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
-            <i class="bi bi-capsule"></i> {{"users.meds" | translate}}
-        </a>
-    </button> 
-      <button class="btn btn-outline-primary me-3" id="users" *ngIf="isSuper">
-        <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
-            <i class="bi bi-person-circle"></i> {{"users.users" | translate}}
-        </a>
-    </button>
-    <button class="btn btn-outline-danger me-3" (click)="signOut()" id="signOut">
-      <i class="bi bi-box-arrow-right"></i> {{'navbar.signOut' | translate}}
-  </button>
-  </nav>
   <div class="container mt-4">
     <form (ngSubmit)="addMedicine()">
       <div class="form-group">
@@ -37,7 +22,7 @@
       />
     </div>
 
-    <div #dataTable>
+    <div class="table-responsive">
       <table class="table table-striped">
           <thead>
             <tr>

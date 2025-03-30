@@ -6,19 +6,22 @@
 }
 
 .parent {
-  margin-top: 150px;
+  margin-top: 10%;
+  padding: 2%;
   background-color: #f8f9fa;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
+  overflow-x: hidden;
 }
+
 
 .container {
   background-color: white;
-  padding: 30px;
+  padding: 3%;
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   width: 100%;
@@ -28,7 +31,13 @@
 
 .b-container {
   display: flex;
-  gap: 5px;
+  gap: 3%;
+}
+
+button.btn {
+  padding: 8px 15px;
+  font-size: 16px;
+  transition: all 0.3s ease;
 }
 
 button .left,
@@ -37,26 +46,15 @@ button .right{
 }
 
 h1 {
-  font-size: 50px;
+  font-size: 3rem;
   letter-spacing: 0.7px;
-  margin-bottom: 20px;
+  margin-bottom: 2%;
   font-weight: 700;
   color: aliceblue;
 }
 
 #h1 {
   color: black !important;
-}
-
-.day-names {
-  display: grid, flex;
-  grid-template-columns: repeat(7, 1fr);
-  font-weight: bold;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  color: aliceblue;
-  text-align: center;
-  gap: 5px;
 }
 
 .med-name {
@@ -68,27 +66,36 @@ h1 {
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
-  padding: 10px;
+  grid-template-columns: repeat(7, minmax(40px, 1fr));
+  gap: 0.5%;
+  padding: 2%;
   border-radius: 30px;
   background-color:#e0e1dd;
-  max-width: 100%;
+  width: 100%;
+  height: auto;
   overflow: hidden;
 }
 
 .calendar-cell {
+  aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
- 
+  padding: 5px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-sizing: border-box; 
 }
 
 .day-box {
   width: 100%;
-  min-height: 120px;
-  max-height: 120px;
+  height: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
   padding: 12px;
   border-radius: 30px;
   transition: 0.2s ease-in-out;  
@@ -105,21 +112,28 @@ h1 {
 }
 
 .day-number {
-  font-size: 22px;
+  font-size: clamp(1rem, 2vw, 1.5rem);
   font-weight: bold;
 }
 
-.day-name {
-  font-size: 14px;
-  color: #6c757d;
-  display: block;
-  margin-top: 4px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+.day-names {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-bottom: 2%;
+  color: aliceblue;
+  text-align: center;
+  gap: 2%;
+  padding: 10px 0;
   white-space: nowrap;
-  max-width: 100%;
-  display: flex;
 }
+.day-name {
+  font-size: clamp(0.8rem, 2vw, 1rem);
+  min-width: 50px;
+  text-align: center;
+}
+
 
 .med-name {
   background-color: #eeebff;
@@ -142,6 +156,7 @@ h1 {
 .pop-up {
   position: fixed;
   display: flex;
+  margin-top: 10%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -151,10 +166,10 @@ h1 {
   padding: 5px 40px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   width: 85%;
-  max-height: 100vh;
-  overflow: hidden;
+  max-height: 100%;
   -ms-overflow-style: none;
-  scrollbar-width: none; 
+  scrollbar-width: none;
+  overflow: scroll;
   display: block !important;
   justify-content: center;
 }
@@ -200,16 +215,12 @@ color: aliceblue;
 
 .row {
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
   justify-content: space-between;
+  
   padding: 20px;
   text-align: left;
-}
-
-.leftSide, .rightSide{
-  flex: 1;
-  min-width: 280px;
-  width: 100%;
 }
 
 
@@ -227,12 +238,12 @@ color: aliceblue;
 .extras {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
 }
 .extra-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 3%;
   width: 100%;
 }
 
@@ -241,6 +252,9 @@ color: aliceblue;
   text-align: left;
   font-size: 16px;
   color: #6c757d;
+}
+.form-control {
+  width: 100%;
 }
 
 textarea{
@@ -308,14 +322,41 @@ span{
 }
 
 
+#pop1{
+  background: transparent !important;
+  box-shadow: none !important;
+  width: 50% !important;
+} 
+.add-buttons-container{
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.meds .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px
+}
+
+.leftSide, .rightSide{
+  flex: 1 1 calc(50% - 20px);
+  min-width: 300px;
+  width: 100%;
+}
+
 #addAppointment,
 #addMeds {
   background: linear-gradient(135deg, #225b7c, #1b4b68);
   color: white;
-  width: 270px;
-  height: 55px;
+  width: 100%;
+  height: 6vh;
   border-radius: 30px;
-  font-size: 18px;
+  font-size: 1rem;
+  padding: 2%;
   font-weight: bold;
   text-align: center;
   cursor: pointer;
@@ -540,63 +581,149 @@ li.reminder-item {
   min-height: 400px;
 }
 
-.slide1, .slide2 {
-  min-height: 400px;
-}
 
-.choices button {
-  background-color: #225b7c;
-  color: aliceblue;
-  font-weight: bold;
-  border: none;
-  transition: all 0.3s ease-in-out;
-}
-
-.choices a {
-  color: white;
-  text-decoration: none;
-}
-
-.choices #medicine, #appointment {
-  width: 180px;
-  height: 50px;
-  border-radius: 25px;
-  font-size: 18px;
-  text-align: center;
-}
-
-.slide2 h1,
-.slide1 h1{
-  color: #1b4b68;
-  font-size: 30px;
-  text-transform: uppercase;
-  font-weight: bolder;
-}
-
-.slide2 .extra-row{
-  margin:  20px;
-}
-
-#pop1{
-  background: transparent !important;
-  box-shadow: none !important;
-  width: 50% !important;
-} 
 
 @media (max-width: 768px) {
   .calendar-grid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(7, minmax(40px, 1fr));
+    gap: 0.5px;
+    padding: 2%;
+  }
+
+  .calendar-cell {
+    aspect-ratio: 1;
+  }
+
+  .day-names {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 1%;
+  }
+
+  .day-names .day-name {
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
   .calendar-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, minmax(40px, 1fr));
+    gap: 2px;
+    padding: 1%;
+  }
+
+  .calendar-cell {
+    aspect-ratio: 1;
+  }
+
+  .day-names {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1%;
+  }
+
+  .day-names .day-name {
+    font-size: 0.8rem;
   }
 }
 
 @media (max-width: 320px) {
   .calendar-grid {
+    grid-template-columns: repeat(2, minmax(40px, 1fr));
+    gap: 1px;
+    padding: 1%;
+  }
+
+  .calendar-cell {
+    aspect-ratio: 1;
+  }
+
+  .day-names {
     grid-template-columns: repeat(2, 1fr);
+    gap: 0.5%;
+  }
+
+  .day-names .day-name {
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 767px) {
+  .day-names {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: repeat(7, minmax(40px, 1fr));
+    gap: 2px;
+    padding: 2%;
+  }
+
+  .calendar-cell {
+    aspect-ratio: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-grid {
+    grid-template-columns: repeat(4, minmax(40px, 1fr));
+    gap: 2px;
+    padding: 1%;
+  }
+
+  .calendar-cell {
+    aspect-ratio: 1;
+  }
+}
+
+@media (max-width: 320px) {
+  .calendar-grid {
+    grid-template-columns: repeat(2, minmax(40px, 1fr));
+    gap: 2%;
+    padding: 1%;
+  }
+
+  .calendar-cell {
+    aspect-ratio: 1;
+  }
+}
+
+@media (max-width: 500px) {
+  .pop-up {
+    width: 95%;
+    padding: 4%;
+  }
+}
+
+@media (max-width: 500px) {
+  .buttons {
+    gap: 3%;
+  }
+
+  #h1 {
+    font-size: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .meds .row {
+    flex-direction: row;
+  }
+
+  .leftSide {
+    width: 50%;
+  }
+
+  .rightSide {
+    width: 50%;
+  }
+}
+
+@media (max-width: 767px) {
+  .meds .row {
+    flex-direction: column;
+  }
+
+  .leftSide, .rightSide {
+    flex: 1 1 100%;
   }
 }

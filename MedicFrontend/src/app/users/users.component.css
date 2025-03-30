@@ -12,20 +12,6 @@
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
-nav{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 120px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color:#e0e1dd;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-}
 
 h1{
     text-transform: uppercase;
@@ -39,36 +25,6 @@ h1{
 a{
     color: white;
     text-decoration: none;
-}
-
-#users, 
-#datas,
-#signOut{
-    background-color: #225b7c;
-    color: aliceblue;
-    font-weight: bold;
-    border: none;
-    transition: all 0.3s ease-in-out;
-    gap: 8px;
-    width: 100%;
-    max-width: 200px;
-    height: 50px;
-    border-radius: 25px;
-    font-size: 18px;
-}
-  
-#users:hover,
-#datas:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: #2ca788 ;
-    color: black;
-}
-#signOut:hover{
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: rgb(216, 6, 6);
-    color: aliceblue;
 }
 
 table{
@@ -139,4 +95,8 @@ th{
 .banned-user {
     text-decoration: line-through;
     color: #6c757d;
+}
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }

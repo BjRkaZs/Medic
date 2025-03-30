@@ -108,8 +108,22 @@
                         <div class="extras">
                             <div class="extra-row">
                                 <label for="stock" class="form-label mt-2">{{'mymeds.stock' | translate}}</label>
-                                <input id="stock" formControlName="stock" type="number" required class="form-control" min="0"/>
+                                <div class="input-group">
+                                    <input id="stock" formControlName="stock" type="number" required class="form-control" min="0"/>
+                                    
+                                    <span class="input-group-text" *ngIf="selectedStockUnit">{{ displayStockUnit }}</span>
+                            
+                                    <button class="btn btn-secondary dropdown-toggle" type="button" id="stockDropdown" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                                    
+                                    <ul class="dropdown-menu" aria-labelledby="stockDropdown">
+                                        <li><a class="dropdown-item" (click)="setDosageUnit('g')">{{ 'calendar.g' | translate }}</a></li>
+                                        <li><a class="dropdown-item" (click)="setDosageUnit('mg')">{{'calendar.mg' | translate}}</a></li>
+                                        <li><a class="dropdown-item" (click)="setDosageUnit('ml')">{{ 'calendar.ml' | translate }}</a></li>
+                                        <li><a class="dropdown-item" (click)="setDosageUnit('pieces')">{{ 'calendar.pieces' | translate }}</a></li>
+                                    </ul>
+                                </div>
                             </div>
+                            
                             <div class="extra-row">
                                 <label for="dosage" class="form-label mt-2">{{'mymeds.dosage' | translate}}</label>
                                 <div class="input-group">
