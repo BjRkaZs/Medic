@@ -487,21 +487,32 @@ export class CalendarComponent implements OnInit {
   
     const currentDate = new Date(this.currentYear, this.currentMonth, day);
     currentDate.setHours(0, 0, 0, 0);
-    const formattedDate = currentDate.toISOString().slice(0, 10);
+    const formattedDate = currentDate.toISOString().split('T')[0];
   
     return this.calendarEntries.filter(entry => {
-        if (entry.isAppointment) {
-            const appointmentDate = new Date(entry.date);
-            appointmentDate.setHours(0, 0, 0, 0);
-            const appointmentDateString = appointmentDate.toISOString().slice(0, 10);
-            return appointmentDateString === formattedDate;
-        } else {
-            const dates = this.getDatesBetween(entry.start_date, entry.end_date);
-            return dates.includes(formattedDate);
+      if (entry.isAppointment) {
+        const appointmentDate = new Date(entry.date);
+        appointmentDate.setHours(0, 0, 0, 0);
+        const appointmentDateString = appointmentDate.toISOString().split('T')[0];
+        return appointmentDateString === formattedDate;
+      } else {
+        const startDate = new Date(entry.start_date);
+        const endDate = new Date(entry.end_date);
+        const repeatInterval = entry.repeat || 1;
+        startDate.setHours(0, 0, 0, 0);
+        endDate.setHours(0, 0, 0, 0);
+        if (startDate.getTime() === currentDate.getTime()) {
+          return true;
         }
+        if (currentDate < startDate || currentDate > endDate) {
+          return false;
+        }
+        const diffInDays = Math.floor((currentDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        return diffInDays % repeatInterval === 0;
+      }
     });
-}
-  
+  }
+
   getDayName(day: number | null): string {
     if (day === null) return '';
     this.showForm = true;
@@ -509,15 +520,23 @@ export class CalendarComponent implements OnInit {
     return date.toLocaleDateString('en-US', { weekday: 'long' }).slice(0, 10);
   }
 
+  selectedStockUnit: string = '';
+  displayStockUnit:string = '';
+  setStockUnit(unit: string): void {
+    this.selectedStockUnit = unit;
+    this.translate.get(`calendar.${unit}`).subscribe(translatedUnit => {
+      this.displayStockUnit = translatedUnit;
+    });
+  }
+
   selectedDosageUnit: string = '';
   displayDosageUnit:string = '';
   setDosageUnit(unit: string): void {
     this.selectedDosageUnit = unit;
-    
     this.translate.get(`calendar.${unit}`).subscribe(translatedUnit => {
-        this.displayDosageUnit = translatedUnit;
+      this.displayDosageUnit = translatedUnit;
     });
-    
+    this.setStockUnit(unit);
   }
 
   selectedRole: string = 'No repeat';

@@ -4,71 +4,15 @@
     align-items: center;
     background-color: #225b7c;
     min-height: 100vh;
-    padding-top: 80px;
+    padding-top: 6%;
 }
-.container{
+.container {
     background-color: white;
-    padding: 0, 20px;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-}
-
-nav{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 120px;
-    width: 100%;;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color:#e0e1dd;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-}
-h1{
-    text-transform: uppercase;
-    font-size: 30px;
-    letter-spacing: 0.3px;
-    margin: 15px 0;
-    text-transform: uppercase;
-    font-weight: 700;
-}
-
-a{
-    color: white;
-    text-decoration: none;
-}
-
-#users, 
-#datas,
-#signOut{
-    background-color: #225b7c;
-    color: aliceblue;
-    font-weight: bold;
-    border: none;
-    transition: all 0.3s ease-in-out;
-    gap: 8px;
-    width: 100%;
-    max-width: 200px;
-    height: 50px;
-    border-radius: 25px;
-    font-size: 18px;
-  }
-  
-#users:hover,
-#datas:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: #2ca788 ;
-    color: black;
-}
-#signOut:hover{
-    transform: scale(1.05);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background-color: rgb(216, 6, 6);
-    color: aliceblue;
+    width: 90%;
+    max-width: 1200px;
 }
 
 form {
@@ -76,16 +20,18 @@ form {
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    margin: 60px 0;
+    margin: 5% 0;
     background-color: #e0e1dd;
     border-bottom: 5px solid #225b7c;
     border-radius: 25px;
-    padding-bottom: 20px;
+    padding-bottom: 1%;
     width: 100%;
 }
 
 table{
-    margin-top: 50px;
+    margin-top: 5%;
+    width: 100%;
+    overflow-x: auto;
 }
 
 #searchInput{
@@ -96,16 +42,19 @@ table{
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
+    padding: 2%;
 }
 
 form #name,
 form #substance,
 form #form{
-    margin-bottom: 10px;
+    margin-bottom: 2%;
 }
 #name, #substance, #form{
-    width: 500px;
-    height: 55px;
+    width: 100%;
+    max-width: 500px;
+    height: 6vh;
     border-radius: 10px;
     border-bottom: 2px solid rgba(34, 91, 124, 0.5);
     transition: all 0.3s ease-in-out;
@@ -131,16 +80,19 @@ form #form{
     margin-right: 15px;
 }
   
-button{
+button {
     background-color: #225b7c;
     color: aliceblue;
     font-weight: bold;
     border: none;
     transition: all 0.3s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #add, #save, #edit, #delete {
-    width: 50px !important;
+    width: 50px;
     height: 50px;
     border-radius: 50%;
     font-size: 16px;
@@ -176,10 +128,53 @@ button{
     background-color: rgb(216, 6, 6);
     color: aliceblue;
 }
-
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+}
 .table{
     width: 100%;
 }
-th{
-    width: 700px;
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
+  
+th{
+    width: 100%;
+    gap: 5%;
+}
+
+
+@media (max-width: 768px) {
+    .buttons button {
+      font-size: 12px;
+      padding: 5px;
+      margin: 2px;
+    }
+  
+    .form-control {
+      font-size: 14px;
+    }
+  
+    table th, table td {
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .buttons button {
+      font-size: 10px;
+      padding: 3px;
+      margin: 1px;
+    }
+  
+    .form-control {
+      font-size: 12px;
+    }
+  
+    table th, table td {
+      font-size: 12px;
+    }
+  }
+

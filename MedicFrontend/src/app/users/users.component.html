@@ -1,21 +1,7 @@
 <div class="parent" *ngIf="isLoggedIn && isSuper" >
-    <nav>
-        <button class="btn btn-outline-primary me-3" id="datas">
-            <a routerLink="/datas" routerLinkActive="active" class="text-decoration-none">
-                <i class="bi bi-capsule"></i> {{"users.meds" | translate}}
-            </a>
-        </button>
-        <button class="btn btn-outline-primary me-3" id="users">
-          <a routerLink="/users" routerLinkActive="active" class="text-decoration-none">
-              <i class="bi bi-person-circle"></i> {{"users.users" | translate}}
-          </a>
-        </button>
-        <button class="btn btn-outline-danger" (click)="signOut()" id="signOut">
-            <i class="bi bi-box-arrow-right"></i> {{'navbar.signOut' | translate}}
-        </button>
-  </nav>
-    <div class="container mt-4">
-    
+  <div class="container mt-4">
+  
+    <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -45,14 +31,15 @@
               </div>
             </td>
             <td>
-              <button class="btn btn-sm" 
-                [ngClass]="{'btn-danger': !user.banned, 'btn-success': user.banned}" 
+              <button class="btn btn-sm"
+                [ngClass]="{'btn-danger': !user.banned, 'btn-success': user.banned}"
                 (click)="banUser(user)">
                 <i class="bi" [ngClass]="{'bi-ban': !user.banned, 'bi-check-lg': user.banned}"></i>
               </button>
             </td>
           </tr>
         </tbody>
-    </table>
+        </table>
     </div>
   </div>
+</div>

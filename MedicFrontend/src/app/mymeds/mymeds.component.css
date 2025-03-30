@@ -131,7 +131,7 @@ input:focus {
 
 .button-container {
   display: flex;
-  justify-content: flex-end; /* Jobbra tolja a tartalmat */
+  justify-content: flex-end;
   padding-right: 20px;
 }
 
