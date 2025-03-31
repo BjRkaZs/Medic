@@ -398,7 +398,7 @@ export class CalendarComponent implements OnInit {
     this.http.put(`http://localhost:8000/api/editcalendar/${this.currentEditId}`, formData, { headers })
       .subscribe({
         next: (response: any) => {
-          if (response.body?.success) {
+          if (response.success) {
             this.showForm = false;
             this.showMedicationForm = false;
             this.loadCalendarEntries();
