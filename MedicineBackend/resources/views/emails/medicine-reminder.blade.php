@@ -3,25 +3,29 @@
 <head>
     <meta charset="utf-8">
     <style>
+        :root {
+            color-scheme: light only;
+        }
+
         body {
             margin: 0;
             padding: 40px;
             font-family: 'Lato', sans-serif;
-            color: white;
+            color: white !important;
         }
 
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 30px;
-            background-color: #225b7c;
+            background-color: #1a2f4b !important;
             border-radius: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             text-align: center;
         }
 
         h2 {
-            color: #ecf8ff;
+            color: white !important;
             font-size: 28px;
             font-weight: 700;
             text-align: center;
@@ -29,7 +33,7 @@
         }
 
         p {
-            color: white;
+            color: white !important;
             font-size: 16px;
             line-height: 1.6;
             margin: 15px 0;
@@ -37,8 +41,8 @@
 
         .medicine-name {
             display: inline-block;
-            background-color: rgba(255, 255, 255, 0.15);
-            color: #ecf8ff;
+            background-color: #4a9eff !important;
+            color: white !important ;
             font-size: 20px;
             padding: 8px 20px;
             border-radius: 20px;

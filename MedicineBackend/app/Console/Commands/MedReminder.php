@@ -48,7 +48,7 @@ class MedReminder extends Command
 
             foreach ($times as $time) {
                 if ($time && Carbon::parse($time)->format('H:i') === $currentTime) {
-                    Mail::to($reminder->user->email)->send(
+                    Mail::to($reminder->user->email)->queue(
                         new MedReminderMail(
                             $reminder->medicine->name,
                             $reminder->dosage,

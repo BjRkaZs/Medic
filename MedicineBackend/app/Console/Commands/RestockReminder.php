@@ -27,10 +27,11 @@ class RestockReminder extends Command
             $reminderDate = $restockDate->copy()->subDays($reminder->restock_reminder);
             
             if ($today->eq($reminderDate)) {
-                Mail::to($reminder->user->email)->send(
+                Mail::to($reminder->user->email)->queue(
                     new RestockReminderMail(
                         $reminder->medicine->name,
                         $reminder->stock,
+                        $reminder->dosage_unit,
                         $reminder->restock
                     )
                 );

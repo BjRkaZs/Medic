@@ -69,6 +69,7 @@ export class CalendarComponent implements OnInit {
 
     this.medicationForm.get('startDate')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('stock')?.valueChanges.subscribe(() => this.calculateRestockDate());
+    this.medicationForm.get('dosage')?.valueChanges.subscribe(() => this.calculateRestockDate());
     this.medicationForm.get('repeat')?.valueChanges.subscribe(() => this.calculateRestockDate());
   }
 
@@ -78,6 +79,15 @@ export class CalendarComponent implements OnInit {
     this.loadCalendarEntries();
     this.weekDays = this.translate.instant('calendar.weekDays');
     console.log('Weekdays:', this.weekDays);
+  }
+
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    };
   }
 
   openMedsForm(): void {
@@ -196,7 +206,7 @@ export class CalendarComponent implements OnInit {
             this.reminders = [];
         }
     }
-}
+  }
 
 
   isToday(day: number): boolean {
@@ -221,12 +231,7 @@ export class CalendarComponent implements OnInit {
   searchMedicine(event: any) {
     const searchTerm = event.target.value;
     if (searchTerm.length > 0) {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
+      const headers = this.getAuthHeaders();
 
       this.http.get(`http://localhost:8000/api/searchmedname?name=${searchTerm}`, { headers })
         .subscribe({
@@ -254,12 +259,7 @@ export class CalendarComponent implements OnInit {
     });
     this.showSearchResults = false;
     
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers = this.getAuthHeaders();
 
     this.http.get(`http://localhost:8000/api/medforms?name=${medicine.name}`, { headers })
       .subscribe({
@@ -285,96 +285,8 @@ export class CalendarComponent implements OnInit {
     this.showForms = false;
   }
 
-  addCalendar(): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
-
-    if (!this.medicationForm.get('medicine_id')?.value) {
-      this.alertService.show(this.translate.instant('alerts.calendar.missmed'));
-      return;
-    }
-
-    console.log('Form values:', this.medicationForm.value);
-    console.log('Reminders:', this.reminders);
-    
-    const requiredFields = ['medicine_id', 'stock', 'startDate', 'endDate'];
-    const missingFields = requiredFields.filter(field => 
-      !this.medicationForm.get(field)?.value
-    );
-  
-    if (missingFields.length > 0) {
-      console.error('Missing required fields:', missingFields);
-      this.alertService.show(this.translate.instant('alerts.calendar.missfields' + `${missingFields.join(', ')}`));
-      return;
-    }
-  
-    if (this.reminders.length === 0) {
-      this.alertService.show(this.translate.instant('alerts.calendar.reminder'));
-      return;
-    }
-
-    const reminderFields: any = {};
-
-    for (let i = 0; i < 5; i++) {
-      reminderFields[`reminder_time${i + 1}`] = 
-          this.reminders[i] || null;
-    }
-  
-    const formData = {
-      medicine_id: this.medicationForm.get('medicine_id')?.value,
-      description: this.medicationForm.get('description')?.value,
-      stock: this.medicationForm.get('stock')?.value,
-      dosage: this.medicationForm.get('dosage')?.value,
-      dosage_unit: this.selectedDosageUnit,
-      start_date: this.medicationForm.get('startDate')?.value,
-      end_date: this.medicationForm.get('endDate')?.value,
-      restock: this.medicationForm.get('restock')?.value,
-      restock_reminder: this.medicationForm.get('restockReminder')?.value,
-      repeat: this.medicationForm.get('repeat')?.value,
-      ...reminderFields
-    };
-
-    console.log('Sending data:', formData);
-    console.log('Token:', token); 
-  
-    this.http.post('http://localhost:8000/api/calendar', formData, { headers, observe: 'response' })
-      .subscribe({
-        next: (response: any) => {
-          console.log('Full response:', response);
-          if (response.body?.success) {
-              this.showForm = false;
-              this.loadCalendarEntries();
-              this.medicationForm.reset();
-              this.reminders = [];
-          } else {
-              console.error('Response indicates failure:', response.body);
-              this.alertService.show(this.translate.instant('alerts.calendar.entryfail'));
-          }
-      },
-      error: (error) => {
-          console.error('Network error details:', {
-              status: error.status,
-              statusText: error.statusText,
-              error: error.error,
-              headers: error.headers?.keys()
-          });
-          this.alertService.show(`Error: ${error.error?.message}` || this.translate.instant('alerts.calendar.entryfail'));
-      }
-      });
-      
-  }
-
   updateCalendarEntry(): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers = this.getAuthHeaders();
 
     const reminderFields: any = {};
     for (let i = 0; i < 5; i++) {
@@ -419,12 +331,7 @@ export class CalendarComponent implements OnInit {
   }
 
   loadCalendarEntries(): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers = this.getAuthHeaders();
 
     forkJoin({
       medicines: this.http.get('http://localhost:8000/api/calendar', { headers }),
@@ -451,11 +358,12 @@ export class CalendarComponent implements OnInit {
   calculateRestockDate(): void {
     const startDate = this.medicationForm.get('startDate')?.value;
     const stock = this.medicationForm.get('stock')?.value;
+    const dosage = this.medicationForm.get('dosage')?.value;
     const repeat = this.medicationForm.get('repeat')?.value;
     const reminderCount = this.reminders.length;
   
     if (startDate && stock && reminderCount > 0) {
-      const dailyDoses = reminderCount;
+      const dailyDoses = reminderCount * dosage;
       const daysUntilRestock = Math.floor((stock / dailyDoses) * repeat);
       
       const restockDate = new Date(startDate);
@@ -581,12 +489,7 @@ export class CalendarComponent implements OnInit {
   }
 
   addCalendarEntry(): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers = this.getAuthHeaders();
 
     if (!this.medicationForm.get('medicine_id')?.value) {
       this.alertService.show(this.translate.instant('alerts.calendar.missmed'));
@@ -596,14 +499,33 @@ export class CalendarComponent implements OnInit {
     console.log('Form values:', this.medicationForm.value);
     console.log('Reminders:', this.reminders);
     
-    const requiredFields = ['medicine_id', 'stock', 'startDate', 'endDate'];
-    const missingFields = requiredFields.filter(field => 
-      !this.medicationForm.get(field)?.value
-    );
+    const requiredFields = ['medicine_id', 'stock', 'dosage', 'dosage_unit', 'startDate', 'endDate', "restock", "restockReminder"];
+    const missingFields = requiredFields.filter(field => {
+      const value = field === 'dosage_unit' 
+          ? this.selectedDosageUnit 
+          : this.medicationForm.get(field)?.value;
+      return !value && value !== 0;
+    });
+    const stock = this.medicationForm.get('stock')?.value;
+    const dosage = this.medicationForm.get('dosage')?.value;
+    const reminderCount = this.reminders.length;
+    const dailyDoses = reminderCount * dosage;
+    const startDate = new Date(this.medicationForm.get('startDate')?.value);
+    const endDate = new Date(this.medicationForm.get('endDate')?.value);
+
+    if (endDate < startDate) {
+      this.alertService.show(this.translate.instant('alerts.calendar.enddatecheck'));
+      return;
+    }
+
+    if (dailyDoses > stock) {
+      this.alertService.show(this.translate.instant('alerts.calendar.dosagetoohigh'));
+      return;
+    }
 
     if (missingFields.length > 0) {
       console.error('Missing required fields:', missingFields);
-      this.alertService.show(this.translate.instant('alerts.calendar.missfields' + `${missingFields.join(', ')}`));
+      this.alertService.show(this.translate.instant('alerts.calendar.missfields', {fields: missingFields.join(', ')}));
       return;
     }
   
@@ -666,7 +588,6 @@ export class CalendarComponent implements OnInit {
   editMedicine(medicine: any): void {
     this.showForm = false;
     this.showMedicationForm = true;
-    this.isSlide1Visible = true;
     this.currentEditId = medicine.id;
     this.currentAppointmentId = null;
     this.medicationForm.patchValue({
@@ -699,20 +620,14 @@ export class CalendarComponent implements OnInit {
       } else {
           this.addAppointment();
       }
-  } else {
-      this.alertService.show(this.translate.instant('alerts.calendar.reqfields'));
+    } else {
+        this.alertService.show(this.translate.instant('alerts.calendar.reqfields'));
+    } 
   }
-    
-}
 
   addAppointment(): void {
     if (this.appointmentForm.valid) {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
+      const headers = this.getAuthHeaders();
 
       const formData = {
         name: this.appointmentForm.get('doctorname')?.value,
@@ -746,12 +661,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getAppointment(): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-    };
+    const headers = this.getAuthHeaders();
 
     this.http.get('http://localhost:8000/api/getappointment', { headers })
     .subscribe({
@@ -772,12 +682,7 @@ export class CalendarComponent implements OnInit {
 }
 
   updateAppointment(): void {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    };
+    const headers = this.getAuthHeaders();
 
     const formData = {
       name: this.appointmentForm.get('doctorname')?.value,
@@ -809,12 +714,7 @@ export class CalendarComponent implements OnInit {
     this.alertService.showConfirm(this.translate.instant('alerts.calendar.deleteconfirm'))
     .then((confirmed) => {
       if (confirmed) {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
+        const headers = this.getAuthHeaders();
 
       this.http.delete(`http://localhost:8000/api/deleteappointment/${this.currentAppointmentId}`, { headers })
       .subscribe({

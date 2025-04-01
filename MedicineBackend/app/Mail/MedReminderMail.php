@@ -2,12 +2,17 @@
 
 namespace App\Mail;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 
-class MedReminderMail extends Mailable
+class MedReminderMail extends Mailable implements ShouldQueue
 {
+    use Queueable, SerializesModels;
+    
     public function __construct(
         protected $medicineName,
         protected $dosage,

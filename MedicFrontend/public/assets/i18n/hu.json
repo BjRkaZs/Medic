@@ -83,7 +83,7 @@
         "calendar": {
             "success" : "Gyógyszer értesítés sikeresen hozzáadva",
             "missmed" : "Kérjük válasszon egy gyógyszert",
-            "missfields" : "Kérjük töltse ki a következő mezőket: ",
+            "missfields" : "Kérjük töltse ki a következő mezőket: {{fields}}",
             "reminder" : "Legalább egy emlékeztető időpont szükséges",
             "entryfail" : "Naptárbejegyzés mentése sikertelen",
             "updatesuccess" : "Naptárbejegyzés sikeresen frissítve",
@@ -97,7 +97,9 @@
             "appdatefail" : "Orvosi vizsgálat időpont frissítése sikertelen",
             "deletesuccess" : "Orvosi vizsgálat időpontja sikeresen törölve",
             "deletefail" : "Orvosi vizsgálat időpontjának törlése sikertelen",
-            "deleteconfirm" : "Biztosan törölni szeretné az orvosi vizsgálat időpontját?"
+            "deleteconfirm" : "Biztosan törölni szeretné az orvosi vizsgálat időpontját?",
+            "dosagetoohigh" : "Kevesebb készlete van, mint a szükséges adag. Kérjük, ellenőrizze készletét.",
+            "enddatecheck": "A befejező dátum nem lehet korábbi, mint a kezdő dátum"
         },
         "datas": {
             "medsuccess" : "Gyógyszer sikeresen hozzáadva",
@@ -145,7 +147,9 @@
             "fail": "Hiba történt a felhasználó rang frissítése közben",
             "banconfirm": "Biztosan tiltani szeretné ezt a felhasználót?",
             "bansuccess": "Felhasználó sikeresen tiltva"
-        }
+        },
+        "confirm": "Igen",
+        "cancel": "Nem"
     }
 }
 

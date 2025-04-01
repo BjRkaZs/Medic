@@ -84,7 +84,7 @@
         "calendar": {
             "success" : "Calendar entry saved successfully",
             "missmed" : "Please select a medicine first",
-            "missfields" : "Please fill in: ",
+            "missfields": "The following fields are required: {{fields}}",
             "reminder" : "At least one reminder time is required",
             "entryfail" : "Failed to save calendar entry",
             "updatesuccess" : "Calendar entry updated successfully",
@@ -98,7 +98,9 @@
             "appdatefail" : "Failed to update appointment",
             "deletesuccess" : "Appointment deleted successfully",
             "deletefail" : "Failed to delete calendar appointment",
-            "deleteconfirm" : "Are you sure you want to delete this appointment?"
+            "deleteconfirm" : "Are you sure you want to delete this appointment?",
+            "dosagetoohigh" : "You have less stock than the required dosage. Please check your stock.",
+            "enddatecheck": "End date cannot be before start date"
         },
         "datas": {
             "medsuccess" : "Medicine added successfully",
@@ -151,6 +153,8 @@
             "unbanconfirm": "Are you sure you want to unban this user?",
             "unbansuccess": "User unbanned successfully",
             "unbanfail": "Failed to unban user"
-        }
+        },
+        "confirm": "Yes",
+        "cancel": "No"
     }
 }
