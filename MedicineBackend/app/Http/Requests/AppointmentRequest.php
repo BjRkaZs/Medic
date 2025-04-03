@@ -24,7 +24,7 @@ class AppointmentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'nullable|string|max:100',
+            'name' => 'nullable|string|min:3|max:100',
             'specialty' => 'required|string|max:120',
             'description' => 'nullable|string',
             'date' => 'required|date'
@@ -35,6 +35,7 @@ class AppointmentRequest extends FormRequest
     {
         return [
             'name.max' => 'Doctor name cannot be longer than 100 characters',
+            'name.min' => 'Doctor name must be at least 3 characters',
             'specialty.required' => 'Medical specialty is required',
             'specialty.max' => 'Specialty name cannot be longer than 120 characters',
             'date.required' => 'Appointment date is required',

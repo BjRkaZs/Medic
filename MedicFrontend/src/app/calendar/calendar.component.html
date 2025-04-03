@@ -26,7 +26,7 @@
                                 {{ entry.medicine.name | slice:0:10 }}
                             </span>
                             <span *ngIf="entry.isAppointment" (click)="editAppointment(entry); $event.stopPropagation()">
-                                {{ entry.specialty }}
+                                {{ entry.date | date:'HH:mm' }}<br>{{ entry.specialty }}
                             </span>
                         </div>
                     </div>

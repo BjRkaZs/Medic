@@ -99,7 +99,10 @@
             "deletefail" : "Orvosi vizsgálat időpontjának törlése sikertelen",
             "deleteconfirm" : "Biztosan törölni szeretné az orvosi vizsgálat időpontját?",
             "dosagetoohigh" : "Kevesebb készlete van, mint a szükséges adag. Kérjük, ellenőrizze készletét.",
-            "enddatecheck": "A befejező dátum nem lehet korábbi, mint a kezdő dátum"
+            "enddatecheck": "A befejező dátum nem lehet korábbi, mint a kezdő dátum",
+            "stocknotzero": "A készletnek nagyobbnak kell lennie, mint 0",
+            "dosagenotzero": "Az adagnak nagyobbnak kell lennie, mint 0",
+            "repeatnotzero": "A gyógyszer szedés gyakoriságának nagyobbnak kell lennie, mint 0"
         },
         "datas": {
             "medsuccess" : "Gyógyszer sikeresen hozzáadva",

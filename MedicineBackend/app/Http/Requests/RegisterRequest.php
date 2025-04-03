@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => "required|max:15",
+            "name" => "required|min:3|max:15",
             "email" => "required|email|unique:users,email",
             "password" => [
                             "required",
@@ -40,6 +40,7 @@ class RegisterRequest extends FormRequest
     public function messages() {
         return [
             "name.required" => "Name is required",
+            "name.min" => "Name must be at least 3 characters",
             "name.max" => "Name cannot be longer than 50 characters",
             "email.required" => "Email address is required",
             "email.email" => "Please enter a valid email address",

@@ -230,9 +230,15 @@ export class CalendarComponent implements OnInit {
 
   searchMedicine(event: any) {
     const searchTerm = event.target.value;
+    this.medicationForm.patchValue({
+      form: '',
+      medicine_id: ''
+    });
+    this.medicineForms = [];
+    this.showForms = false;
+
     if (searchTerm.length > 0) {
       const headers = this.getAuthHeaders();
-
       this.http.get(`http://localhost:8000/api/searchmedname?name=${searchTerm}`, { headers })
         .subscribe({
           next: (response: any) => {
@@ -255,9 +261,12 @@ export class CalendarComponent implements OnInit {
 
   selectMedicine(medicine: any) {
     this.medicationForm.patchValue({
-      name: medicine.name
+      name: medicine.name,
+      form: '',
+      medicine_id: ''
     });
     this.showSearchResults = false;
+    this.medicineForms = [];
     
     const headers = this.getAuthHeaders();
 
@@ -490,16 +499,10 @@ export class CalendarComponent implements OnInit {
 
   addCalendarEntry(): void {
     const headers = this.getAuthHeaders();
-
-    if (!this.medicationForm.get('medicine_id')?.value) {
-      this.alertService.show(this.translate.instant('alerts.calendar.missmed'));
-      return;
-    }
-
     console.log('Form values:', this.medicationForm.value);
     console.log('Reminders:', this.reminders);
     
-    const requiredFields = ['medicine_id', 'stock', 'dosage', 'dosage_unit', 'startDate', 'endDate', "restock", "restockReminder"];
+    const requiredFields = ['medicine_id', 'stock', 'dosage', 'dosage_unit', 'startDate', 'endDate', "restock", "restockReminder", "repeat"];
     const missingFields = requiredFields.filter(field => {
       const value = field === 'dosage_unit' 
           ? this.selectedDosageUnit 
@@ -508,10 +511,31 @@ export class CalendarComponent implements OnInit {
     });
     const stock = this.medicationForm.get('stock')?.value;
     const dosage = this.medicationForm.get('dosage')?.value;
+    const repeat = Number(this.medicationForm.get('repeat')?.value);
     const reminderCount = this.reminders.length;
     const dailyDoses = reminderCount * dosage;
     const startDate = new Date(this.medicationForm.get('startDate')?.value);
     const endDate = new Date(this.medicationForm.get('endDate')?.value);
+
+    if (!this.medicationForm.get('medicine_id')?.value) {
+      this.alertService.show(this.translate.instant('alerts.calendar.missmed'));
+      return;
+    }
+
+    if (stock <= 0) {
+      this.alertService.show(this.translate.instant('alerts.calendar.stocknotzero'));
+      return;
+    }
+    
+    if (dosage <= 0) {
+      this.alertService.show(this.translate.instant('alerts.calendar.dosagenotzero'));
+      return;
+    }
+    
+    if (repeat <= 0) {
+      this.alertService.show(this.translate.instant('alerts.calendar.repeatnotzero'));
+      return;
+    }
 
     if (endDate < startDate) {
       this.alertService.show(this.translate.instant('alerts.calendar.enddatecheck'));
