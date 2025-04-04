@@ -58,7 +58,11 @@ h1 {
 }
 
 .med-name {
-  background-color: #eeebff;
+ 
+}
+
+.med-names,
+.speciality {
   margin-bottom: 2px;
   border-radius: 20px;
   color: black !important;
@@ -68,6 +72,14 @@ h1 {
   align-items: center;
   justify-content: center;
 }
+
+.med-names{
+  background-color: #eeebff;
+}
+.speciality{
+  background-color: #a0d6e7;
+}
+
 
 .calendar-grid {
   display: grid;

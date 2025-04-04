@@ -22,12 +22,16 @@
                     <div class="day-number">{{ day }}</div>
                     <div *ngIf="getEntriesForDay(day).length > 0">
                         <div *ngFor="let entry of getEntriesForDay(day)" class="med-name">
-                            <span *ngIf="!entry.isAppointment" (click)="editMedicine(entry); $event.stopPropagation()">
-                                {{ entry.medicine.name | slice:0:10 }}
-                            </span>
-                            <span *ngIf="entry.isAppointment" (click)="editAppointment(entry); $event.stopPropagation()">
-                                {{ entry.date | date:'HH:mm' }}<br>{{ entry.specialty }}
-                            </span>
+                            <div class="med-names">
+                                <span *ngIf="!entry.isAppointment" (click)="editMedicine(entry); $event.stopPropagation()">
+                                    {{ entry.medicine.name | slice:0:10 }}
+                                </span>
+                            </div>
+                            <div class="speciality">
+                                <span *ngIf="entry.isAppointment" (click)="editAppointment(entry); $event.stopPropagation()">
+                                    {{ entry.date | date:'HH:mm' }}<br>{{ entry.specialty }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                     <button id="addPopup" type="button" class="btn btn-sm" (click)="newPopup(day); $event.stopPropagation()">

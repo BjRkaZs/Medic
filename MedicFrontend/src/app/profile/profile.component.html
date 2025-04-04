@@ -13,7 +13,7 @@
             <input type="email" class="form-control" id="email" placeholder="Email" [(ngModel)]="user.email" name="email" readonly>
             <div class="button-container">
                 <button class="btn btn-sm" id="save" (click)="saveProfile()">{{ 'profile.save' | translate }}</button>
-                <button class="btn btn-sm" id="delete" onclick="deleteProfile()">{{ 'profile.delete' | translate }}</button>
+                <button class="btn btn-sm" id="delete" (click)="deleteProfile()">{{ 'profile.delete' | translate }}</button>
             </div>
         </form>
     </div>
