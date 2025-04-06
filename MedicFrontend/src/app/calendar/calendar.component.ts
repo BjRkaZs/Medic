@@ -764,7 +764,7 @@ export class CalendarComponent implements OnInit {
 }
 
   editAppointment(appointment: any): void {
-    this.showForm = true;
+    this.showForm = false;
     this.showMedicationForm = false;
     this.showAppointmentForm = true;
     this.currentAppointmentId = appointment.id;
