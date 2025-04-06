@@ -42,22 +42,26 @@ export class PassresetComponent implements OnInit {
   }
 
   resetPassword() {
+    console.log('Reset Password button clicked');
     if (this.resetForm.valid) {
       const data = {
         token: this.token,
         email: this.email,
         ...this.resetForm.value
       };
-
+  
       this.auth.resetPassword(data).subscribe({
         next: () => {
           this.alertService.show(this.translate.instant('alerts.passreset.success'));
           this.router.navigate(['/signin']);
         },
         error: (error) => {
+          console.error('Error:', error);
           this.alertService.show(error.error?.message || this.translate.instant('alerts.passreset.fail'));
         }
       });
+    } else {
+      console.log('Form is invalid');
     }
   }
 }
