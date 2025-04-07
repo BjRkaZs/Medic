@@ -16,18 +16,22 @@
 }
 
 .container {
-  height: 500px;
-  width: 700px;
-  padding: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.30);
   background-color: white;
   border-radius: 30px;
   text-align: center;
   position: relative;
+  margin-top: 2%;
+  padding: 2%;
+  background-color: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  min-height: 50vh;
+  width: 100%;
+  max-width: 600px;
+  overflow-x: hidden;
 }
 
 form{
@@ -91,4 +95,32 @@ button {
 
 button:hover {
   background-color: #4D55CC;
+}
+
+@media (min-width: 768px) {
+  .button-container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  button {
+    width: 45%;
+  }
+}
+
+@media (max-width: 576px) {
+  h1 {
+    font-size: 20px;
+  }
+
+  input {
+    min-width: 100%;
+  }
+
+  .container {
+    padding: 20px;
+  }
+  button {
+    font-size: 0.8rem;
+  }
 }

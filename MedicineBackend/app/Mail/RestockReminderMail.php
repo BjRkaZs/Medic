@@ -34,7 +34,7 @@ class RestockReminderMail extends Mailable implements ShouldQueue
             with: [
                 'medicineName' => $this->medicineName,
                 'stock' => $this->stock,
-                'stock_unit' => $this->dosage_unit,
+                'dosage_unit' => $this->dosage_unit,
                 'restockDate' => $this->restockDate,
             ],
         );

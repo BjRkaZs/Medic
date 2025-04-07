@@ -86,10 +86,12 @@ class CalendarController extends ResponseController
         if ($calendar->user_id !== auth("sanctum")->user()->id) {
             return $this->sendError("Unauthorized", [], 403);
         }
-    
+
+        $calendar->load('medicine');
+        $calendarResource = new CalendarResource($calendar);
         $calendar->delete();
     
-        return $this->sendResponse([], "Sikeres törlés");
+        return $this->sendResponse($calendarResource, "Sikeres törlés");
     }
 
     public function calculateRestockReminderDate($restockDate, $restock_reminder) 

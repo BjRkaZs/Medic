@@ -34,9 +34,6 @@ export class ProfileComponent implements OnInit {
     }
   }
   
-
-  
-
   ngOnInit(): void {
     this.isLoggedIn = this.auth.getIsLoggedUser();
     this.loadProfile();
@@ -102,15 +99,16 @@ export class ProfileComponent implements OnInit {
   }
 
   deleteProfile(): void {
-    if (confirm('Are you sure you want to delete your profile? This cannot be undone.')) {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
-  
-      this.http.delete('http://localhost:8000/api/deleteprofile', { headers })
+    this.alertService.showConfirm(this.translate.instant('alerts.profile.deleteconfirm')).then((result) => {
+      if (result) {
+        const token = localStorage.getItem('token');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        };
+    
+        this.http.delete('http://localhost:8000/api/deleteprofile', { headers })
         .subscribe({
           next: (response: any) => {
             if (response.success) {
@@ -128,5 +126,6 @@ export class ProfileComponent implements OnInit {
           }
         });
       }
+    });
   }
 }

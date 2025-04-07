@@ -50,7 +50,7 @@ export class CalendarComponent implements OnInit {
       medicine_id: [''],
       description: '',
       stock: '',
-      dosage: '',
+      dosage: [1, [Validators.min(1)]],
       dosage_unit: '',
       startDate: '',
       endDate: '',
@@ -195,7 +195,6 @@ export class CalendarComponent implements OnInit {
                 }
             }
         } else {
-
             this.medicationForm.reset();
             this.medicationForm.patchValue({ 
                 startDate: `${this.currentYear}-${month}-${formattedDay}`,
@@ -614,13 +613,15 @@ export class CalendarComponent implements OnInit {
     this.showMedicationForm = true;
     this.currentEditId = medicine.id;
     this.currentAppointmentId = null;
+
+    const dosage = medicine.dosage > 0 ? medicine.dosage : 1;
     this.medicationForm.patchValue({
       medicine_id: medicine.medicine_id,
       name: medicine.medicine.name,
       form: medicine.medicine.form,
       description: medicine.description,
       stock: medicine.stock,
-      dosage: medicine.dosage,
+      dosage: dosage,
       dosage_unit: medicine.dosage_unit,
       startDate: medicine.start_date,
       endDate: medicine.end_date,
@@ -762,7 +763,7 @@ export class CalendarComponent implements OnInit {
 }
 
   editAppointment(appointment: any): void {
-    this.showForm = true;
+    this.showForm = false;
     this.showMedicationForm = false;
     this.showAppointmentForm = true;
     this.currentAppointmentId = appointment.id;

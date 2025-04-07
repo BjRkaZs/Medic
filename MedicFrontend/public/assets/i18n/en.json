@@ -146,6 +146,7 @@
         "profile": {
             "success" : "Profile updated successfully",
             "fail" : "Failed to update profile",
+            "deleteconfirm" : "Are you sure you want to delete your profile? This action cannot be undone.",
             "deletesuccess" : "Profile deleted successfully",
             "deletefail" : "Failed to delete profile"
         },

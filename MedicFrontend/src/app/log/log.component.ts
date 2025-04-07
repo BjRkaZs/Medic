@@ -107,8 +107,9 @@ export class LogComponent {
                 this.alertService.show(error.error.message);
             } else if (error.error?.message.includes("próbálkozás maradt")) {
                 this.alertService.show(error.error.message);
-            } else if (error.error?.message === "Nem megfelelő e-mail vagy jelszó") {
-                this.alertService.show(this.translate.instant('alerts.log.invalid'));
+            } else if (error.error?.message === "Nem megfelelő e-mail vagy jelszó" || 
+              error.error?.message === "Incorrect e-mail address or password") {
+              this.alertService.show(this.translate.instant('alerts.log.invalid'));
             } else {
                 this.alertService.show(this.translate.instant('alerts.log.logfail'));
             }

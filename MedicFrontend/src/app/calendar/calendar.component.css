@@ -76,6 +76,7 @@ h1 {
   background-color: #a0d6e7;
 }
 
+
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(40px, 1fr));

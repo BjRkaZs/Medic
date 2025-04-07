@@ -68,7 +68,7 @@
         "pass": "Új jelszó",
         "enterpass": "Írd be az új jelszavad",
         "entercpass": "Hitelesítsd az új jelszót",
-        "reset": "Jelszó megváltoztatása"
+        "reset": "Megváltoztatom"
     },
     "users": {
         "meds": "Gyógyszerek",
@@ -144,6 +144,7 @@
         "profile": {
             "success" : "Profil sikeresen frissítve",
             "fail" : "Hiba történt a profil frissítése közben",
+            "deleteconfirm" : "Biztosan törölni szeretné a profilt? Ez a művelet visszafordíthatatlan.",
             "deletesuccess" : "Profil sikeresen törölve",
             "deletefail" : "Hiba történt a profil törlése közben"
         },
