@@ -100,7 +100,7 @@ export class UsersComponent implements OnInit {
     if (confirmed) {
       const token = localStorage.getItem('token');
       const headers = {
-          'Authorization': `Beare r ${token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json'
       };

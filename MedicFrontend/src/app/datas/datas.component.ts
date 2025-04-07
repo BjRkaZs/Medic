@@ -182,28 +182,31 @@ export class DatasComponent implements OnInit {
   }
 
   deleteMedicine(data: any): void {
-    if (confirm('Are you sure you want to delete this medicine?')) {
-      const token = localStorage.getItem('token');
-      const headers = {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      };
+    this.alertService.showConfirm(this.translate.instant('alerts.datas.deleteconfirm'))
+    .then((confirmed) => {
+      if (confirmed) {
+        const token = localStorage.getItem('token');
+        const headers = {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        };
 
-      const body = { id: data.id };
-      this.http.delete('http://localhost:8000/api/deletemedicine', { headers, body }).subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            console.log('Medicine deleted:', response.data);
-            this.loadData();
-            this.alertService.show(this.translate.instant('alerts.datas.meddeletesuccess'));
+        const body = { id: data.id };
+        this.http.delete('http://localhost:8000/api/deletemedicine', { headers, body }).subscribe({
+          next: (response: any) => {
+            if (response.success) {
+              console.log('Medicine deleted:', response.data);
+              this.loadData();
+              this.alertService.show(this.translate.instant('alerts.datas.meddeletesuccess'));
+            }
+          },
+          error: (error) => {
+            console.error('Error deleting medicine:', error);
+            this.alertService.show(error.error?.message || this.translate.instant('alerts.datas.meddeletefail'));
           }
-        },
-        error: (error) => {
-          console.error('Error deleting medicine:', error);
-          this.alertService.show(error.error.message || this.translate.instant('alerts.datas.meddeletefail'));
-        }
-      });
-    }
+        });
+      }
+    });
   }
 }

@@ -110,7 +110,8 @@
             "medupdatesuccess" : "Gyógyszer sikeresen frissítve",
             "medupdatefail" : "Hiba történt a gyógyszer frissítése közben",
             "meddeletesuccess" : "Gyógyszer sikeresen törölve",
-            "meddeletefail" : "Hiba történt a gyógyszer törlése közben"
+            "meddeletefail" : "Hiba történt a gyógyszer törlése közben",
+            "deleteconfirm" : "Biztosan törölni szeretné ezt a gyógyszert?"
         },
         "fpass": {
             "success": "Jelszó visszaállítási link elküldve az e-mail címedre.",
@@ -149,7 +150,11 @@
         "users":{
             "fail": "Hiba történt a felhasználó rang frissítése közben",
             "banconfirm": "Biztosan tiltani szeretné ezt a felhasználót?",
-            "bansuccess": "Felhasználó sikeresen tiltva"
+            "bansuccess": "Felhasználó sikeresen tiltva",
+            "banfail": "Hiba történt a felhasználó tiltása közben",
+            "unbansuccess": "Felhasználó sikeresen feloldva",
+            "unbanfail": "Hiba történt a felhasználó feloldása közben",
+            "unbanconfirm": "Biztosan fel szeretné oldani ezt a felhasználót?"
         },
         "confirm": "Igen",
         "cancel": "Nem"
