@@ -3,11 +3,11 @@
     <form (ngSubmit)="addMedicine()">
       <div class="form-group">
         <input id="name" name="name" class="form-control" placeholder="{{'log.name' | translate}}" 
-                [(ngModel)]="addModel.name" required maxlength="100" />
+                [(ngModel)]="addModel.name" required />
         <input id="form" name="form" class="form-control" placeholder="{{'datas.form' | translate}}" 
-                [(ngModel)]="addModel.form" required maxlength="20"/>
+                [(ngModel)]="addModel.form"/>
         <input id="substance" name="substance" class="form-control" placeholder="{{'datas.substance' | translate}}" 
-                [(ngModel)]="addModel.substance" required maxlength="20" />
+                [(ngModel)]="addModel.substance" required />
         <button type="submit" class="btn btn-primary" id="add">+</button>
       </div>
     </form>
